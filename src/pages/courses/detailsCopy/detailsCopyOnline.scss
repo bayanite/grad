@@ -1,0 +1,157 @@
+.detailsCopy {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.additional-info {
+  justify-content: space-between;
+  display: flex;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.flex-input- {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto auto;
+}
+
+.row_inpout {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.AddOnlineCourse_input_ {
+  margin: 10px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+  width: 200px;
+}
+
+
+.input-label {
+  font-size: 18px;
+  color: #555;
+
+
+  justify-content: start;
+  margin: 10px  5px;
+}
+
+.folder-menu {
+  height: 436px;
+  overflow-y: auto;
+  width: 50%;
+  max-width: 600px;
+  margin: 20px 10px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  padding: 20px;
+}
+
+.folder-item {
+  margin-bottom: 15px;
+}
+
+.folder-item.open .dropdown-content {
+  height: auto;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.folder-header {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  min-height: 110px; /* Ensures the height doesn't shrink */
+  margin: 5px 0;
+  margin-bottom: 0px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  justify-content: start;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #c6c6c6;
+}
+
+.container-images {
+  height: 110px; /* Match the height of .folder-header */
+}
+
+.container-images img {
+  width: 130px;
+  height: 100%;
+  border-radius: 5px;
+  object-fit: cover;
+  background-color: red;
+}
+
+.folder-header:hover {
+  background-color: #fafafa;
+}
+
+.folder-header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.folder-header h4 {
+  margin: 0;
+  color: #333;
+  font-family: Tajawal, sans-serif;
+}
+
+.folder-header p {
+  margin: 2px 0;
+  color: #666;
+  font-family: Tajawal, sans-serif;
+}
+
+.dropdown-content {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  background-color: #ececec;
+  padding: 10px 15px;
+  margin-top: -2px;
+  border-radius: 0 0 10px 10px;
+  border-top: 1px solid #c6c6c6;
+}
+
+.videos, .pdfs {
+  margin-top: 10px;
+}
+
+.video, .pdf {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #fdfdfd;
+}
+
+.video p, .pdf a {
+  margin: 0;
+  color: #444;
+  font-size: 14px;
+}

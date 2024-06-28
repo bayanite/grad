@@ -1,0 +1,121 @@
+//
+//.icon-account{
+//  font-size: 20px;
+//  margin: 5px;
+//  color:#3C7168;
+//  cursor: pointer;
+//}
+.FaEyeSlash{
+  font-size: 20px;
+  margin: 5px;
+  color: #8700fd;
+  cursor: pointer;
+}
+.FaPen{
+  font-size: 20px;
+  margin: 5px;
+  color: #FF9066;
+  cursor: pointer;
+}
+.FaTrashAlt1{
+  font-size: 20px;
+  margin: 5px;
+  color: red;
+  cursor: pointer;
+}
+.FaEyeSlash:hover,.FaTrashAlt1:hover ,.FaPen:hover {
+  transform: translateY(-3px);
+
+}
+.hidden-password {
+  font-size: 1.6em; /* Adjust the size as needed */
+}
+.input_pass{
+  text-align: center;
+  padding: 8px;
+  border: none;
+  width: 90%;
+  outline: none;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  //background-color: #f8f9fa; /* Adjust the background color as needed */
+  border-bottom: 2px #3C7168 solid;
+  font-family: Tajawal, sans-serif;
+  margin: 10px 0;
+  //background-color: #f1f1f1;
+}
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px; /* This makes the container oval */
+  background-color: #ffffff; /* Adjust the background color as needed */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+  overflow: hidden; /* Ensures the buttons are contained within the oval */
+}
+.navbar input{
+width: 200px;
+background-color: #eaeaea;
+border-radius: 25px;
+border: 0;
+outline: none;
+font-family: Tajawal, sans-serif;
+padding: 10px;
+}
+
+//.search-input {
+//  margin-left: 10px;
+//  padding: 5px;
+//  border: 1px solid #ccc;
+//  border-radius: 4px;
+//}
+
+.filter-button {
+  flex: 1;
+  padding: 10px 20px;
+  background-color: #3C7168; /* Button background color */
+  color: white;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  //border-right: 1px solid #ffffff; /* Creates the division between buttons */
+}
+
+.filter-button:last-child {
+  border-right: none; /* Removes the border from the last button */
+}
+
+.filter-button:hover {
+  background-color: #52958a; /* Button hover color */
+}
+
+//.search-input {
+//  padding: 10px;
+//  border-radius: 20px; /* Round the input corners */
+//  border: 1px solid #ccc; /* Border color */
+//  width: 200px; /* Adjust the width as needed */
+//}
+.div-add{
+  display: flex;
+}
+.plus-user{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3C7168;
+  border-radius: 20%;
+  width: 20%;
+  cursor: pointer;
+}
+.plus-user-role{
+  color:white;
+}
+.btn .solid{
+  font-family: Tajawal, sans-serif;
+
+}

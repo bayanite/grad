@@ -1,0 +1,139 @@
+.courses {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.create_template {
+  background-color: white;
+  width: 220px;
+  height: 280px;
+  margin: 20px;
+  border-radius: 30px;
+  border: thin dashed #908f8f;
+  border-spacing: 100px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  cursor: pointer;
+}
+
+
+.FaPlus {
+  margin-bottom: 10px;
+  color: #EAD078;
+  font-size: xx-large;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease; /* Add transitions for transform, box-shadow, and filter */
+}
+
+.FaPlus:hover {
+  transform: scale(0.9);
+  box-shadow: 0 0 10px rgba(234, 208, 120, 0.5); /* Add a subtle shadow effect */
+  filter: brightness(1.2); /* Add a lighting effect by increasing brightness */
+}
+
+.template {
+
+  position: relative; /* Ensure the template acts as a relative container for absolute positioning */
+  margin: 20px;
+  border-radius: 30px;
+  width: 220px;
+  height: 280px;
+  background-color: white;
+  border: 0.5px solid #908f8f;
+}
+
+.template:hover {
+  position: relative; /* Ensure the template acts as a relative container for absolute positioning */
+  margin: 20px;
+  border-radius: 30px;
+  width: 220px;
+  height: 280px;
+  background-color: white;
+  border: 0.5px solid #908f8f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+
+.img_template {
+  cursor: pointer;
+
+  width: 100%;
+  height: 160px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+
+
+.content {
+  word-wrap: break-word; /* لتمكين التفاف النص */
+  overflow-wrap: break-word; /* لتمكين التفاف النص */
+  white-space: pre-wrap;
+  overflow-y: auto;
+  margin: 10px;
+  height: 85px;
+}
+
+.name_template {
+  font-family: Tajawal, sans-serif;
+  font-size: 17px;
+}
+
+.title_template {
+  font-family: Tajawal, sans-serif;
+  font-size: 13px;
+}
+
+
+.about_template {
+  font-family: Tajawal, sans-serif;
+  color: black;
+  font-size: 17px;
+
+
+}
+
+.MdMoreVert {
+
+  cursor: pointer;
+  position: absolute;
+  font-size: x-large;
+  bottom: 8%;
+  left: 1%;
+  z-index: 2; /* Ensure the menu icon appears above other elements */
+}
+
+.MdMoreVert:hover {
+  background-color: #cccccc;
+  border-radius: 50px;
+}
+
+.menu {
+  position: absolute;
+  z-index: 1;
+  top: 95%; /* Adjust top position as needed */
+  left: 0; /* Adjust left position as needed */
+  width: auto;
+  height: auto;
+  overflow-y: auto;
+  border: 3px solid #3C7168;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+
+}
+
+.menu-content p {
+  cursor: pointer;
+  margin: 15px;
+  font-family: Tajawal, sans-serif;
+  font-size: large;
+  transition: background-color 0.3s ease; /* Add transition effect on background-color */
+}
+
+.menu-content p:hover {
+
+  background-color: #f2f2f2; /* Change background color on hover */
+}

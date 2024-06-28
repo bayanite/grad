@@ -1,0 +1,353 @@
+
+.sub-con {
+  padding: 0;
+  margin-top: 0;
+}
+
+.nav {
+  //border-bottom: 1px solid white;
+  height: 70px;
+  width: 960px;
+  border-radius: 30px 30px 0 0;
+  display: block;
+
+}
+
+ul.nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #959595;
+
+}
+ul.nav li {
+  width: 50%;
+  padding: 25px;
+  list-style: none;
+  text-align: center;
+  font-family:  Tajawal, sans-serif;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+ul.nav #tab1.active {
+  background: #D2B260;
+  color: #F3F4FA;
+  border-top-right-radius: 30px;
+}
+
+ul.nav #tab2.active {
+  background: #D2B260;
+  color: #F3F4FA;
+  border-top-left-radius: 30px;
+}
+
+.model-div.title{
+  position: relative;
+  border-top-color: #D2B260;
+  border-top-width: 1rem;
+}
+.model-div.body{
+  position: relative;
+  border-right-color:#D2B260;
+  border-right-width:1rem;
+  min-height: 150px;
+  height: auto;
+}
+.model-div{
+  width: 60%;
+  box-shadow: 0 0 5px 0 #4E4D4F;
+  height: 150px;
+  margin: 3% 20% 2.5% 20%;
+  border: 0 solid gray;
+  border-radius: 0.50rem;
+  cursor: pointer;
+
+}
+.model-title{
+  margin: 0 3% 0 3%;
+  width: 90%;
+  height: 40%;
+  border: none;
+  border-bottom: 1px solid #959595;
+  outline: none;
+}
+.model-title.font{
+  font-size: 24pt;
+}
+.model-title.question{
+  height: 40px;
+  width: 40%;
+  background-color: rgba(153, 158, 163, 0.05);
+  font-size: 12pt;
+
+}
+.model-div.body.bank{
+  padding-top: 17px;
+}
+.model-select{
+  //font-size: 10px;
+  font-family:  Tajawal, sans-serif;
+  position: relative;
+  margin: 3% 10% 0 10%;
+  width: 30%;
+  height: 40px;
+  border-radius: 0.50rem;
+  border: 1px solid gray ;
+}
+.model-select option{
+  font-size: 18px;
+
+}
+.model-title:focus {
+  border: none;
+  border-bottom: 1px solid  #D2B260;
+}
+.MultipleChoice{
+  margin:20px 10px 20px 10px;
+  //border: 2px solid #FF9066;
+  width: 90%;
+}
+
+.MultipleChoiceBody {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  //padding-bottom: 10px;
+
+}
+.MultipleChoiceBody.button {
+  padding-bottom: 7px;
+}
+  .FaRegCircle {
+    font-size:large ;
+    color: #4E4D4F;
+    margin-right: 10px;
+    margin-left: 3px;
+  }
+
+ .FaRegDotCircle{
+  font-size:large ;
+  color: #bd2f2f;
+  margin-right: 10px;
+  margin-left: 3px;
+ }
+  .MultipleChoiceBody input[type="text"] {
+    width: 50%;
+    font-size: 15px;
+    outline: none;
+    border: none;
+    padding: 5px;
+    flex: 1;
+    animation: expandLine 10s forwards;
+
+  }
+
+.MultipleChoiceBody input[type="text"]:hover{
+  border-bottom: 2px solid #959595;
+
+}
+.MultipleChoiceBody input[type="text"]:focus{
+  border-bottom: 2px solid #3f7d74;
+
+}
+.bottom_nav{
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  bottom: 0;
+  width: 95%;
+  padding: 7px;
+  margin: 15px;
+  height: 34px;
+  border-top:1px solid #959595;
+}
+.FaPlusCircle{
+  color: #3C7168;
+  font-size: 20px;
+  margin:0 15px 0 15px ;
+  //display: inline-flex;
+}
+.require{
+  display:inline-block;
+  margin-left: 10px;
+  width: 15%;
+  border-right: 1px solid #959595;
+  flex: -1;
+}
+.require label {
+  vertical-align: middle;
+}
+
+.FaToggleOff{
+  vertical-align: middle;
+  color: gray;
+  font-size: 25px;
+}
+.FaToggleOn{
+  vertical-align: middle;
+  color: #3C7168;
+  font-size: 25px;
+}
+.shortAnswer textarea {
+  border: none;
+  margin: 20px 15px 20px 10px;
+  border-bottom: 1px dotted #959595;
+  width: 90%;
+  font-size: 15px;
+  outline: none;
+  padding: 5px;
+  resize: vertical;
+}
+.DateInput {
+  position: relative;
+
+}
+
+.DateInput input[type="date"],input[type="time"] {
+  padding-right: 30px; /* Adjust as necessary */
+  margin: 20px 20px 20px 10px;
+ border: none;
+  border-bottom: 1px solid #959595;
+  width: 20%;
+  height: 30px;
+  font-size: 15px;
+  outline: none;
+}
+
+.DateInput .FaRegCalendarAlt {
+  color: gray;
+  position: absolute;
+  right: 10px; /* Adjust to your preference */
+  top: 50%;
+  transform: translate(-80%,-50%);
+}
+.DateInput .FaClock{
+  color: gray;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translate(-80%,-50%);
+}
+.dropdown-number{
+  margin-right: 10px;
+  margin-left: 3px;
+}
+.model {
+  position: relative; // Ensure relative positioning for absolute positioning of the button
+}
+
+.save {
+  position: absolute;
+  left: 30px;
+  width: 80px;
+  height: 40px;
+  font-size: 20px;
+  color: #F3F4FA;
+  background-color: #D2B260;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  font-family: Tajawal, sans-serif;
+  cursor: pointer;
+}
+.save:hover{
+  background-color: #b39942;
+}
+.save:active{
+  background-color: #b39942;
+  transform: translateY(4px);
+}
+.add-button-container {
+  position: absolute;
+  bottom: -25px;
+  left: -50px; /* Adjust this value as needed to position the button */
+  transform: translateY(-50%);
+}
+
+.add-button {
+  font-size: 24px; /* Adjust as needed */
+  color: #ffffff; /* Button color */
+  background-color: #D2B260; /* Button background color */
+  border: none;
+  border-radius: 50%; /* Makes the button circular */
+  width: 40px; /* Adjust width as needed */
+  height: 40px; /* Adjust height as needed */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+}
+
+.add-button:hover {
+  background-color: #b39935; /* Darker color on hover */
+  transform: scale(1.1); /* Slightly scale up on hover */
+}
+
+.add-button:before {
+  content: "+"; /* Plus sign content */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.required-field {
+  border-bottom: 2px solid red;
+}
+
+//show
+.go{
+//position: fixed;
+padding-top: 10px;
+}
+.back-button {
+  font-size:25px ;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Add a smooth transition effect */
+
+}
+
+.back-button:hover {
+  color: #EAD078;
+  transform: scale(1.2); /* Increase the size of the button on hover */
+}
+
+.showTitle{
+  margin: 15px;
+  font-family: Tajawal, sans-serif;
+  overflow: scroll;
+
+}
+.close{
+  position: absolute;
+  top:0;
+  left: 0;
+  margin: 7px;
+}
+.close:hover{
+  color: #db2323;
+}
+.showQuestion{
+  font-family: Tajawal,sans-serif;
+  margin-right: 20px;
+  padding-top: 20px ;
+}
+@media only screen and (max-width: 768px) {
+  .model-div {
+    width: 90%;
+    margin: 3% 5% 2.5% 5%;
+  }
+
+  .model-select {
+    width: 50%;
+  }
+
+  .bottom_nav {
+    width: 100%;
+  }
+
+  .require {
+    width: 30%;
+  }
+}

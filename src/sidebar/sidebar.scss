@@ -1,0 +1,63 @@
+.sidebar {
+  background: #3C7168;
+  color: #fff;
+  height: 100%;
+  transition: all 0.5s;
+}
+
+.top_section {
+  height: 15%;
+  /*background-color: orange;*/
+  /*display: flex;*/
+  align-items: center;
+  /*padding: 10px 15px;*/
+}
+
+.logo {
+  transition: all 0.5s;
+  /*background-color: fuchsia;*/
+
+}
+
+.bars {
+  padding: 10px 15px;
+  /*background-color: #DB190C;*/
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+}
+
+.link {
+  font-family: Segoe UI, Helvetica, sans-serif;
+  display: flex;
+  color: #fff;
+  padding: 17px 15px;
+  gap: 15px;
+  transition: all 0.8s;
+}
+
+.link:hover {
+  //border-bottom-left-radius: 50px;
+  //border-top-left-radius: 50px;
+  transition: all 0.9s;
+}
+
+.active {
+  background: #D2B260;
+
+
+}
+.icon{
+  color: #ffffff;
+  font-family: Tajawal, sans-serif;
+  overflow: no-display;
+  font-size: 20px;
+}
+
+.icon, .link_text {
+  color: #ffffff;
+  font-family: Tajawal, sans-serif;
+  overflow: no-display;
+
+
+}

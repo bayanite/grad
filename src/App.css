@@ -1,38 +1,90 @@
-.App {
-  text-align: center;
+* {
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+    width: 100%;
+    background-color: #3C7168;
+    height: 100%;
+    display: block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.sub-container {
+    width: 97%;
+    height: 90%;
+    margin: 1% 0 2.5% 2.5%;
+    border-radius: 30px;
+    background-color: #ffffff;
+    /*padding: 10px;*/
+    overflow: scroll;
+}
+.sub-container1 {
+    width: 97%;
+    height: 5%;
+    margin: 1% 0 0 0;
+    border-radius: 30px;
+    background-color: #3C7168;
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
+
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.icon_main {
+    color: white;
+    font-size: 17px;
+}
+.icon_main.brown{
+    color: #D2B260;
+}
+.icon-container {
+    position: relative;
+    display: inline-block;
+    margin:0 0 0 2% ;
+
+}
+.icon-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 10px;
+}
+.icon_main:hover {
+    transform: scale(1.2); /* Increase the size of the button on hover */
+    cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.tooltip-text {
+    visibility: hidden;
+    width: auto;
+    background-color: #333333;
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: 125%; /* Position the tooltip below the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.icon-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
+::-webkit-scrollbar {
+    width: 0.01px;
+}
+.main {
+    display: flex;
+    height: 100vh;
+}
+
+

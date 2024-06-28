@@ -1,0 +1,102 @@
+
+
+.FaRegCheckCircle- {
+  color: green; /* Change the color to green */
+  font-size: 20px; /* Adjust the font size */
+  margin: 5px;
+}.FaEye {
+  color: #8700fd; /* Change the color to green */
+  font-size: 20px; /* Adjust the font size */
+  margin: 5px;
+}
+
+.FaRegTimesCircle- {
+  color: red; /* Change the color to red */
+  font-size: 20px; /* Adjust the font size */
+  margin: 5px;
+
+}
+
+.send-notif{
+  color: gold; /* Change the color to blue */
+  font-size: 20px; /* Adjust the font size */
+  margin: 5px;
+
+}
+
+.send-notif:hover,.FaRegTimesCircle-:hover ,.FaRegCheckCircle-:hover ,.FaEye:hover{
+  transform: translateY(-3px);
+
+}
+.table-container {
+  margin: 15px;
+  margin-top: 30px;
+  max-height: calc(100vh - 110px); /* Adjust based on your layout */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.table-container p{
+  font-family: Tajawal, sans-serif;
+}
+
+table {
+  font-family: Tajawal, sans-serif;
+  width: 90%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  margin-bottom: 20px; /* Adjust as needed */
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.Edit {
+  font-size: large;
+  margin: 10px;
+  cursor: pointer;
+}
+.show_details {
+  font-size: large;
+  margin: 10px;
+  cursor: pointer;
+}
+.Edit:hover,
+.show_details:hover{
+  transform: translateY(-3px);
+  color: #c39c53;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.order {
+  font-size: large;
+  font-weight: bolder;
+  cursor: pointer;
+
+}
+.search-input {
+  background-color: #f2f2f2;
+  margin-right: auto;
+  margin-left: 30px;
+  padding: 10px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  font-size: 16px;
+  outline: none;
+  font-family: Tajawal, sans-serif;
+
+}
+
+/* Example styling for placeholder text */
+.search-input::placeholder {
+  color: #a8a8a8;
+  font-family: Tajawal, sans-serif;
+}

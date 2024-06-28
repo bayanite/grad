@@ -1,0 +1,26 @@
+.form{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+  .trash-circle {
+    position: absolute;
+    bottom: -10px;
+    left: -20px; /* Adjust the amount of shift */
+    width: 40px; /* Adjust size of the circle */
+    height: 40px; /* Adjust size of the circle */
+    border-radius: 50%; /* Makes the square shape a circle */
+    background-color: #f00; /* Adjust circle background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .FaTrashAlt {
+    /* Adjust icon size and color */
+    font-size: 20px;
+    color: #fff;
+  }
+.FaTrashAlt:hover {
+  cursor: pointer;
+}
