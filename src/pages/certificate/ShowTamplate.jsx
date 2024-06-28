@@ -6,23 +6,20 @@ import {MdFileUpload, MdMoreVert} from 'react-icons/md';
 import {useNavigate} from 'react-router-dom';
 import showCertificateTamplate from "../../hooks/showCertificateTamplate";
 import Swal from "sweetalert2";
+import Spinner from "react-spinner-material";
+
 import deleteCourse from "../../hooks/deleteTemplate";
 
 
 const ShowTamplate = () => {
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [certificate, setCertificate] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [openMenuIndex, setOpenMenuIndex] = useState(null);
     const [editPopupIndex, setEditPopupIndex] = useState(null);
     const navigate = useNavigate();
     const menuRefs = useRef([]);
-    const override: CSSProperties = {
-        display: "block",
-        margin: "80px auto",
-        borderColor: "green",
-        borderRadius: "50%",
-    };
+
 
 
     const toggleMenu = (index) => {
@@ -79,7 +76,7 @@ const ShowTamplate = () => {
         try {
             const data = await fetchCertificate();
             setCertificate(data.data.data);
-            setIsLoading(false);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching courses:', error);
         }
@@ -128,6 +125,12 @@ const ShowTamplate = () => {
 
     return (
         <div className={'courses-'}>
+            {loading ? (
+                <div className="spinner-container">
+                    <Spinner size={120} visible={true} />
+                </div>
+            ) : (
+                <>
             <div className={'ShowCopy-navbar-'}>
                 <FaArrowRight className="arrow-icon" onClick={handleGoBack}/>
                 <p>  عرض القوالب  </p>
@@ -188,6 +191,8 @@ const ShowTamplate = () => {
                 ))}
             </div>
 
+                </>
+            )}
         </div>
     );
 };

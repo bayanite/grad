@@ -338,8 +338,8 @@ const AddOnlineCourse = () => {
                         )}
                     </div>
                 </div>
+                <button className={"save-"} onClick={handleSaveCourse}>حفظ</button>
             </div>
-            <button className={"save_"} onClick={handleSaveCourse}>حفظ</button>
         </div>
     );
 };

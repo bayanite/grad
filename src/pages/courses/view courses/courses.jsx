@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef, CSSProperties } from 'react';
-import { FaPlus } from 'react-icons/fa';
+import React, {useState, useEffect, useRef, CSSProperties} from 'react';
+import {FaPlus} from 'react-icons/fa';
 import './courses.scss';
 import './CreateTemplate';
-import { MdMoreVert } from 'react-icons/md';
+import {MdMoreVert} from 'react-icons/md';
 import CreateTemplate from './CreateTemplate';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import useGetCourses from "../../../hooks/showcourses";
 import editCourse from '../../../hooks/editTemplate';
 import deleteCourse from '../../../hooks/deleteTemplate';
 import Swal from "sweetalert2";
 import EditCourse from "../edit-course/editCourse";
+import Spinner from "react-spinner-material";
 
 const Courses = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -18,10 +19,11 @@ const Courses = () => {
     const [openMenuIndex, setOpenMenuIndex] = useState(null);
     const [editPopupIndex, setEditPopupIndex] = useState(null);
     const [currentCourse, setCurrentCourse] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
     const menuRefs = useRef([]);
-    const { fetchCourses } = useGetCourses();
-
+    const {fetchCourses} = useGetCourses();
 
 
     const toggle = () => {
@@ -34,36 +36,22 @@ const Courses = () => {
     };
 
     const toggleEditPopup = (index) => {
+        console.log("uuu")
         setEditPopupIndex(editPopupIndex === index ? null : index);
         setCurrentCourse(editPopupIndex === index ? null : courses[index]); // Set current course data when editing
     };
 
-    const handleEditCourse = async (editedCourseData) => {
-        try {
-            const courseId = currentCourse.id;
-            const success = await editCourse(courseId, editedCourseData);
-
-            if (success) {
-                getCourses();
-                toggleEditPopup(null); // Close the edit popup
-            } else {
-                // Handle failure if necessary
-            }
-        } catch (error) {
-            console.error('Error editing course:', error);
-        }
-    };
 
     const handleAddOnlineCourse = (courseName, id) => {
-        navigate('/courses/add-online-courses/AddOnlineCourse', { state: { courseName, id } });
+        navigate('/courses/add-online-courses/AddOnlineCourse', {state: {courseName, id}});
     };
 
     const handleAnnounceCourse = (courseName, id) => {
-        navigate('/courses/announce-course/AnnounceCourse', { state: { courseName, id } });
+        navigate('/courses/announce-course/AnnounceCourse', {state: {courseName, id}});
     };
 
     const handleShowCopy = (courseName, id) => {
-        navigate('/courses/show-copy/ShowCopy', { state: { courseName, id } });
+        navigate('/courses/show-copy/ShowCopy', {state: {courseName, id}});
     };
 
     const handleDelete = async (id) => {
@@ -121,7 +109,7 @@ const Courses = () => {
         try {
             const data = await fetchCourses();
             setCourses(data.data.data);
-            setIsLoading(false);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching courses:', error);
         }
@@ -133,56 +121,67 @@ const Courses = () => {
 
     return (
         <div className={'courses'}>
-            <div className={'create_template'}>
-                <FaPlus className={'FaPlus'} onClick={toggle} />
-                <p className={'title_template'}>إضافة دورة جديدة</p>
-                {isOpen && <CreateTemplate toggle={toggle} onSave={getCourses} />}
-            </div>
-            {courses.map((item, index) => (
-                <div key={item.id} className={'template'}
-                     ref={(ref) => (menuRefs.current[index] = ref)}>
-                    <img src={process.env.REACT_APP_API_PATH + "/Uploads/" + item.photo}
-                         onClick={() => handleShowCopy(item.name, item.id)} className="img_template" />
-                    <div className={'content'}>
-                        <h1 className={'name_template'}>{item.name}</h1>
-                        <h5 className={'title_template'}>حول الدورة</h5>
-                        <p className={'about_template'}>{item.about}</p>
-                    </div>
-                    <MdMoreVert className={'MdMoreVert'} onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMenu(index);
-                    }} />
-                    {openMenuIndex === index && (
-                        <div className="menu">
-                            <div className="menu-content">
-                                <p onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleEditPopup(index);
-                                }}>تعديل</p>
-                                <p onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleAddOnlineCourse(item.name, item.id);
-                                }}>اضافة دورة أون لاين</p>
-                                <p onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleAnnounceCourse(item.name, item.id);
-                                }}>اعلان عن دورة في المركز</p>
-                                <p onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDelete(item.id);
-                                }}>حذف</p>
-                            </div>
-                        </div>
-                    )}
+            {loading ? (
+                <div className="spinner-container">
+                    <Spinner size={120} visible={true}/>
                 </div>
-            ))}
-            {editPopupIndex !== null && (
-                <EditCourse
-                    toggle={() => toggleEditPopup(null)}
-                    onSave={getCourses}
-                    courseData={currentCourse}
-                />
-            )}
+            ) : (
+                <>
+                    <div className={'create_template'}>
+                        <FaPlus className={'FaPlus'} onClick={toggle}/>
+                        <p className={'title_template'}>إضافة دورة جديدة</p>
+                        {isOpen && <CreateTemplate toggle={toggle} onSave={getCourses}/>}
+                    </div>
+
+                    {courses.map((item, index) => (
+                        <div key={item.id} className={'template'}
+                             ref={(ref) => (menuRefs.current[index] = ref)}>
+                            <img src={process.env.REACT_APP_API_PATH + "/Uploads/" + item.photo}
+                                 onClick={() => handleShowCopy(item.name, item.id)} className="img_template"/>
+                            <div className={'content'}>
+                                <h1 className={'name_template'}>{item.name}</h1>
+                                <h5 className={'title_template'}>حول الدورة</h5>
+                                <p className={'about_template'}>{item.about}</p>
+                            </div>
+                            <MdMoreVert className={'MdMoreVert'} onClick={(e) => {
+                                e.stopPropagation();
+                                toggleMenu(index);
+                            }}/>
+                            {openMenuIndex === index && (
+                                <div className="menu">
+                                    <div className="menu-content">
+                                        <p onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleEditPopup(index);
+                                        }}>تعديل</p>
+                                        <p onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleAddOnlineCourse(item.name, item.id);
+                                        }}>اضافة دورة أون لاين</p>
+                                        <p onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleAnnounceCourse(item.name, item.id);
+                                        }}>اعلان عن دورة في المركز</p>
+                                        <p onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDelete(item.id);
+                                        }}>حذف</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ))
+                    }{editPopupIndex !== null && (
+                    <EditCourse
+                        toggle={() => toggleEditPopup(null)}
+                        onSave={getCourses}
+                        courseData={currentCourse}
+                    />
+                )}
+
+                </>
+            )
+            }
         </div>
     );
 };

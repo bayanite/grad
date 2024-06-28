@@ -29,11 +29,10 @@ const useEditTemplate = () => {
             const response = await fetch(url, {
                 method: method,
                 body: formData,
-
                 headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });// Pass the form data directly as the body
+                    'Authorization': `Bearer ${token}`,
+                },
+            }); // Pass the form data directly as the body
 
             if (!response.ok) {
                 const errorData = await response.json();

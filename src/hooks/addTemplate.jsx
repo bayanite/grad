@@ -5,7 +5,6 @@ const useAddTemplate = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [sos, setSos] = useState(null);
 
     const addTemplate = async (name, photo, about, text, teacher) => {
         setLoading(true);

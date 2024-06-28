@@ -46,7 +46,14 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
             }
 
             if (courseData.id) {
-                await editCourse(courseData.id, formData);
+                await editCourse(
+                    courseData.id,
+                    nameOfCourse,
+                    image, // Assuming image is handled correctly elsewhere
+                    aboutOfCourse,
+                    textCertificate,
+                    teacher
+                );
             }
             toggle();
             onSave();
@@ -66,7 +73,7 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
 
     return (
         <div className="popup">
-            <div className="popup-inner">
+            <div className="popup-inner popcourse">
                 <nav className="popup-navbar">
                     <h5>{'تعديل دورة'}</h5>
                     <IoClose className="IoClose" onClick={toggle} />

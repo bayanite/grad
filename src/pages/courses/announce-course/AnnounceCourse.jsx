@@ -115,7 +115,7 @@ const AnnounceCourse = () => {
                 selectedQuestionnaire.id,
                 price
             );
-            navigate('show-copy/ShowCopy/'); // Replace '/copy-page' with the path you want to navigate to
+            navigate('/courses'); // Navigate to the desired route after saving
 
         } catch (error) {
             console.error('Error adding template:', error);
@@ -259,8 +259,8 @@ const AnnounceCourse = () => {
                         )}
                     </div>
                 </div>
+            <button className={"save-"} onClick={handleSaveCourse}>حفظ</button>
             </div>
-            <button className={"save"} onClick={handleSaveCourse}>حفظ</button>
         </div>
     );
 };
