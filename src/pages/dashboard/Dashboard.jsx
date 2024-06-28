@@ -32,7 +32,7 @@ const AnimatedLineChart = ({ data = [] }) => {
                 <label htmlFor="yearSelect">Select Year: </label>
                 <select id="yearSelect" value={selectedYear} onChange={handleChangeYear}>
                     {years.map(year => (
-                        <option key={year} value={year}>{year}</option>
+                        <option key={year} value={year}>{2024}</option>
                     ))}
                 </select>
             </div>
@@ -44,6 +44,7 @@ const AnimatedLineChart = ({ data = [] }) => {
                     <Tooltip />
                     <Legend />
                     <Line key="bookings" type="monotone" dataKey="bookings" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line key="certificate" type="monotone" dataKey="certificate" stroke="#84d8b6" activeDot={{ r: 8 }} />
                 </LineChart>
             </div>
         </div>
@@ -137,7 +138,8 @@ const DashboardPage = () => {
             setCountData(countData);
             setPieChartData(pieChartData);
             setAppointmentData(appointmentData.data);
-            setStatisticsData(statisticsData.bookingsByMonth);
+            setStatisticsData(statisticsData.data);
+            console.log("ppppppppppppppppppp",statisticsData)
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
