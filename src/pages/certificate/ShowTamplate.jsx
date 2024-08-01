@@ -131,7 +131,7 @@ const ShowTamplate = () => {
                 </div>
             ) : (
                 <>
-            <div className={'ShowCopy-navbar-'}>
+            <div className={'ShowCopy-navbar'}>
                 <FaArrowRight className="arrow-icon" onClick={handleGoBack}/>
                 <p>  عرض القوالب  </p>
 

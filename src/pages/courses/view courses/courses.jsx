@@ -121,11 +121,11 @@ const Courses = () => {
 
     return (
         <div className={'courses'}>
-            {loading ? (
-                <div className="spinner-container">
-                    <Spinner size={120} visible={true}/>
-                </div>
-            ) : (
+            {/*{loading ? (*/}
+            {/*    <div className="spinner-container">*/}
+            {/*        <Spinner size={120} visible={true}/>*/}
+            {/*    </div>*/}
+            {/*) : (*/}
                 <>
                     <div className={'create_template'}>
                         <FaPlus className={'FaPlus'} onClick={toggle}/>
@@ -180,8 +180,8 @@ const Courses = () => {
                 )}
 
                 </>
-            )
-            }
+            {/*)*/}
+            {/*}*/}
         </div>
     );
 };

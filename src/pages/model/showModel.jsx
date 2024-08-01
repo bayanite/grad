@@ -111,7 +111,7 @@ const ShowModel = () => {
     const TimeInput=()=> {
         return (
             <div className={"DateInput"}>
-                <input type="time"  disabled />
+                <input type="time" className={"input-time"} disabled />
                 <FaClock className={"FaClock"} />
             </div>
         );

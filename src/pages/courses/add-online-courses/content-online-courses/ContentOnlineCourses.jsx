@@ -4,82 +4,38 @@ import React, {useEffect, useRef, useState} from 'react';
 import './ContentOnlineCourses.scss'
 import {TfiTimer} from "react-icons/tfi";
 import {IoMdAdd} from "react-icons/io";
-import {FaArrowLeft, FaArrowRight, FaCamera, FaTrashAlt} from "react-icons/fa";
+import { FaTrashAlt} from "react-icons/fa";
 import {useLocation, useNavigate} from "react-router-dom";
 import CourseOnline from "../../../../hooks/createCourseOnline";
 
 const ContentOnlineCourses = () => {
 
-    const {fetchContentCourse} = CourseOnline();
+    const {fetchNameExam} = CourseOnline();
     const containerRef = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
 
     const courseName = location.state?.courseName;
     const id = location.state?.id;
+    const [selectedQuizIndex, setSelectedQuizIndex] = useState(null); // Define state for selected quiz index
 
     const [showExamPopup, setShowExamPopup] = useState(false); // State to control the exam popup visibility
     const [showPopup, setShowPopup] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState('');
     const [duration, setDuration] = useState('');
+    const [numberVideos, setNumberVideos] = useState('0');
     const [contentExam, setContentExam] = useState('');
     const [title, setTitle] = useState('عنوان المحتوى');
-    const [totalDuration, setTotalDuration] = useState("0:00");
+    const [totalDuration, setTotalDuration] = useState('');
     const [dynamicContent, setDynamicContent] = useState([]);
-    const [contentCourse, setContentCourse] = useState([]);
+    const [listExam, setListExam] = useState([]);
     const [error, setError] = useState(''); // New state variable for error messages
+    const [selectedVideoIndex, setSelectedVideoIndex] = useState(null); // State to store the selected video index
 
-    console.log('Number of Questions:44  ', numberOfQuestions);
-    console.log('Duration:44  ', duration);
-
-    const handleSaveExam = (numberOfQuestions, duration) => {
-        // Add your save logic here
-        console.log("Number of questions:", numberOfQuestions);
-        console.log("Duration:", duration);
-        setShowExamPopup(false); // Close the popup after saving
-    };
-
-    const handleNumberOfQuestionsChange = (event) => {
-        const inputValue = event.target.value;
-        // Parse the input value as an integer
-        let value = parseInt(inputValue);
-
-        // Validate the input value
-        if (!isNaN(value) && value >= 0) {
-            // If it's a valid non-negative integer, update the state
-            setNumberOfQuestions(value);
-        } else {
-            // Otherwise, reset the number of questions to an empty string
-            setNumberOfQuestions('');
-        }
-    };
-
-    const handleDurationChange = (event) => {
-        const inputValue = event.target.value;
-        // Parse the input value as an integer
-        let value = parseInt(inputValue);
-        setDuration(value);
-    };
-
-    const handleSave = () => {
-        // Add your save logic here
-        setShowPopup(false); // Close the popup after saving
-    };
-
-    const handleExamButtonClick = () => {
-        setShowPopup(true);
-    };
-
-    const handleClosePopup = () => {
-        setShowPopup(false);
-    };
 
     console.log("kkk", courseName)
-    // Function to toggle the exam popup visibility
-    const toggleExamPopup = () => {
-        setShowExamPopup(!showExamPopup);
-    };
+    console.log("totalDuration--------------------", totalDuration)
 
     const scrollToNewContent = () => {
         const container = containerRef.current;
@@ -132,16 +88,12 @@ const ContentOnlineCourses = () => {
         const newContent = {
             photo: '',
             name: 'عنوان المحتوى',
-            numberHours: '00:00',
-            numberVideos: '0',
             videoFiles: [],
             pdfFiles: [],
             exam: '0',
             numberQuestion: '0',
             durationExam: '00:00',
-            id_exam: '',
         };
-
         setDynamicContent([...dynamicContent, newContent]);
         scrollToNewContent();
     };
@@ -165,11 +117,12 @@ const ContentOnlineCourses = () => {
         setDynamicContent(updatedContent);
     }
 
-    const fetchContent = async () => {
+    const fetchExams = async () => {
         console.log("ppppppp", id)
         try {
-            const data = await fetchContentCourse(id);
-            setContentCourse(data.data.data);
+            const data = await fetchNameExam();
+            setListExam(data.data.exam);
+            console.log("KKKKKKKKKKKKKK", listExam)
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -190,7 +143,8 @@ const ContentOnlineCourses = () => {
                     return {
                         name: file.name,
                         video: file, // Store file as object URL
-                        duration: durationInMinutes
+                        duration: durationInMinutes,
+                        id_exam: null,
                     };
                 } catch (error) {
                     console.error("Error occurred during file processing:", error);
@@ -209,7 +163,6 @@ const ContentOnlineCourses = () => {
                 ...(updatedContent[index].videoFiles || []),
                 ...filteredVideoFiles,
             ];
-
             // Set the updated dynamic content
             setDynamicContent(updatedContent);
         } catch (error) {
@@ -287,12 +240,16 @@ const ContentOnlineCourses = () => {
         return dynamicContent.reduce((total, content) => total + (content.videoFiles ? content.videoFiles.length : 0), 0);
     };
 
+    useEffect(() => {
+        setNumberVideos(getTotalNumberOfVideos());
+    }, [dynamicContent]);
+
     const getTotalNumberOfContent = () => {
         return dynamicContent.length;
     };
 
     useEffect(() => {
-        fetchContent();
+        fetchExams();
     }, []);
 
     useEffect(() => {
@@ -308,6 +265,7 @@ const ContentOnlineCourses = () => {
 
         const formattedTotalDuration = convertSecondsToMinutes(totalSeconds);
         setTotalDuration(formattedTotalDuration);
+
     }, [dynamicContent]);
 
     const handleDeleteVideo = (contentIndex, videoIndex) => {
@@ -318,29 +276,89 @@ const ContentOnlineCourses = () => {
         contentToUpdate.videoFiles = updatedVideoFiles;
         setDynamicContent(updatedContent);
     };
+    const handleExamSelection = (index, id_exam, examTitle) => {
+        const updatedContent = [...dynamicContent];
+        const videoFile = updatedContent[index].videoFiles[selectedVideoIndex];
 
-    const handleNext = (dynamicContent) => {
-        // Validate that each content item has a photo
-        const missingPhoto = dynamicContent.some(content => !content.photo);
-        const missingName = dynamicContent.some(content => content.name === "عنوان المحتوى");
-        const missingVideoFiles = dynamicContent.some(content => content.videoFiles.length === 0);
-
-        if (missingPhoto) {
-            alert("الرجاء ادخال الصورة");
-            return;
-        }  if (missingName) {
-            alert("الرجاء ادخال الاسم");
-            return;
-        }  if (missingVideoFiles) {
-            alert("الرجاء اضافة فيديوهات");
-            return;
+        if (videoFile.examTitle === examTitle) {
+            // If the examTitle is already set, remove it
+            videoFile.id_exam = null;
+            videoFile.examTitle = null;
+        } else {
+            // Otherwise, set the new examTitle
+            videoFile.id_exam = id_exam;
+            videoFile.examTitle = examTitle;
         }
 
-
-        // Proceed to the next page if validation passes
-        setError(''); // Clear any previous error
-        navigate('/courses/add-online-courses/AddOnlineCourse', {state: {dynamicContent, courseName, id}}); // Replace '/next-page' with your actual next page route
+        setDynamicContent(updatedContent);
+        setShowExamPopup(false);
     };
+
+    const handleLinkExamWithVideo = (contentIndex, videoIndex) => {
+        setSelectedVideoIndex(videoIndex);
+        setShowExamPopup(true);
+    };
+
+
+    const handleNext = (dynamicContent) => {
+        // Initialize a new array to store error messages for each content item
+        const newErrors = dynamicContent.map((content, index) => {
+            if (!content.name || content.name.trim() === '' || content.name.trim() === 'عنوان المحتوى') {
+                return `الرجاء إدخال عنوان للمحتوى ${index + 1}.`;
+            }
+            if (!content.photo) {
+                return `الرجاء إضافة صورة للمحتوى ${index + 1}.`;
+            }
+            if (!content.videoFiles || content.videoFiles.length === 0) {
+                return `يجب أن يحتوي المحتوى ${index + 1} على فيديو واحد على الأقل.`;
+            }
+            return null; // No error for this content item
+        });
+
+        // Check if there are any errors
+        const hasErrors = newErrors.some(error => error !== null);
+
+        // Update the errors state
+        setError(newErrors);
+
+        if (!hasErrors) {
+            // If no errors, proceed with navigation
+            navigate('/courses/add-online-courses/AddOnlineCourse', {
+                state: {dynamicContent, courseName, id, numberVideos, totalDuration}
+            });
+        }
+    };
+
+    const handleQuizChange = (index, numberQuestions, duration,exam) => {
+        const updatedContent = [...dynamicContent];
+        updatedContent[index].numberQuestion = numberQuestions;
+        updatedContent[index].durationExam = duration;
+        updatedContent[index].exam = exam;
+        setDynamicContent(updatedContent);
+    };
+
+    const handleShowQuizPopup = (index) => {
+        setSelectedQuizIndex(index);
+        setShowPopup(true);
+    };
+
+    // const handleSaveQuiz = () => {
+    //     if (selectedQuizIndex !== null) {
+    //         handleQuizChange(selectedQuizIndex, numberOfQuestions, duration);
+    //         setShowExamPopup(false);
+    //         setNumberOfQuestions('');
+    //         setDuration('');
+    //     }
+    // };
+    const handleSaveQuiz = () => {
+        if (selectedQuizIndex !== null) {
+            handleQuizChange(selectedQuizIndex, numberOfQuestions, duration,1);
+            setShowPopup(false);
+            setNumberOfQuestions('');
+            setDuration('');
+        }
+    };
+
 
     const handlePrevious = () => {
         navigate(-1);
@@ -351,7 +369,7 @@ const ContentOnlineCourses = () => {
             <div className={"ContentOnlineCourses_navbar"}>
                 <div className="navbar-title">
                     <text>محتويات الدورة</text>
-                    <span>{getTotalNumberOfVideos()} فيديوهات / {getTotalNumberOfContent()} محتويات </span>
+                    <span>{numberVideos} فيديوهات / {getTotalNumberOfContent()} محتويات </span>
                 </div>
                 <div className="navbar-icon">
                     <TfiTimer/>
@@ -366,8 +384,8 @@ const ContentOnlineCourses = () => {
             <div ref={containerRef} className={"ContentOnlineCourses_container"}>
                 <div className={'scrollable-content'}>
                     {dynamicContent.map((content, index) => (
-                        <div className={"dynamicContent"}>
-                            <div key={index} className={"title-content"}>
+                        <div className={"dynamicContent"} key={index}>
+                            <div className={"title-content"}>
                                 <label htmlFor={`upload-input-${index}`} className="image-container">
                                     {content.photo &&
                                     <img src={URL.createObjectURL(content.photo)} alt="Selected"
@@ -383,7 +401,6 @@ const ContentOnlineCourses = () => {
                                 </label>
                                 <div className={"content-text"}>
                                     <div className="content-number">{index + 1}.</div>
-
                                     {editMode === index ? (
                                         <input
                                             type="text"
@@ -396,85 +413,94 @@ const ContentOnlineCourses = () => {
                                         </div>
                                     )}
                                     <span onClick={() => handleEditClick(index)}> / إعادة التسمية</span>
-
                                     <button onClick={() => handleDeleteContent(index)}>
                                         <FaTrashAlt/>
                                     </button>
-
                                 </div>
                                 <div className={"sum_of_duration_content"}>
                                     {content.videoFiles ? calculateTotalDuration(content.videoFiles) : '00:00'}
                                 </div>
                             </div>
 
+                            {/* VideoUpload Component */}
                             <VideoUpload
                                 index={index}
                                 handleFileUpload={handleFileUpload}
                                 handleDeleteVideo={handleDeleteVideo}
+                                handleLinkExamWithVideo={handleLinkExamWithVideo} // Pass handleLinkExamWithVideo function
                                 handleVideoDragStart={handleVideoDragStart}
                                 handleVideoDragOver={handleVideoDragOver}
                                 handleVideoDrop={handleVideoDrop}
                                 content={content}
                             />
+
+                            {/* PdfUpload Component */}
                             <PdfUpload
                                 index={index}
                                 handleFileUploadPdf={handleFileUploadPdf}
                                 handleDeletePdf={handleDeletePdf}
                                 content={content}
                             />
+
+                            {/* DynamicContent-input-exam */}
                             <div className={'dynamicContent-input-exam'}>
-                                <label className={"exam-label"} onClick={() => setShowPopup(true)}>
+                                <label className={"exam-label"} onClick={() => handleShowQuizPopup(index)}>
                                     <IoMdAdd className="add-icon"/>
                                     إضافة اختبار
                                 </label>
-                                {content.numberQuestion !== '0' && content.durationExam !== '00:00' && (
-                                    <div className="exam-details">
-                                        <p>عدد الأسئلة: {content.numberQuestion}</p>
-                                        <p>مدة الامتحان: {content.durationExam}</p>
-                                    </div>
-                                )}
-                                {showPopup && (
-                                    <div className="popup" onClick={handleClosePopup}>
-                                        <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-                                            <label>
-                                                عدد الاسئلة
-                                                <input type="text" value={content.numberQuestion}
-                                                       onChange={(event) => handleNumberQuestionsChange(index, event)}
-                                                       required/> </label>
-                                            <label>
-                                                مدة الامتحان (في الدقائق)
-                                                <input
-                                                    type="text"
-                                                    value={content.durationExam}
-                                                    onChange={(event) => handleExamDurationChange(index, event)}
-                                                    required
-                                                />
-                                            </label>
-                                            <label>
-                                                اختر الامتحان
-                                                <select
-                                                    onChange={(event) => handleNumberQuestionsChange(index, event)}
-                                                    required
-                                                >  {contentCourse.map(element =>
-                                                    <option key={element.id}
-                                                            value={contentExam}
-                                                    >{element.name}</option>)}</select>
-                                            </label>
-                                            <div className={"arrow-icon-exam"}>
-                                                <FaArrowLeft/>
-                                            </div>
+
+                            </div>
+
+                            {/* Quiz Popup */}
+                            {showPopup && (
+                                <div className="popup">
+                                    <div className="popup-content">
+                                        <label>عدد الأسئلة</label>
+                                        <input
+                                            type="number"
+                                            value={numberOfQuestions}
+                                            onChange={(e) => setNumberOfQuestions(e.target.value)}
+                                            placeholder="0"
+                                        />
+                                        <label>المدة الزمنية للاختبار</label>
+                                        <input
+                                            className={"typeTime"}
+                                            type="time"
+                                            value={duration}
+                                            step="60"                                            onChange={(e) => setDuration(e.target.value)}
+                                        />
+                                        <div className="button-group">
+                                            <button className="save-button" onClick={handleSaveQuiz}>حفظ</button>
+                                            <button className="cancel-button" onClick={() => setShowExamPopup(false)}>إلغاء</button>
                                         </div>
                                     </div>
-                                )}</div>
+                                </div>
+                            )}
+
+                            {showExamPopup && (
+                                <div className="popup" onClick={() => setShowExamPopup(false)}>
+                                    <div className="popup-content">
+                                        <ul className="popup-list">
+                                            {listExam.map((exam, indexExam) => (
+                                                <li key={indexExam} onClick={() => handleExamSelection(index,exam.id,exam.title)}>
+                                                    {exam.title}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <button onClick={() => setShowExamPopup(false)}>Close</button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {error[index] && <div className="error-message-content">{error[index]}</div>}
                         </div>
+
                     ))}
                 </div>
                 <div style={{display: 'flex', justifyContent: dynamicContent.length > 0 ? 'flex-end' : 'flex-start'}}>
                     {dynamicContent.length > 0 ? (
                         <>
-                            <button onClick={() => {
-                                handleNext(dynamicContent)
-                            }} className={"next_content"}>التالي
+                            <button onClick={() => handleNext(dynamicContent)} className={"next_content"}>التالي
                             </button>
                             <button onClick={handlePrevious} className={"previous_content"}>السابق</button>
                         </>
@@ -483,7 +509,6 @@ const ContentOnlineCourses = () => {
                     )}
                 </div>
             </div>
-            {/*{error && <div className="error-message">{error}</div>}*/}
         </div>
     );
 }

@@ -20,7 +20,7 @@ import Adviser from "./pages/adviser/adviser";
 import AddAdviser from "./pages/adviser/addAdviser";
 import ShowAdviser from "./pages/adviser/showAdviser";
 import SignInUp from "./pages/Sign_in_up/sign_in_up"
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 import ShowRegistered from './pages/courses/show-registered/ShowRegistered';
@@ -33,6 +33,7 @@ import Showqus from "./pages/model/questionnaire/questionnaire";
 
 
 import {FaBell, FaCog, FaSignOutAlt, FaUser} from "react-icons/fa";
+import Spinner from "react-spinner-material";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,7 +55,9 @@ function App() {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>; // or a loading spinner
+        return<div className="spinner-container">
+            <Spinner size={120} visible={true} />
+        </div> // or a loading spinner
     }
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -118,6 +121,8 @@ function App() {
                             {/*<Route path="/model/questionnaire/questionnaire" element={<Showqus/>}/>*/}
                             <Route path="/courses/detailsCopy/detailsCopyOnline" element={<DetailsCopyOnline/>}/>
                             <Route path="/courses/detailsCopy/detailsCopyCenter" element={<DetailsCopyCenter/>}/>
+                            <Route path="/users/showForm" element={<ShowAnswer/>}/>
+
                         </Routes>
                     </div>
                 </div>

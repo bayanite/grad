@@ -5,10 +5,16 @@ const DashboardApi = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const token = localStorage.getItem('token');
 
     const count = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}count`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}count`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+
+                    },
+            });
             if (!response.ok) {
                 throw new Error('Failed to fetch count');
             }
@@ -22,7 +28,13 @@ const DashboardApi = () => {
 
     const PieChart = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}proportion`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}proportion`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+
+                },
+            });
             if (!response.ok) {
                 throw new Error('Failed to fetch pie chart data');
             }
@@ -36,11 +48,17 @@ const DashboardApi = () => {
 
     const appointments = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}advisernow`);
+            const response = await fetch(`${process.env.REACT_APP_API_URL}advisernow`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+
+                },
+            });
             if (!response.ok) {
                 throw new Error('Failed to fetch appointments');
             }
             const data = await response.json();
+            console.log(data)
             return data;
         } catch (error) {
             setError(error);
@@ -49,11 +67,20 @@ const DashboardApi = () => {
 
     const statistics = async (year) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}statistic/${year}`);
+            console.log("year",year)
+            const response = await fetch(`${process.env.REACT_APP_API_URL}statistic/${year}`, {
+                method: 'GET',
+
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+
+                },
+            });
             if (!response.ok) {
                 throw new Error('Failed to fetch statistics');
             }
             const data = await response.json();
+            console.log("ffff",data)
             return data;
         } catch (error) {
             setError(error);

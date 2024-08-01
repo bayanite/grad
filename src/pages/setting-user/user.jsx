@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './user.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
+// import { useLocation, useNavigate } from 'react-router-dom';
 import { FaArrowRight, FaEye, FaRegCheckCircle, FaRegTimesCircle } from 'react-icons/fa';
 import { BsSendCheck } from "react-icons/bs";
 import usesSetting from "../../hooks/userSetting";
 import Spinner from "react-spinner-material";
 
 const UserSetting = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+    // const navigate = useNavigate();
+    // const location = useLocation();
 
-    const [sortOrder, setSortOrder] = useState('asc');
     const [search, setSearch] = useState('');
     const [user, setUser] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -21,22 +20,22 @@ const UserSetting = () => {
         window.history.back();
     };
 
-    const handleEdit = (type) => {
-        if (type === 'مركز') {
-            navigate('/courses/announce-course/AnnounceCourse');
-        } else if (type === 'أون لاين') {
-            navigate('/courses/add-online-courses/AddOnlineCourse');
-        }
-    };
+    // const handleEdit = (type) => {
+    //     if (type === 'مركز') {
+    //         navigate('/courses/announce-course/AnnounceCourse');
+    //     } else if (type === 'أون لاين') {
+    //         navigate('/courses/add-online-courses/AddOnlineCourse');
+    //     }
+    // };
 
     const handleSearch = (event) => {
         setSearch(event.target.value);
     };
 
-    const handleSort = () => {
-        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-        setSortOrder(newSortOrder);
-    };
+    // const handleSort = () => {
+    //     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    //     setSortOrder(newSortOrder);
+    // };
 
     const getUser = async () => {
         try {

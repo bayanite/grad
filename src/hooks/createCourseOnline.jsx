@@ -7,7 +7,7 @@ const CourseOnline = () => {
     const [loading, setLoading] = useState(false); // Changed initial loading state to false
     const [error, setError] = useState(null);
     const token = localStorage.getItem('token');
-    const createCourseOnline = async (exam, price, id_form, id_poll, id_prefix, serial, id_course, numberHours, numberVideos, numberQuestion, durationExam, id_exam, content) => {
+    const createCourseOnline = async (exam, price, id_form, id_poll, id_prefix, serial, id_course, numberHours, numberVideos, numberQuestion, durationExam, content) => {
         console.log("=============")
         try {
             setLoading(true); // Set loading to true when starting the request
@@ -26,7 +26,6 @@ const CourseOnline = () => {
             formData.append('numberVideos', numberVideos)
             formData.append('numberQuestion', numberQuestion)
             formData.append('durationExam', durationExam)
-            formData.append('id_exam', id_exam)
             content.forEach((item, index) => {
                 formData.append(`content[${index}][photo]`, item.photo);
                 formData.append(`content[${index}][name]`, item.name);
@@ -35,12 +34,12 @@ const CourseOnline = () => {
                 formData.append(`content[${index}][exam]`, item.exam);
                 formData.append(`content[${index}][numberQuestion]`, item.numberQuestion);
                 formData.append(`content[${index}][durationExam]`, item.durationExam);
-                formData.append(`content[${index}][id_exam]`, item.id_exam);
 
                 console.log("llll",  item.videoFiles)
                 item.videoFiles.forEach((videoFile, i) => {
                     formData.append(`content[${index}][videoFiles][${i}][name]`, videoFile.name);
                     formData.append(`content[${index}][videoFiles][${i}][video]`, videoFile.video);
+                    formData.append(`content[${index}][videoFiles][${i}][id_exam]`, videoFile.id_exam);
                     formData.append(`content[${index}][videoFiles][${i}][duration]`, videoFile.duration);
                 });
                 console.log("llll",  item.pdfFiles)
@@ -103,6 +102,32 @@ const CourseOnline = () => {
             setError(error);
         } finally {
         }
+    };const fetchNameExam = async () => {
+        console.log("not");
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}exam/index`,
+                {
+            // headers: {
+                //         'Authorization': `Bearer ${token}`,
+                //     },
+
+                });
+            // console.log("response",response)
+
+            if (!response.ok) {
+                console.log("not");
+                throw new Error('Failed to fetch course');
+            }
+            const data = await response.json();
+
+            console.log("notnotnot", JSON.stringify(data))
+            return data;
+
+        } catch (error) {
+            setError(error);
+        } finally {
+        }
     };
     const fetchContentCourse = async (id) => {
         try {
@@ -125,7 +150,7 @@ const CourseOnline = () => {
         } finally {
         }
     };
-    return {createCourseOnline,fetchNameCourse,fetchContentCourse, data, loading, error};
+    return {createCourseOnline,fetchNameCourse,fetchNameExam,fetchContentCourse, data, loading, error};
 };
 
 export default CourseOnline;

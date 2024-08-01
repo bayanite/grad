@@ -662,11 +662,19 @@ select option {
   }
 
 
-  .dynamicContent-input-video div > div span:first-child:hover,
+  .dynamicContent-input-video div > div span > span:first-child:hover,
   .dynamicContent-input-pdf div > div span:first-child:hover {
     color: rgba(255, 0, 0, 1); // Fully opaque red color
     cursor: pointer;
   }
+  .link-exam{
+    cursor: pointer;
+    margin-right: 30px;
+  }
+.link-exam:hover {
+  color: rgb(0, 26, 255); /* Change color on hover */
+}
+
 
   .next_content,
   .previous_content {

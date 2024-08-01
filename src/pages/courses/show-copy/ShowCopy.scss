@@ -1,16 +1,158 @@
-.ShowCopy-navbar {
-  flex-direction: row;
-  padding: 10px;
-  border-bottom: 2px #3C7168 solid;
-  font-family: Tajawal, sans-serif;
-  margin: 10px 0;
-  display: flex; /* Ensure flexbox layout */
-  align-items: center; /* Align items vertically */
-  border-bottom: 2px #3C7168 solid;
-
-}
+//
+//.copy-folder {
+//
+//  margin: 20px;
+//  height: 150px;
+//  width: 220px; /* Change this value as needed */
+//  position: relative;
+//  background-color: white;
+//  border: 1px solid #3C7168;
+//  border-radius: 0 6px 6px 6px;
+//  box-shadow: 4px 4px 7px rgba(60, 113, 104, 0.5);
+//  padding: 0.25em 0.5em;
+//
+//}
+//
+//.copy-folder:before {
+//  content: "";
+//  width: 50%;
+//  height: 12px;
+//  border-radius: 0 20px 0 0;
+//  background-color: white;
+//  border-top: 1px solid #3C7168;
+//  border-left: 1px solid #3C7168;
+//  border-right: 1px solid #3C7168;
+//  position: absolute;
+//  top: -13px;
+//  left: -1px;
+//}
+//
+//.copy-folder::after {
+//
+//  content: '';
+//  position: absolute;
+//  left: 0.8em;
+//  width: 4em;
+//  height: 5px;
+//  top: -0.8em;
+//  background: #D2B260;
+//  border-radius: 0 0 5px 5px;
+//}
+//
+//
+//.usersRow {
+//
+//  display: flex;
+//  flex-wrap: wrap;}
+//
+//
+//
+//
+//.ShowCopy-navbar {
+//  z-index: 100;
+//  padding: 10px;
+//  border-bottom: 2px #3C7168 solid;
+//  font-family: Tajawal, sans-serif;
+//  display: flex;
+//  align-items: center;
+//  flex-shrink: 0; /* Prevent navbar from shrinking */
+//}
+//
+//
+//
+//.toggle{
+//  margin-right: 170px;
+//}
+//
+//
+//.copy-folder.gray {
+//  background-color: silver; // or any other gray styling
+//}
+//
+//.copy-folder.pink {
+//  background-color: khaki; // or any other pink styling
+//}
+//
+//.copy-folder.green {
+//  background-color: lightblue; // or any other green styling
+//}
+//
+//
+//.content- {
+//  display: flex;
+//  flex-direction: column;
+//}
+//
+//.row {
+//  display: flex;
+//  align-items: center;
+//  margin: 8px;
+//}
+//
+//
+//.row span {
+//  margin-right: 5px; /* Adjust spacing between icon and text */
+//}
+//
+//.MdMoreVert- {
+//  font-size: 20px;
+//  font-weight: bold;
+//  color: #555555;
+//
+//  margin-right: 190px;
+//  margin-bottom: 20px;
+//}
+//
+//
+//.MdMoreVert-:hover {
+//  background-color: rgba(243, 243, 243, 0.63);
+//  border-radius: 50px;
+//  cursor: pointer;
+//}
+//
+//.menu-{
+//  position: absolute;
+//  z-index: 10;
+//  top: 95%; /* Adjust top position as needed */
+//  left: 0; /* Adjust left position as needed */
+//  width: auto;
+//  height: auto;
+//  overflow-y: auto;
+//  border: 3px solid #3C7168;
+//  background-color: white;
+//  border-radius: 10px;
+//  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+//
+//}
+//
+//.menu-content- p {
+//  cursor: pointer;
+//  margin: 15px;
+//  font-family: Tajawal, sans-serif;
+//  font-size: large;
+//  transition: background-color 0.3s ease; /* Add transition effect on background-color */
+//}
+//
+//.menu-content p:hover {
+//
+//  background-color: #f2f2f2; /* Change background color on hover */
+//}
+//
+//.icon- {
+//  color: gray; /* Change the color of the icon */
+//}
+//
+//.text- {
+//  margin-right: 5px; /* Adjust spacing between icon and text */
+//
+//  color: #404040; /* Change the color of the text */
+//}
+//
+//
+//
+//
+//
 .copy-folder {
-
   margin: 20px;
   height: 150px;
   width: 220px; /* Change this value as needed */
@@ -20,10 +162,6 @@
   border-radius: 0 6px 6px 6px;
   box-shadow: 4px 4px 7px rgba(60, 113, 104, 0.5);
   padding: 0.25em 0.5em;
-  //display: flex;
-  //justify-content: space-around;
-  //align-items: center;
-  //flex-direction: column;
 }
 
 .copy-folder:before {
@@ -41,7 +179,6 @@
 }
 
 .copy-folder::after {
-
   content: '';
   position: absolute;
   left: 0.8em;
@@ -52,17 +189,30 @@
   border-radius: 0 0 5px 5px;
 }
 
-
 .usersRow {
   display: flex;
   flex-wrap: wrap;
-  overflow-y: auto;
-  max-height: calc(100vh - 150px);
-}
-.toggle{
-  margin-right: 170px;
 }
 
+.ShowCopy-navbar {
+  z-index: 100;
+  padding: 10px;
+  border-bottom: 2px #3C7168 solid;
+  font-family: Tajawal, sans-serif;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* Prevent navbar from shrinking */
+  position: sticky; /* Change from fixed to sticky */
+  top: 0; /* Align it to the top of the container */
+  width: 100%; /* Ensure it takes full width of the container */
+  background-color: #ffffff; /* Add background color to navbar */
+  box-sizing: border-box; /* Ensures padding doesn't add to the width */
+
+}
+
+.toggle {
+  margin-right: 170px;
+}
 
 .copy-folder.gray {
   background-color: silver; // or any other gray styling
@@ -76,7 +226,6 @@
   background-color: lightblue; // or any other green styling
 }
 
-
 .content- {
   display: flex;
   flex-direction: column;
@@ -88,7 +237,6 @@
   margin: 8px;
 }
 
-
 .row span {
   margin-right: 5px; /* Adjust spacing between icon and text */
 }
@@ -97,11 +245,9 @@
   font-size: 20px;
   font-weight: bold;
   color: #555555;
-
   margin-right: 190px;
   margin-bottom: 20px;
 }
-
 
 .MdMoreVert-:hover {
   background-color: rgba(243, 243, 243, 0.63);
@@ -109,9 +255,9 @@
   cursor: pointer;
 }
 
-.menu-{
+.menu- {
   position: absolute;
-  z-index: 1;
+  z-index: 10;
   top: 95%; /* Adjust top position as needed */
   left: 0; /* Adjust left position as needed */
   width: auto;
@@ -121,7 +267,6 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
-
 }
 
 .menu-content- p {
@@ -133,7 +278,6 @@
 }
 
 .menu-content p:hover {
-
   background-color: #f2f2f2; /* Change background color on hover */
 }
 
@@ -143,11 +287,6 @@
 
 .text- {
   margin-right: 5px; /* Adjust spacing between icon and text */
-
   color: #404040; /* Change the color of the text */
 }
-
-
-
-
 

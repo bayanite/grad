@@ -21,7 +21,11 @@ const DetailsCopyOnline = () => {
         content: []
     }]);
     const [openContainers, setOpenContainers] = useState([]);
-
+    const formatTime = (timeString) => {
+        // Extract the hour and minute from the time string
+        const [hour, minute] = timeString.split(':');
+        return `${hour}:${minute}`;
+    }
     const getInfoOnline = async () => {
         try {
             const data = await fetchInfoOnlineCopy(id);
@@ -83,14 +87,17 @@ const DetailsCopyOnline = () => {
                                                     <div key={videoIndex} className="video">
                                                         {/*<img srcz={process.env.REACT_APP_API_PATH + "/Uploads/" + video.poster} alt={`Image ${contentIndex + 1}`} />*/}
                                                         <iframe
-                                                           src={process.env.REACT_APP_API_PATH + "/Uploads/" + video.video}// Assuming video.url holds the URL of the video
+                                                            src={process.env.REACT_APP_API_PATH + "/Uploads/" + video.video}// Assuming video.url holds the URL of the video
                                                             width="50%"
                                                             height="30%"
                                                             title={`Video ${videoIndex + 1}`}
                                                             allowFullScreen
                                                         />
-                                                        <p>Duration: {video.duration}</p>
-                                                        <p>Name: {video.name}</p>
+                                                        <div className="video-details">
+                                                            <p>الاسم: {video.name}</p>
+
+                                                            <p>المدة: {formatTime(video.duration)}</p>
+                                                        </div>
                                                     </div>
                                                 ))}
                                             </div>

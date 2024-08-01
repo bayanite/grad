@@ -3,8 +3,7 @@ import sidebarNav from '../configs/sidebarNav';
 import './sidebar.scss';
 import logo from '../assets/images/logo.png';
 import { FaBars } from "react-icons/fa";
-import { Link, NavLink } from 'react-router-dom';
-import { TbLogout } from "react-icons/tb";
+import {  NavLink } from 'react-router-dom';
 
 const Sidebar = ({ children }) => {
     const [isOpen, setIsOpen] = useState(true);

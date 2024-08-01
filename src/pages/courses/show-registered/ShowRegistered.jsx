@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { FaArrowRight } from "react-icons/fa";
 import CopyHooks from "../../../hooks/copyHooks";
 import { useLocation } from "react-router-dom";
+import Spinner from "react-spinner-material";
 
 const ShowRegistered = () => {
     const [search, setSearch] = useState(''); // State for search input
     const [register, setRegister] = useState([]); // State for registered data
+    const [loading, setLoading] = useState(true);
 
     const location = useLocation();
     const { fetchRegister } = CopyHooks();
@@ -16,6 +18,7 @@ const ShowRegistered = () => {
             const data = await fetchRegister(id);
             if (Array.isArray(data.data.data)) {
                 setRegister(data.data.data);
+                setLoading(false)
             } else {
                 setRegister([]); // Handle unexpected data format
             }
@@ -47,6 +50,12 @@ const ShowRegistered = () => {
 
     return (
         <div className="showRegistered">
+            {loading ? (
+                <div className="spinner-container">
+                    <Spinner size={120} visible={true} />
+                </div>
+            ) : (
+                <>
             <div className="ShowCopy-navbar">
                 <FaArrowRight className="arrow-icon" onClick={handleGoBack} />
                 <input
@@ -58,9 +67,7 @@ const ShowRegistered = () => {
                 />
             </div>
             <div className="table-container">
-                {register.length === 0 ? (
-                    <p>لايوجد مسجلين بعد</p>
-                ) : (
+
                     <table>
                         <thead>
                         <tr>
@@ -77,8 +84,10 @@ const ShowRegistered = () => {
                         ))}
                         </tbody>
                     </table>
-                )}
+
             </div>
+                </>
+            )}
         </div>
     );
 };

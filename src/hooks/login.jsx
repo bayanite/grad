@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-const Login = ({ setIsAuthenticated }) => {
+const Login = (setIsAuthenticated) => {
     const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const login = async (e,nameEmp,passwordEmp) => {
@@ -18,7 +18,7 @@ const Login = ({ setIsAuthenticated }) => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/employee/login', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}employee/login`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

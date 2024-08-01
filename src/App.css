@@ -13,13 +13,14 @@
 }
 
 .sub-container {
+    position: relative; /* Add this line */
     width: 97%;
     height: 90%;
     margin: 1% 0 2.5% 2.5%;
     border-radius: 30px;
     background-color: #ffffff;
     /*padding: 10px;*/
-    overflow: scroll;
+    overflow-y: scroll;
 }
 .sub-container1 {
     width: 97%;

@@ -12,7 +12,12 @@ const AddOnlineCourse = () => {
     const location = useLocation();
     const courseName = location.state?.courseName;
     const id = location.state?.id;
+    const totalDuration = location.state?.totalDuration;
+    const numberVideos = location.state?.numberVideos;
     const dynamicContent = location.state?.dynamicContent;
+    console.log("cfcfgv",dynamicContent)
+    console.log("numberVideos",numberVideos)
+    console.log("duration",totalDuration)
 
     const {fetchForm} = Model();
 
@@ -22,7 +27,7 @@ const AddOnlineCourse = () => {
     const [selectedSeries, setSelectedSeries] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState('');
-    const [duration, setDuration] = useState('');
+    const [durationMinut, setDurationMinut] = useState('');
     const [model, setModel] = useState([]);
     const [contentExam, setContentExam] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +88,7 @@ const AddOnlineCourse = () => {
     const handleDurationChange = (event) => {
         const inputValue = event.target.value;
         let value = parseInt(inputValue);
-        setDuration(value);
+        setDurationMinut(value);
     };
 
     const handleContentCourse = () => {
@@ -177,7 +182,7 @@ const AddOnlineCourse = () => {
     const handleSaveCourse = async (e) => {
         e.preventDefault();
         try {
-            await createCourseOnline(0, price, 1, 1, selectCourse, selectedSeries, id, 7, 4, 3, 55, 1, dynamicContent);
+            await createCourseOnline(0, price, selectedForm.id, selectedQuestionnaire.id, selectCourse, selectedSeries, id, duration, numberVideos, 0, 0, dynamicContent);
         } catch (error) {
             console.error('Error creating course:', error);
         }
@@ -287,12 +292,9 @@ const AddOnlineCourse = () => {
                                 </label>
                                 <label>
                                     مدة الامتحان (في الدقائق)
-                                    <input type="text" value={duration} onChange={handleDurationChange} required/>
+                                    <input type="text" value={durationMinut} onChange={handleDurationChange} required/>
                                 </label>
-                                <label>
-                                    اختر الامتحان
-                                    <select value={contentExam} onChange={handleContentExamChange} required/>
-                                </label>
+
                                 <button className={"cancel-button"} onClick={handleClosePopupEx}>إلغاء</button>
                                 <button className={"save-button"} onClick={handleSave}>حفظ</button>
                             </div>

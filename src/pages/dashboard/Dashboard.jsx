@@ -31,8 +31,8 @@ const AnimatedLineChart = ({ data = [] }) => {
             <div>
                 <label htmlFor="yearSelect">Select Year: </label>
                 <select id="yearSelect" value={selectedYear} onChange={handleChangeYear}>
-                    {years.map(year => (
-                        <option key={year} value={year}>{2024}</option>
+                    {years.map((year,index) => (
+                        <option key={index} value={year}>{2024}</option>
                     ))}
                 </select>
             </div>

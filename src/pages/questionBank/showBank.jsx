@@ -17,7 +17,7 @@ const ShowBank = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [dataModel, setDataModel] = useState([]);
-    const [ids, setIds] = useState([]);
+    // const [ids, setIds] = useState([]);
     const [idModel, setIdModel] = useState("");
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [saveDisabled, setSaveDisabled] = useState(true);
