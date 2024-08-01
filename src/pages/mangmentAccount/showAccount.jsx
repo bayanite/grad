@@ -4,6 +4,8 @@ import '../courses/show-copy/ShowCopy.scss';
 import './acouunt.scss';
 import '../courses/view courses/courses.scss';
 import AddAccount from "./addAccount";
+import Account from "../../hooks/account";
+import Swal from "sweetalert2";
 
 const ShowAccount = () => {
     const [userAccount, setUserAccount] = useState([]);
@@ -15,7 +17,7 @@ const ShowAccount = () => {
     const [editedPasswords, setEditedPasswords] = useState({});
     const inputRefs = useRef({});
 
-    // console.log("llsl",userAccount)
+     const {getAllAccount,updatePassword,deleteAccount}=Account();
 
     const togglePasswordVisibility = (index) => {
         setVisiblePasswords((prevState) => ({
@@ -43,7 +45,6 @@ const ShowAccount = () => {
         const oldPassword = row.password;
         const result = await changePassword(row.id, oldPassword, editedPasswords[index]);
         if (result.ok) {
-            console.log("llllllllllllllllllll")
             setEditMode((prevState) => ({
                 ...prevState,
                 [index]: false
@@ -82,81 +83,65 @@ const ShowAccount = () => {
         getAccount();
     }, []);
 
-    const getAccount = async () => {
-        const token = localStorage.getItem('token');
-        await fetch('http://127.0.0.1:8000/api/employee/indexAll', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                setUserAccount(data);
-            })
-            .catch(error => console.error(error));
+    const getAccount = async () =>
+    {
+        try {
+            const data = await getAllAccount();
+            setUserAccount(data);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
     };
 
     const changePassword = async (id, oldPassword, newPassword) => {
-        const token = localStorage.getItem('token');
-        const data = {
-            'id': id,
-            'oldPassword':oldPassword,
-            'newPassword': newPassword,
-        };
-        console.log("Password updated successfully", data);
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/employee/resetpass', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify(data)
-            });
-
-        const result = await response.json();
-        if( result.status === 'success'){
-        return { ok:true , result };
-        } else
-            return { ok: false, result };
+            return  await updatePassword(id, oldPassword, newPassword);
         } catch (error) {
-        console.error('Error:', error);
-        return { ok: false, result: error };
+            console.error('Error fetching courses:', error);
         }
-
     }
 
     const deleteUser = async (id) => {
-        const token = localStorage.getItem('token');
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/employee/delete/${id}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
 
-            const data = await response.json();
-            console.log(data);
+        const result = await Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "لن تتمكن من التراجع عن هذا!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'نعم، احذفه!',
+            cancelButtonText: 'إلغاء'
+        });
 
-            if (response.ok) {
-                setUserAccount(prevState => {
-                    const updatedData = prevState.data.filter(item => item.id !== id);
-                    return { ...prevState, data: updatedData };
-                });
-            } else {
-                console.error('Failed to delete user:', data);
+        if (result.isConfirmed) {
+            try {
+                const isDeleted = await deleteAccount(id);
+                if (isDeleted) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحذف بنجاح',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                    setUserAccount(prevState => {
+                        const updatedData = prevState.data.filter(item => item.id !== id);
+                        return { ...prevState, data: updatedData };
+                    });//remove without refresh all page
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'فشل الحذف !',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                }
+            } catch (error) {
+                console.error('Error deleting adviser:', error);
             }
-        } catch (error) {
-            console.error('Error:', error);
         }
     };
+
     const handleGoBack = () => {
         window.history.back(); // Go back to the previous page
     };

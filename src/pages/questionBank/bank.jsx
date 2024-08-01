@@ -3,6 +3,8 @@ import '../model/form/form.scss'
 import { useNavigate } from 'react-router-dom';
 import {FaPlus, FaTrashAlt} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
+import Swal from "sweetalert2";
+import Exam from "../../hooks/Exam";
 const Bank = () => {
     const navigate = useNavigate();
     const handleClick = () => {
@@ -14,24 +16,48 @@ const Bank = () => {
 
     const [exam, setExams] = useState([]);
 
-    const deleteExam = async (e,id) => {
-        // e.preventDefault();
-        await fetch(`http://127.0.0.1:8000/api/exam/delete/${id}`,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // window.location.reload(); //refresh all page
-                setExams(prevState => {
-                    const updatedExam = prevState.data.exam.filter(item => item.id !== id);
-                    return { ...prevState, data: { ...prevState.data, exam: updatedExam } };
-                });//remove without refresh all page
-            })
+    const {deleteBank,allExam}=Exam();
+
+    const deleteExam = async (id) => {
+
+        const result = await Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "لن تتمكن من التراجع عن هذا!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'نعم، احذفه!',
+            cancelButtonText: 'إلغاء'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                // setIds(id)
+                const isDeleted = await deleteBank(id);
+                if (isDeleted) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحذف بنجاح',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                    setExams(prevState => {
+                        const updatedExam = prevState.data.exam.filter(item => item.id !== id);
+                        return { ...prevState, data: { ...prevState.data, exam: updatedExam } };
+                    });//remove without refresh all page
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'فشل الحذف !',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                }
+            } catch (error) {
+                console.error('Error deleting adviser:', error);
+            }
+        }
     }
 
     useEffect(() => {
@@ -39,21 +65,12 @@ const Bank = () => {
     }, [])
 
     const showExam = async () => {
-
-        await fetch('http://127.0.0.1:8000/api/exam/index', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                setExams(data);
-
-                console.log("exam",data)
-            })
-            .catch(error => console.error(error));
+        try {
+            const data = await allExam();
+            setExams(data);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
     }
 
     const exams = exam && exam.data && exam.data.exam;
@@ -72,7 +89,7 @@ const Bank = () => {
                             <text className={'about_template'}>{item.description}</text>
                         </div>
                         <div className="trash-circle">
-                            <FaTrashAlt className={"FaTrashAlt"} onClick={(e)=>deleteExam(e,item.id)} />
+                            <FaTrashAlt className={"FaTrashAlt"} onClick={(e)=>deleteExam(item.id)} />
                         </div>
                     </div>
                 ))}

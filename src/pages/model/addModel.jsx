@@ -13,6 +13,7 @@ import {
     FaToggleOn,
     FaTrashAlt
 } from "react-icons/fa";
+import Model from "../../hooks/Model";
 
 
 const AddModel = () => {
@@ -24,6 +25,8 @@ const AddModel = () => {
     const [divValues, setDivValues] = useState([{ question: "", select: "خيار متعدد", options: [{ index:"",value: ""}] ,required: 0}]);
     const [activationStates, setActivationStates] = useState(Array(divValues.length).fill(false));
     console.log("divValues",divValues)
+
+    const {createModel}=Model();
 
     const toggleActivation = (index) => {
         setActivationStates(prevStates => {
@@ -351,29 +354,11 @@ const AddModel = () => {
             setFormSubmitted(true);// Mark the form as submitted
             return; // Exit the function if required fields are empty
         }
-
-        const data = {
-            "type":TypeName,
-            "title": inputValueTitle,
-            "description": inputValueDes,
-            "body":divValues,
-        }
-
-        console.log("jj",JSON.stringify(data))
         try {
-            await fetch('http://127.0.0.1:8000/api/paper/create', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify(data)
-
-            }).then(response=> response.json()).then(data=> console.log("ggg",data));
-
+            await createModel(TypeName,inputValueTitle,inputValueDes,divValues);
+            handleGoBack();
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching courses:', error);
         }
 
     };

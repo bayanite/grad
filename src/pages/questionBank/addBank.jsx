@@ -8,6 +8,7 @@ import {
     FaTimes,
     FaTrashAlt,
 } from "react-icons/fa";
+import Exam from "../../hooks/Exam";
 
 
 
@@ -17,6 +18,8 @@ const AddBank = () => {
     const [divValues, setDivValues] = useState([{ question: "", options: [{ option: "", correct: "0" }] }]);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [saveDisabled, setSaveDisabled] = useState(true);
+    const {addBank}=Exam();
+
     console.log("saveDisabled",saveDisabled)
     useEffect(() => {
         checkSaveButtonState(); // Check initial state of save button
@@ -160,35 +163,21 @@ const AddBank = () => {
             setFormSubmitted(true);// Mark the form as submitted
             return; // Exit the function if required fields are empty
         }
-
-        const data = {
-            "title": inputValueTitle,
-            "description": inputValueDes,
-            "body": divValues,
-        }
-
-        console.log("jj", JSON.stringify(data))
         try {
-            await fetch('http://127.0.0.1:8000/api/exam/create', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify(data)
-
-            }).then(response => response.json()).then(data => console.log("ggg", data));
-
+            await addBank(inputValueTitle,inputValueDes,divValues);
+            handleGoBack();
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching courses:', error);
         }
+
     };
+
+
     const handleGoBack = () => {
         window.history.back(); // Go back to the previous page
     };
-
     return (
+
         <div className={"model"}>
             <div className={"go"}>
                 <FaArrowRight className="back-button" onClick={handleGoBack}/>
@@ -218,7 +207,7 @@ const AddBank = () => {
             {divValues.length > 0 && (
                 <>
                     {renderModelDivs()}
-                    <button className={"save"} onClick={(e) => SendBank(e)} disabled={saveDisabled}>
+                    <button className={"save"} onClick={(e) => SendBank(e)}>
                         حفظ
                     </button>
                 </>

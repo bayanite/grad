@@ -12,6 +12,8 @@ import {
     FaToggleOff,
     FaToggleOn,
 } from "react-icons/fa";
+import Model from "../../hooks/Model";
+import Swal from "sweetalert2";
 
 
 const ShowModel = () => {
@@ -29,6 +31,8 @@ const ShowModel = () => {
     const description1 = location.state?.description
     const id1 = location.state?.id
 
+    const {detailsForm,deleteQuestion,addQuestion}=Model()
+
     useEffect(() => {
         if (title1) {
             setTitle(title1);}
@@ -37,60 +41,60 @@ const ShowModel = () => {
         }
         if(id1){
             setIdModel(id1);
-             ShowForm(id1)
+            formDetails(id1)
         }
 
     }, [title1, description1,id1]);
 
-    const ShowForm = async (id) => {
-        // e.preventDefault();
-        console.log("id",id)
-        await fetch(`http://127.0.0.1:8000/api/paper/show/${id}`,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setDataModel(data);
-            })
+    const formDetails = async (id) => {
+
+        try {
+            const data = await detailsForm(id);
+            setDataModel(data);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
     }
 
-    const deleteQuestion = async (e,id) => {
-        // e.preventDefault();
-        console.log("kkk",id)
-         setIds(id);
-         const d={
-             "ids":[id],
-         }
-            console.log("d",d)
-        try {
-            console.log(JSON.stringify(ids))
-        await fetch('http://127.0.0.1:8000/api/paper/deleteQusetions',{
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(d)
-        })
-    .then(response=> response.json())
-            .then(data=> {
-                console.log("ggg", data)
-                if(data.data.paper==="success"){
-                setDataModel(prevState => {
-                    const updatedPaper = prevState.data.paper.filter(item => item.id !== id);
-                    return {...prevState, data: {...prevState.data, paper: updatedPaper}};
-                });
-                }
-            });
+    const questionDelete = async (id) => {
+        const result = await Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "لن تتمكن من التراجع عن هذا!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'نعم، احذفه!',
+            cancelButtonText: 'إلغاء'
+        });
 
-         } catch (error) {
-            console.error(error)
-          }
+        if (result.isConfirmed) {
+            try {
+                // setIds(id)
+                const isDeleted = await deleteQuestion(id);
+                if (isDeleted) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحذف بنجاح',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                    setDataModel(prevState => {
+                        const updatedPaper = prevState.data.paper.filter(item => item.id !== id);
+                        return {...prevState, data: {...prevState.data, paper: updatedPaper}};
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'فشل الحذف !',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                }
+            } catch (error) {
+                console.error('Error deleting adviser:', error);
+            }
+        }
     }
 
     const paperData = dataModel && dataModel.data && dataModel.data.paper;
@@ -98,7 +102,7 @@ const ShowModel = () => {
         return paperData && Array.isArray(paperData) && paperData.map((value1, index1) => (
             <div key={index1} className={"model-div body"}>
                <p className={"showQuestion"} >{value1.question}</p>
-               <FaTimes className={"close"} onClick={(e)=>deleteQuestion(e,value1.id)}/>
+               <FaTimes className={"close"} onClick={()=>questionDelete(value1.id)}/>
                 {renderQuestionType(value1.select, index1)} {/* Pass options array to renderQuestionType */}
             </div>
             ));
@@ -207,7 +211,7 @@ const ShowModel = () => {
 
     //***************** add question *****************//
 
-    const AddQuestion = async (e) => {
+    const questionAdd = async (e) => {
         e.preventDefault();
         // Check if any required fields are empty
         const requiredFieldsEmpty = questions.some((value) => {
@@ -228,28 +232,20 @@ const ShowModel = () => {
             setFormSubmitted(true); // Mark the form as submitted
             return; // Exit the function if required fields are empty
         }
-
-        const data = {
-            "id_paper":id1,
-            "body":questions,
-        }
-
         try {
-            await fetch('http://127.0.0.1:8000/api/paper/addQuestions', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify(data)
-
-            }).then(response=> response.json()).then(data=> console.log("ggg",data));
+            await addQuestion(id1,questions);
+            await Swal.fire({
+                icon: 'success',
+                title: 'تمت الإضافة بنجاح',
+                showConfirmButton: false,
+                timer: 1500
+            });
+              setQuestions([]);
+             await formDetails(id1)
 
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching courses:', error);
         }
-
     };
 
     const handleAddModelDiv = () => {
@@ -569,7 +565,7 @@ const ShowModel = () => {
             </div>
            {renderModelDivs()}
             {renderQuestions()}
-            <button className={"save"}  onClick={(e)=>AddQuestion(e)} style={{ display: questions.length === 0 ? 'none' : 'block' }}>
+            <button className={"save"}  onClick={(e)=>questionAdd(e)} style={{ display: questions.length === 0 ? 'none' : 'block' }}>
                 حفظ
             </button>
         </div>

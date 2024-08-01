@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {IoClose} from "react-icons/io5";
 import {FaCamera, FaLock, FaLockOpen, FaUser} from "react-icons/fa";
+import Account from "../../hooks/account";
 
 const AddAccount = ({toggle,onSave}) => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [selectedRole, setSelectedRole] = useState('');
+    const [selectedRole, setSelectedRole] = useState('1');
     const [nameEmp, setNameEmp] = useState('');
     const [passwordEm, setPasswordEmp] = useState('');
  console.log("select",selectedRole)
@@ -21,41 +22,17 @@ const AddAccount = ({toggle,onSave}) => {
     const handlePopupClick = (event) => {
         event.stopPropagation();
     };
+    const {addAccount}=Account(toggle,onSave);
 
-    const addAccount = async () => {
-        const token = localStorage.getItem('token');
-        const data = {
-            'name': nameEmp,
-            'password': passwordEm,
-            'role': selectedRole
-        }
+    const handleAddAccount= async ()=>{
+       try {
+           await addAccount(nameEmp,passwordEm,selectedRole);
 
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/employee/create', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-            console.log("jgdd", result);
-
-            if (response.ok) {
-                console.log("lllll", result.ok);
-                toggle(); // Call toggle function when the request is successful
-                onSave();
-            } else {
-                // Handle error case if needed
-                console.error('Error:', result);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+       } catch (error) {
+           console.error('Error adding template:', error);
+       }
     }
+    const isFormValid = nameEmp !== '' && passwordEm !== '' && selectedRole !== '';
 
     return (
         <div className="popup" onClick={toggle}>
@@ -91,14 +68,13 @@ const AddAccount = ({toggle,onSave}) => {
                         // value={selectedRole}
                         onChange={handleSelectChange}
                     >
-                        <option value=" " >اختر دورًا</option>
                         <option>موظف</option>
                         <option>مدير</option>
                     </select>
 
                     {/*</div>*/}
                     <div style={{display: 'flex', justifyContent: 'space-between', marginRight: '190px'}}>
-                        <button style={{ marginTop: '120px'}} type="submit" onClick={addAccount}>
+                        <button style={{ marginTop: '120px'}} type="submit" onClick={handleAddAccount}  disabled={!isFormValid}>
                             حفظ
                         </button>
                         <button style={{ marginTop: '120px'}} type="button" onClick={toggle}>

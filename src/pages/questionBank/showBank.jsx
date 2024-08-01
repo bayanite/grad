@@ -7,6 +7,8 @@ import {
     FaRegCircle, FaRegDotCircle,
     FaTimes,
 } from "react-icons/fa";
+import Exam from "../../hooks/Exam";
+import Swal from "sweetalert2";
 
 
 const ShowBank = () => {
@@ -25,6 +27,8 @@ const ShowBank = () => {
     const description1 = location.state?.description
     const id1 = location.state?.id
 
+    const {detailsBank,deleteQuestionExam,addQuestionExam}=Exam();
+
     useEffect(() => {
         if (title1) {
             setTitle(title1);}
@@ -39,52 +43,53 @@ const ShowBank = () => {
     }, [title1, description1,id1]);
 
     const ShowBank = async (id) => {
-        // e.preventDefault();
-        console.log("id",id)
-        await fetch(`http://127.0.0.1:8000/api/exam/show/${id}`,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setDataModel(data);
-            })
+        try {
+            const data = await detailsBank(id);
+            setDataModel(data);
+        } catch (error) {
+            console.error('Error fetching :', error);
+        }
     }
 
-    const deleteQuestion = async (e,id) => {
-        // e.preventDefault();
-        console.log("kkk",id)
-        setIds(id);
-        const d={
-            "ids":[id],
-        }
-        try {
-            console.log(JSON.stringify(ids))
-            await fetch('http://127.0.0.1:8000/api/exam/deleteQusetions',{
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(d)
-            })
-                .then(response=> response.json())
-                .then(data=> {
-                    console.log("ggg", data)
-                    if(data.data.exam==="success"){
-                        setDataModel(prevState => {
-                            const updatedPaper = prevState.data.exam.filter(item => item.id !== id);
-                            return {...prevState, data: {...prevState.data, exam: updatedPaper}};
-                        });
-                    }
-                });
+    const deleteQuestion = async (id) => {
 
-        } catch (error) {
-            console.error(error)
+        const result = await Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "لن تتمكن من التراجع عن هذا!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'نعم، احذفه!',
+            cancelButtonText: 'إلغاء'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                // setIds(id)
+                const isDeleted = await deleteQuestionExam(id);
+                if (isDeleted) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحذف بنجاح',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                    setDataModel(prevState => {
+                        const updatedPaper = prevState.data.exam.filter(item => item.id !== id);
+                        return {...prevState, data: {...prevState.data, exam: updatedPaper}};
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'فشل الحذف !',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                }
+            } catch (error) {
+                console.error('Error deleting adviser:', error);
+            }
         }
     }
 
@@ -93,7 +98,7 @@ const ShowBank = () => {
         return examData && Array.isArray(examData) && examData.map((value1, index1) => (
             <div key={index1} className={"model-div body "}>
                 <p className={"showQuestion"} >{value1.question}</p>
-                <FaTimes className={"close"} onClick={(e)=>deleteQuestion(e,value1.id)}/>
+                <FaTimes className={"close"} onClick={(e)=>deleteQuestion(value1.id)}/>
                 {MultipleChoice(index1)} {/* Pass options array to renderQuestionType */}
             </div>
         ));
@@ -135,32 +140,30 @@ const ShowBank = () => {
 
     const AddQuestion = async (e) => {
         e.preventDefault();
-        const requiredFieldsEmpty = questions.some((value) => value.question.trim() === '' || value.options.some(option => option.option.trim() === ''));
+        const requiredFieldsEmpty = questions.some((value) => {
+            if (value.question.trim() === '' || value.options.some(option => option.option.trim() === '')) {
+                return true; // If question or select field is empty, return true
+            }
+        });
 
         if (requiredFieldsEmpty) {
             setFormSubmitted(true); // Mark the form as submitted
             return; // Exit the function if required fields are empty
         }
 
-        const data = {
-            "id_exame":id1,
-            "body":questions,
-        }
-
         try {
-            await fetch('http://127.0.0.1:8000/api/exam/addQuestions', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-
-                body: JSON.stringify(data)
-
-            }).then(response=> response.json()).then(data=> console.log("ggg",data));
+            await addQuestionExam(id1,questions);
+            await Swal.fire({
+                icon: 'success',
+                title: 'تمت الإضافة بنجاح',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            setQuestions([]);
+            await ShowBank(id1)
 
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching courses:', error);
         }
 
     };
@@ -254,7 +257,7 @@ const ShowBank = () => {
         return questions.map((question, index) => (
             <div key={index} className={"model-div body bank"} ref={index === questions.length - 1 ? latestDivRef : null}>
                 <input
-                    className={`model-title question  ${formSubmitted && (question.question.trim() === '' || question.select.trim() === '') ? 'required-field' : ''}`}
+                    className={`model-title question  ${formSubmitted && (question.question.trim() === '' || question.options.some(option => option.option.trim() === '')) ? 'required-field' : ''}`}
                     type={"text"}
                     placeholder={"السؤال"}
                     value={question.question}

@@ -4,6 +4,8 @@ import '../../courses/view courses/courses.scss'
 import { useNavigate } from 'react-router-dom';
 import {FaPlus, FaTrashAlt} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
+import Model from "../../../hooks/Model";
+import Swal from "sweetalert2";
 
 
 const Questionnaire = ({TypeName}) => {
@@ -17,48 +19,60 @@ const Questionnaire = ({TypeName}) => {
     };
 
     const [questionnaire, setQuestionnaire] = useState([]);
-
+    const {deleteForm,allForm}=Model()
 //=====================================================
-    const deleteForm = async (e,id) => {
-        // e.preventDefault();
-        await fetch(`http://127.0.0.1:8000/api/paper/delete/${id}`,{
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // window.location.reload(); //refresh all page
-                setQuestionnaire(prevState => {
-                    const updatedPaper = prevState.data.paper.filter(item => item.id !== id);
-                    return { ...prevState, data: { ...prevState.data, paper: updatedPaper } };
-                });//remove without refresh all page
-            })
+    const deleteForm1 = async (id) => {
+
+        const result = await Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: "لن تتمكن من التراجع عن هذا!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'نعم، احذفه!',
+            cancelButtonText: 'إلغاء'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const isDeleted = await deleteForm(id);
+                if (isDeleted) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم الحذف بنجاح',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                    setQuestionnaire(prevState => {
+                        const updatedPaper = prevState.data.paper.filter(item => item.id !== id);
+                        return { ...prevState, data: { ...prevState.data, paper: updatedPaper } };
+                    });//remove without refresh all page
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'فشل الحذف !',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                }
+            } catch (error) {
+                console.error('Error deleting adviser:', error);
+            }
+        }
     }
 //=====================================================
     useEffect(() => {
-        showForm()
+        showForm1()
     }, [])
 
-    const showForm = async () => {
-
-        await fetch(`http://127.0.0.1:8000/api/paper/index/${type}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                setQuestionnaire(data);
-
-                console.log("form",data)
-            })
-            .catch(error => console.error(error));
+    const showForm1 = async () => {
+        try {
+            const data = await allForm(type);
+            setQuestionnaire(data);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
     }
     const papers = questionnaire && questionnaire.data && questionnaire.data.paper;
 
@@ -76,7 +90,7 @@ const Questionnaire = ({TypeName}) => {
                         <text className={'about_template'}>{item.description}</text>
                     </div>
                     <div className="trash-circle">
-                        <FaTrashAlt className={"FaTrashAlt"} onClick={(e)=>deleteForm(e,item.id)} />
+                        <FaTrashAlt className={"FaTrashAlt"} onClick={()=>deleteForm1(item.id)} />
                     </div>
                 </div>
             ))}

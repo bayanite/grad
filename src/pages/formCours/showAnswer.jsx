@@ -1,38 +1,37 @@
 import React, {useEffect, useState} from 'react'
-import {Outlet} from "react-router-dom";
+import {Outlet, useLocation} from "react-router-dom";
 import {FaArrowRight, FaPlusCircle, FaToggleOff, FaToggleOn, FaTrashAlt} from "react-icons/fa";
 import "./showAnswer.scss"
+import Model from "../../hooks/Model";
 const ShowAnswer = () => {
     const [activationStates, setActivationStates] = useState(false);
     const [getFormUser, setGetFormUser] = useState([]);
+    const location = useLocation();
+    const id_user = location.state?.id_user
+    const id_online_center = location.state?.id_online_center
+    const {displayUser}=Model();
+
     useEffect(() => {
         show();
     }, []);
-    const show=async () => {
+    const show= async () => {
         try {
-            await fetch(`http://127.0.0.1:8000/api/paper/displayUser/${11}/${2}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-            }).then(response => response.json())
-                .then(data =>
-                {
-                    setGetFormUser(data)
-                console.log("ggg", data)
-            } );
-
+            const data = await displayUser(id_user,id_online_center);
+            setGetFormUser(data)
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching courses:', error);
         }
+
     }
+    const handleGoBack = () => {
+        window.history.back(); // Go back to the previous page
+    };
     const getFormUsers = getFormUser && getFormUser.data;
 
     return (
         <div className={"model"}>
             <div className={"go"}>
-                <FaArrowRight className="back-button" />
+                <FaArrowRight className="back-button" onClick={handleGoBack} />
                 {/* Back button */}
             </div>
             {getFormUsers && Array.isArray(getFormUsers) && getFormUsers.length > 0 && (

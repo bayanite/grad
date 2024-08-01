@@ -14,64 +14,14 @@ const SignInUp = ({ setIsAuthenticated }) => {
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
     };
-  // const {login}=Login(setIsAuthenticated)
+     const {login}=Login(setIsAuthenticated);
 
-    // const signIn =async (e)=>{
-    //     try {
-    //       const mes= await login(e,nameEmp,passwordEmp);
-    //         setErrorMessage(mes);
-    //     } catch (error) {
-    //         console.error('Error adding template:', error);
-    //     }
-    // }
-    const login = async (e) => {
-        e.preventDefault(); // Prevent form submission
-
-        // Input validation
-        if (!nameEmp || !passwordEmp) {
-            setErrorMessage("يرجى ملء جميع البيانات.");
-            return;
-        }
-
-        const data = {
-            "name": nameEmp,
-            "password": passwordEmp,
-        }
-
+    const signIn =async (e)=>{
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/employee/login', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            });
-            console.log(response.ok)
-            if (response.ok) {
-                const data = await response.json();
-                if (data.status === 'success') {
-                    const token = data.token;
-                    const role = data.role;
-                    const name = data.name;
-                    console.log(role)
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('userRole', role); // Store the user's role
-                    localStorage.setItem('userName', name);
-                    setIsAuthenticated(true);
-                    navigate('/');
-                    console.log("Token stored in local storage:", token);
-                }else{
-                    setErrorMessage(data.message || "فشل تسجيل الدخول. يرجى التحقق من البيانات الخاصة بك.");
-                }
-            } else {
-                const errorData = await response.json();
-                setErrorMessage(errorData.message || "فشل تسجيل الدخول. يرجى التحقق من البيانات الخاصة بك.");
-                console.error("Login failed:", response.statusText);
-            }
+          const mes= await login(e,nameEmp,passwordEmp);
+            setErrorMessage(mes);
         } catch (error) {
-            setErrorMessage("حدث خطأ. حاول مرة اخرى.");
-            console.error(error);
+            console.error('Error adding template:', error);
         }
     }
 
@@ -79,7 +29,7 @@ const SignInUp = ({ setIsAuthenticated }) => {
         <div className="container1">
             <div className="forms-container">
                 <div className="signin-signup">
-                    <form action="#" className="form1 sign-in-form" onSubmit={login}>
+                    <form action="#" className="form1 sign-in-form" onSubmit={signIn}>
                         <h2 className="title1">تسجيل الدخول</h2>
                         <div className="input-field">
                             <FaUser className="icon" />

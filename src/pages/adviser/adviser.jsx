@@ -25,9 +25,11 @@ const Adviser = () => {
     const menuRefs = useRef([]);
 
     console.log("showAddDatesPopup",showAddDatesPopup);
+    // console.log("openMenuIndex",openMenuIndex);
 
     const toggleMenu = (index) => {
         setOpenMenuIndex(openMenuIndex === index ? null : index);
+
     };
     const toggleAddPopup = (index) => {
         setShowAddDatesPopup(showAddDatesPopup === index ? null : index);
@@ -90,7 +92,7 @@ const Adviser = () => {
     useEffect(() => {
         const handleOutsideClick = (event) => {
             // Check if click occurred outside of the menu
-            if (!event.target.closest('.menu')) {
+            if (event.target.closest('.menu')) {
                 setOpenMenuIndex(null); // Close the menu
             }
         };
@@ -106,7 +108,7 @@ const Adviser = () => {
     }, [openMenuIndex]);
 
     const advisers = Adviser && Adviser.data && Adviser.data.adviser;
-      console.log(advisers)
+    console.log(advisers)
     return (
         <div className={"form"}>
             <div className={"create_template"}>
