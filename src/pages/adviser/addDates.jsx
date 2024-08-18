@@ -13,16 +13,20 @@ const AddDates = ({onClose,name,id}) => {
 
     const handleSubmit = async (e) => {
         try {
+            setLoading(true); // Start the loading state
             await SendDates(e,selectedTimesByDay,id);
 
         } catch (error) {
             console.error('Error adding template:', error);
+        }finally {
+            setLoading(false); // End the loading state
         }
         onClose();
     };
 
     const [timeCombinations, setTimeCombinations] = useState({});
     const [selectedTimesByDay, setSelectedTimesByDay] = useState([]);
+    const [loading, setLoading] = useState(false); // New loading state
     console.log("selectedTimesByDay",selectedTimesByDay)
 
     // Populate time combinations array
@@ -257,7 +261,15 @@ const AddDates = ({onClose,name,id}) => {
                                 onClick={(e)=>handleSubmit(e)}
                                 disabled={!isSaveButtonEnabled()} // Disable the button if conditions are not met
                         >
-                            حفظ
+                            {loading ? (
+                                <div className="loading-indicator">
+                                    <span>.</span>
+                                    <span>.</span>
+                                    <span>.</span>
+                                </div>
+                            ) : (
+                                "حفظ"
+                            )}
                         </button>
                         <button  style={{ marginTop: '50px'}} type="button"
                                  onClick={onClose}>

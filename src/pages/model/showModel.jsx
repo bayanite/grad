@@ -3,7 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import { useLocation } from "react-router-dom";
 import {
     FaArrowRight,
-    FaClock,
+    FaClock, FaExclamationCircle,
     FaPlusCircle,
     FaRegCalendarAlt,
     FaRegCircle,
@@ -17,6 +17,9 @@ import Swal from "sweetalert2";
 
 
 const ShowModel = () => {
+    const [loading, setLoading] = useState(true); // Loading state
+    const [loading1, setLoading1] = useState(false); // Loading state
+    const [error, setError] = useState(null); // Error state
     const latestDivRef = useRef(null);
     const [questions, setQuestions] = useState([]);
     const [title, setTitle] = useState("");
@@ -41,19 +44,50 @@ const ShowModel = () => {
         }
         if(id1){
             setIdModel(id1);
-            formDetails(id1)
+            // setLoading(true); // Start loading when fetching data
+            // formDetails(id1)
+            checkServerConnectivity();
         }
 
     }, [title1, description1,id1]);
 
-    const formDetails = async (id) => {
+    const checkServerConnectivity = async () => {
+        try {
+            // Make a simple GET request to check server status
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/show/${id1}`); // Replace with a basic endpoint
+            if (!response.ok) throw new Error('Server not reachable');
 
+            // If the server is reachable, proceed to fetch the forms
+            await formDetails(id1);
+        } catch (error) {
+            // Handle the error without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setLoading(false); // Stop the loading spinner
+        }
+    };
+    const formDetails = async (id) => {
+        setLoading(true);
+        setError(null);
         try {
             const data = await detailsForm(id);
-            setDataModel(data);
+            if (!data || !data.data || !data.data.paper || data.data.paper.length === 0) {
+                setError("لا توجد بيانات."); // Handle no data found
+            } else {
+                setDataModel(data);
+            }
         } catch (error) {
-            console.error('Error fetching courses:', error);
+            // Catch the error and handle it without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+        } finally {
+            setLoading(false);
         }
+        //     setDataModel(data);
+        //     setLoading(false); // Stop loading when data is fetched
+        // } catch (error) {
+        //     // setError('Failed to fetch the data. Please try again.');
+        //     setLoading(false); // Stop loading even if there is an error
+        //     console.error('Error fetching courses:', error);
+        // }
     }
 
     const questionDelete = async (id) => {
@@ -111,7 +145,7 @@ const ShowModel = () => {
     const TimeInput=()=> {
         return (
             <div className={"DateInput"}>
-                <input type="time" className={"input-time"} disabled />
+                <input type="time"  disabled />
                 <FaClock className={"FaClock"} />
             </div>
         );
@@ -233,6 +267,7 @@ const ShowModel = () => {
             return; // Exit the function if required fields are empty
         }
         try {
+            setLoading1(true); // Start the loading state
             await addQuestion(id1,questions);
             await Swal.fire({
                 icon: 'success',
@@ -244,7 +279,10 @@ const ShowModel = () => {
              await formDetails(id1)
 
         } catch (error) {
+
             console.error('Error fetching courses:', error);
+        }finally {
+            setLoading1(false); // End the loading state
         }
     };
 
@@ -556,6 +594,17 @@ const ShowModel = () => {
                 <FaArrowRight className="back-button" onClick={handleGoBack}/>
                 {/* Back button */}
             </div>
+            {loading ? (
+                <div className="spinner-container2">
+                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                </div>
+            ) : error ? (
+                <div className="spinner-container2">
+                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <p className="error-message-">{error}</p>
+                </div>
+            ) : (
+                <>
             <div className={"model-div title"}>
                <h1 className={"showTitle"}>{title}</h1>
                 <p className={"showTitle"}>{description}</p>
@@ -566,8 +615,18 @@ const ShowModel = () => {
            {renderModelDivs()}
             {renderQuestions()}
             <button className={"save"}  onClick={(e)=>questionAdd(e)} style={{ display: questions.length === 0 ? 'none' : 'block' }}>
-                حفظ
+                {loading1 ? (
+                    <div className="loading-indicator">
+                        <span>.</span>
+                        <span>.</span>
+                        <span>.</span>
+                    </div>
+                ) : (
+                    "حفظ"
+                )}
             </button>
+                </>
+                )}
         </div>
 
 

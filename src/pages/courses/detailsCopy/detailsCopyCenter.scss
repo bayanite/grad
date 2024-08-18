@@ -1,0 +1,23 @@
+.Form_Button-show,
+.Questionnaire_Button-show,
+.Exam_Button-show,
+ {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.Form_Button-show {
+  background-color: #4a8b80;
+}
+
+.Questionnaire_Button-show {
+  background-color: #d2b260;
+}
+.Exam_Button-show {
+ background-color: #4a8b80;
+}

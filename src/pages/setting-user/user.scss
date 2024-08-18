@@ -100,3 +100,19 @@ th {
   color: #a8a8a8;
   font-family: Tajawal, sans-serif;
 }
+@media (max-width: 768px) {
+  .table-container {
+    margin: 10px;
+  }
+  th, td {
+    padding: 4px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+
+  table {
+    font-size: 14px; /* Adjust font size */
+  }
+
+
+}

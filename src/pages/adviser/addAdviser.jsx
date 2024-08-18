@@ -15,6 +15,7 @@ const AddAdviser = () => {
     const [specializationAdviser, setSpecializationAdviser] = useState('قانونية');
     const [aboutAdviser, setAboutAdviser] = useState('');
     const [selectedTimesByDay, setSelectedTimesByDay] = useState([]);
+    const [loading1, setLoading1] = useState(false); // Loading state
     const navigate = useNavigate();
 
     console.log("imageAdviser",imageAdviser)
@@ -229,10 +230,13 @@ const AddAdviser = () => {
             return;
         }
         try {
+            setLoading1(true); // Start the loading state
             await SendAdviser(e,imageAdviser,nameAdviser,specializationAdviser,aboutAdviser,selectedTimesByDay);
             handleGoBack(); // Navigate back to the previous page
         } catch (error) {
             console.error('Error adding template:', error);
+        }finally {
+            setLoading1(false); // End the loading state
         }
     };
     return (
@@ -291,7 +295,15 @@ const AddAdviser = () => {
 
                 </form>
                 <button className={"save1"} onClick={(e)=> handleUpload(e)}>
-                    حفظ
+                    {loading1 ? (
+                        <div className="loading-indicator">
+                            <span>.</span>
+                            <span>.</span>
+                            <span>.</span>
+                        </div>
+                    ) : (
+                        "حفظ"
+                    )}
                 </button>
             </div>
 

@@ -375,3 +375,43 @@
   word-wrap: break-word;
   height:110px;
 }
+@media screen and (max-width: 800px) {
+  .allSection {
+    flex-direction: column;
+  }
+
+  .containForm, .time-picker {
+    margin: 5% 10%;
+  }
+  //
+  //.time-container, .calendar {
+  //  margin: 10% 5%;
+  //  width: 90%;
+  //}
+
+  .appointment, .no-appointments {
+    width: 90%;
+    margin: 5% 5%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .containForm, .time-picker {
+    margin: 2% 5%;
+  }
+
+  //.time-container, .calendar {
+  //  margin: 5% 2%;
+  //  width: 100%;
+  //}
+
+  .appointment, .no-appointments {
+    width: 100%;
+    margin: 5% 2%;
+  }
+
+  .save1 {
+    width: 100%;
+    margin: 5% 0;
+  }
+}

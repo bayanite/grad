@@ -17,8 +17,33 @@ const ShowCopy = () => {
     const idc = location.state?.id;
     const [copy, setCopy] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [hasInternet, setHasInternet] = useState(true);
     const menuRef = useRef(null);
     const [openMenuIndex, setOpenMenuIndex] = useState(null);
+
+    useEffect(() => {
+        if (idc) {
+            getCopy();
+        }
+
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpenMenuIndex(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [idc]);
+
+    useEffect(() => {
+        if (!navigator.onLine) {
+            setHasInternet(false);
+            setLoading(false);
+        }
+    }, []);
 
     const getCopy = async () => {
         try {
@@ -27,6 +52,7 @@ const ShowCopy = () => {
             setLoading(false);
         } catch (error) {
             console.log('Error fetching copy data');
+            setLoading(false);
         }
     };
 
@@ -68,29 +94,12 @@ const ShowCopy = () => {
         }
     };
 
-    useEffect(() => {
-        if (idc) {
-            getCopy();
-        }
-
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpenMenuIndex(null);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [idc]);
-
     const handlePrevious = () => {
         navigate('/courses');
     };
 
-    const handleShowRegistered = (id) => {
-        navigate('/courses/show-registered/ShowRegistered', { state: { id } });
+    const handleShowRegistered = (id, type) => {
+        navigate('/courses/show-registered/ShowRegistered', { state: { id, type } });
     };
 
     const handleDetailsCopy = (id, date, type) => {
@@ -103,14 +112,14 @@ const ShowCopy = () => {
 
     const toggleActivation = async (index, idOnline, isopen) => {
         try {
-            const data = await activationCopy(idOnline, isopen);
+            await activationCopy(idOnline, isopen);
             setCopy(prevCopy => {
                 const newCopy = [...prevCopy];
                 newCopy[index] = { ...newCopy[index], isopen };
                 return newCopy;
             });
         } catch (error) {
-            console.error('Error updating user isopen:', error);
+            console.error('Error updating copy activation status:', error);
         }
     };
 
@@ -118,31 +127,45 @@ const ShowCopy = () => {
         setOpenMenuIndex(openMenuIndex === index ? null : index);
     };
 
+    const handleShowReview = (id_online_center) => {
+        navigate('/users/showReview', { state: { id_online_center } });
+    };
+
     return (
-        <div className={'ShowCopys'}>
-            {loading ? (
-                <div className="spinner-container">
-                    <Spinner size={120} visible={true} />
-                </div>
-            ) : (
-                <>
-                    <div className={'ShowCopy-navbar'}>
+        <div className="ShowCopys">
+
+                    <div className="ShowCopy-navbar">
                         <FaArrowRight className="arrow-icon" onClick={handlePrevious} />
                         {` دورة `}
                         <span style={{ color: '#D2B260', fontWeight: 'bold', marginRight: '10px' }}>{courseName}</span>
                     </div>
+            {loading ? (
+                <div className="spinner-container">
+                    <Spinner size={120} visible={true} />
+                </div>
+            )
+                : !hasInternet ? (
+                <div className="no-data">
+                    <p>لا يوجد اتصال بالإنترنت</p>
+                </div>
+            ) : copy.length === 0 ? (
+                <div className="no-data">
+                    <p>لا يوجد نسخ من هذه الدورة بعد</p>
+                </div>
+            ) : (
+                <>
 
-                    <div className={"usersRow"}>
+                    <div className="usersRow">
                         {copy.map((row, index) => (
                             <div
                                 key={row.id}
-                                className={`copy-folder ${row.isopen === "0" ? 'gray' : row.id_online != null ? 'pink' : row.id_center != null ? 'green' : ''}`}
+                                className={`copy-folder ${row.isopen === "0" ? 'gray' : row.id_online ? 'pink' : row.id_center ? 'green' : ''}`}
                             >
-                                <div className={"toggle"}>
+                                <div className="toggle">
                                     {row.isopen !== null && (
                                         row.isopen === "1" ? (
                                             <FaToggleOn
-                                                className={"FaToggleOn"}
+                                                className="FaToggleOn"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     toggleActivation(index, row.id, "0");
@@ -150,7 +173,7 @@ const ShowCopy = () => {
                                             />
                                         ) : (
                                             <FaToggleOff
-                                                className={"FaToggleOff"}
+                                                className="FaToggleOff"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     toggleActivation(index, row.id, "1");
@@ -174,17 +197,21 @@ const ShowCopy = () => {
                                         <span className="text-">{row.average_rate}</span>
                                     </div>
                                 </div>
+
                                 <div>
-                                    <MdMoreVert className={"MdMoreVert-"} onClick={(e) => {
-                                        e.stopPropagation();
-                                        toggleMenu(index);
-                                    }} />
+                                    <MdMoreVert
+                                        className="MdMoreVert-"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleMenu(index);
+                                        }}
+                                    />
                                     {openMenuIndex === index && (
                                         <div ref={menuRef} className="menu-">
                                             <div className="menu-content-">
                                                 <p onClick={(e) => {
                                                     e.stopPropagation();
-                                                    handleShowRegistered(row.id);
+                                                    handleShowRegistered(row.id, row.id_online ? 'online' : 'center');
                                                 }}>عرض المسجلين</p>
                                                 <p onClick={(e) => {
                                                     e.stopPropagation();
@@ -194,6 +221,10 @@ const ShowCopy = () => {
                                                     e.stopPropagation();
                                                     DeleteCopy(row.id);
                                                 }}>حذف</p>
+                                                <p onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleShowReview(row.id_online);
+                                                }}>عرض الآراء</p>
                                             </div>
                                         </div>
                                     )}

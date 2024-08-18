@@ -60,25 +60,34 @@ const CourseOnline = () => {
                 method: 'POST',
                 body: formData,
 
-             headers: {
-                'Authorization': `Bearer ${token}`,
-            },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
             });
 
-            if (response.ok) {
-                throw new Error('Failed to create course center');
+            if (!response.ok) {
+                const errorData = await response.json();
+
+                setError(errorData.message);
+            } else {
+                const responseData = await response.json();
+                console.log("responseData999999", responseData);
+
+                setData(responseData);
+
+                // Show success notification
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'تم الاضافة بنجاح',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
-
-            const responseData = await response.json();
-            console.log("responseData999999", responseData);
-
-            setData(responseData);
-            // Optionally, you can show a success message here using Swal or navigate to another page
         } catch (error) {
-            console.error('Error creating course center:', error);
-            setError("An error occurred while creating the course center.");
+            console.error(error);
+            setError("An error occurred while adding the template.");
         } finally {
-            setLoading(false); // Set loading to false after request is completed
+            setLoading(false);
         }
     };
     const fetchNameCourse = async () => {
@@ -102,15 +111,16 @@ const CourseOnline = () => {
             setError(error);
         } finally {
         }
-    };const fetchNameExam = async () => {
+    };
+    const fetchNameExam = async () => {
         console.log("not");
 
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}exam/index`,
                 {
-            // headers: {
-                //         'Authorization': `Bearer ${token}`,
-                //     },
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
 
                 });
             // console.log("response",response)

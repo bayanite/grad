@@ -28,20 +28,7 @@
   display: flex;
 }
 
-.AddOnlineCourse_Content {
-  padding-right: 10px;
-  background-color: #D3EDE8;
-  width: 40%;
-  height: 430px;
-  border-radius: 20px;
-  border: thin dashed #3C7168;
-  margin: 20px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  display: flex;
-  overflow-y: scroll;
-}
+
 
 .AddOnlineCourse_Content.dynamic-content {
   padding-top: 20px;
@@ -126,11 +113,11 @@
 }
 
 .AddOnlineCourse_input_info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
-}
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   //margin: 20px;
+ }
 
 .AddOnlineCourse_input label {
   display: block;
@@ -138,28 +125,6 @@
   font-family: Tajawal, sans-serif;
 }
 
-.AddOnlineCourse_input_info label {
-  display: block;
-  margin-bottom: 10px;
-  font-family: Tajawal, sans-serif;
-}
-
-.AddOnlineCourse_input_info label {
-  display: block;
-  margin-bottom: 10px;
-  font-family: Tajawal, sans-serif;
-}
-
-.AddOnlineCourse_input_info input {
-  outline: none;
-  margin: 10px 10px 10px 10px;
-  width: 350px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-family: Tajawal, sans-serif;
-}
 
 .AddOnlineCourse_input select,
 .AddOnlineCourse_input input {
@@ -248,7 +213,6 @@
   cursor: pointer;
   font-family: 'Tajawal', sans-serif; /* Use custom font family */
   font-size: 16px; /* Adjust font size */
-  color: #333; /* Set text color */
   transition: background-color 0.3s ease; /* Smooth transition on hover */
 }
 
@@ -262,7 +226,8 @@
 
 /* Add this to your CSS file */
 .active-item {
-  background-color: #f0f0f0; /* Example background color */
+  background-color: blue; /* Example background color */
+  color: white; /* Change text color to white */
   font-weight: bold; /* Example style */
 }
 
@@ -274,7 +239,7 @@
 }
 
 .popup-content input[type="number"],
-.popup-content .typeTime {
+.popup-content input[type="text"] {
   outline: none;
   width: 100%;
   padding: 8px;
@@ -353,78 +318,7 @@
   transform: translateY(4px);
 }
 
-@media screen and (max-width: 768px) {
-  body {
-    overflow-x: hidden;
-  }
-  .AddOnlineCourse_Content {
-    width: 60%;
-    height: 350px;
-  }
-  .AddOnlineCourse_Button {
-    display: flex;
-    flex-direction: row;
-    margin: 30px;
-  }
-  .AddOnlineCourse_Content {
-    width: 100%;
-    height: 280px;
-    margin: 20px;
-  }
-  .AddOnlineCourse_container {
-    flex-direction: column;
-  }
-  .AddOnlineCourse_Content {
-    width: 100%;
-    height: 350px;
-    margin: 20px;
-  }
-  .AddOnlineCourse_Button {
-    display: flex;
-    flex-direction: row;
-  }
-  .popup-content label {
-    display: block;
-  }
 
-
-  .AddOnlineCourse_input select,
-  .AddOnlineCourse_input input {
-    margin: 10px 10px 50px 10px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  body {
-    overflow-x: hidden;
-  }
-  .AddOnlineCourse_Content {
-    width: 100%;
-    height: 280px;
-    margin: 20px;
-  }
-  .AddOnlineCourse_container {
-    flex-direction: column;
-  }
-  .AddOnlineCourse_Content {
-    width: 100%;
-    height: 350px;
-    margin: 20px;
-  }
-  .AddOnlineCourse_Button {
-    display: flex;
-    flex-direction: row;
-    margin: 30px;
-  }
-  .popup-content label {
-    display: block;
-  }
-  .AddOnlineCourse_input select,
-  .AddOnlineCourse_input input {
-    margin: 10px 10px 50px 10px;
-
-  }
-}
 .AddOnlineCourse_Content {
   background-color: #D3EDE8;
   width: 40%;
@@ -438,73 +332,114 @@
   display: flex;
   overflow-y: scroll;
 }
+//.AddOnlineCourse_Content {
+//  background-color: #D3EDE8;
+//  width: 60%;
+//  height: 430px;
+//  border-radius: 20px;
+//  border: thin dashed #3C7168;
+//  //margin: 20px;
+//  align-items: center;
+//  justify-content: center;
+//  flex-direction: column;
+//  display: flex;
+//  overflow-y: scroll;
+//}
 
-.AddOnlineCourse_input_info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px;
-  width: 80%; /* Ensure it takes full width for responsiveness */
-}
+
 
 .AddOnlineCourse_input_info label {
   display: block;
   margin-bottom: 10px;
   font-family: Tajawal, sans-serif;
   width: 100%; /* Ensure it takes full width for responsiveness */
+  //background-color: #00c5ff;
 }
+
 
 .AddOnlineCourse_input_info input {
   outline: none;
-  margin: 10px 0;
-  width: 100%; /* Ensure it takes full width for responsiveness */
+  margin: 10px 10px 10px 10px;
+  width: 90%;
   padding: 8px;
+  //background-color: red;
   border: 1px solid #ccc;
   border-radius: 4px;
-  //background-color: red;
   box-sizing: border-box;
   font-family: Tajawal, sans-serif;
 }
-.AddOnlineCourse_input_info div {
+
+.AddOnlineCourse_input_info .data-center {
   outline: none;
-  margin: 10px 0;
-  width: 100%; /* Ensure it takes full width for responsiveness */
-  padding: 11px;
-  background-color: white;
+  margin: 10px 0px 10px 10px;
+  width: 150%;
+  padding: 8px;
+  //background-color: red;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box;
   font-family: Tajawal, sans-serif;
 }
 
 @media screen and (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .AddOnlineCourse_Button {
+    display: flex;
+    flex-direction: row;
+    margin: 30px;
+  }
+  .AddOnlineCourse_container {
+    flex-direction: column;
+  }
   .AddOnlineCourse_Content {
-    width: 100%;
-    height: auto;
+    width: 90%;
+    height: 430px;
+    margin: auto;
+  }
+  .AddOnlineCourse_Button {
+    display: flex;
+    flex-direction: row;
+  }
+  .popup-content label {
+    display: block;
   }
 
-  .AddOnlineCourse_input_info {
-    width: 90%; /* Adjust width for smaller screens */
-  }
 
-  .AddOnlineCourse_input_info input {
-    width: 100%; /* Ensure it takes full width for responsiveness */
+  .AddOnlineCourse_input select,
+  .AddOnlineCourse_input input {
+    margin: 10px 10px 50px 10px;
   }
 }
+
 
 @media screen and (max-width: 480px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .AddOnlineCourse_container {
+    flex-direction: column;
+  }
   .AddOnlineCourse_Content {
-    width: 100%;
-    height: auto;
-    margin: 20px 0;
-  }
+    width: 90%;
+    height: 430px;
+    margin: auto;
 
-  .AddOnlineCourse_input_info {
-    width: 90%; /* Adjust width for smaller screens */
   }
-
-  .AddOnlineCourse_input_info input {
-    width: 100%; /* Ensure it takes full width for responsiveness */
+  .AddOnlineCourse_Button {
+    display: flex;
+    flex-direction: row;
+    margin: 30px;
   }
+  .popup-content label {
+    display: block;
+  }
+  .AddOnlineCourse_input select,
+  .AddOnlineCourse_input input {
+    margin: 10px 10px 50px 10px;
 
+  }
 }
+

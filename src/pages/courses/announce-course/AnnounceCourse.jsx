@@ -28,7 +28,6 @@ const AnnounceCourse = () => {
     const [selectedForm, setSelectedForm] = useState({ id: null, title: '' });
     const [selectedQuestionnaire, setSelectedQuestionnaire] = useState({ id: null, title: '' });
     const questionnairePopupRef = useRef(null);
-    const [error, setError] = useState(null);
 
     const handleFormButtonClick = async () => {
         try {
@@ -92,8 +91,18 @@ const AnnounceCourse = () => {
         setIsSeries(e.target.value === 'series');
     };
 
-    const handlePaymentTypeChange = (event) => {
-        setIsFree(event.target.value === 'free');
+    const handlePaymentTypeChange = (e) => {
+        const paymentType = e.target.value;
+        console.log("paymentType" ,paymentType)
+        if (paymentType === 'free') {
+            setIsFree(true);
+            setPrice('0');
+        } else {
+            setIsFree(false);
+            setPrice(''); // Allow user to input price for paid option
+
+            // Handle setting price for non-free options if needed
+        }
     };
 
     const handlePrevious = () => {
@@ -104,6 +113,11 @@ const AnnounceCourse = () => {
 
     const handleSaveCourse = async (e) => {
         e.preventDefault();
+        const formId = selectedForm.id ? selectedForm.id : null;
+
+        // Check if no questionnaire is selected
+        const questionnaireId = selectedQuestionnaire.id ? selectedQuestionnaire.id : null;
+
         try {
             await createCourseCenter(
                 beginningOfRegistration,
@@ -111,8 +125,8 @@ const AnnounceCourse = () => {
                 numberOfHour,
                 numberOfLessons,
                 id,
-                selectedForm.id,
-                selectedQuestionnaire.id,
+                formId,
+                questionnaireId,
                 price
             );
             navigate('/courses'); // Navigate to the desired route after saving

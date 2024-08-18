@@ -18,6 +18,7 @@ const AddBank = () => {
     const [divValues, setDivValues] = useState([{ question: "", options: [{ option: "", correct: "0" }] }]);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [saveDisabled, setSaveDisabled] = useState(true);
+    const [loading, setLoading] = useState(false); // New loading state
     const {addBank}=Exam();
 
     console.log("saveDisabled",saveDisabled)
@@ -155,19 +156,42 @@ const AddBank = () => {
 
     const SendBank = async (e) => {
         e.preventDefault();
+
         // Check if any required fields are empty
-        const requiredFieldsEmpty = divValues.some((value) => value.question.trim() === '' || value.options.some(option => option.option.trim() === ''));
-        const titleEmpty = inputValueTitle.trim() === '';
-        const descriptionEmpty = inputValueDes.trim() === '';
+        const requiredFieldsEmpty = divValues.some(
+            (value) =>
+                value.question.trim() === "" ||
+                value.options.some((option) => option.option.trim() === "")
+        );
+        const titleEmpty = inputValueTitle.trim() === "";
+        const descriptionEmpty = inputValueDes.trim() === "";
+
+        // Check if each question has exactly one correct option
+        const invalidQuestions = divValues.some(
+            (question) =>
+                question.options.filter((option) => option.correct === 1).length !== 1
+        );
+
+        // Display error if any required fields are empty or questions do not have exactly one correct option
         if (titleEmpty || descriptionEmpty || requiredFieldsEmpty) {
-            setFormSubmitted(true);// Mark the form as submitted
+            alert("يجب تعبئة جميع الحقول.");
+            setFormSubmitted(true); // Mark the form as submitted
             return; // Exit the function if required fields are empty
         }
+
+        if (invalidQuestions) {
+            alert("يجب أن يحتوي كل سؤال على خيار واحد صحيح بالضبط.");
+            return; // Exit the function if any question has more than one or zero correct options
+        }
+
         try {
-            await addBank(inputValueTitle,inputValueDes,divValues);
+            setLoading(true); // Start the loading state
+            await addBank(inputValueTitle, inputValueDes, divValues);
             handleGoBack();
         } catch (error) {
-            console.error('Error fetching courses:', error);
+            console.error("Error saving bank:", error);
+        }finally {
+            setLoading(false); // End the loading state
         }
 
     };
@@ -208,7 +232,15 @@ const AddBank = () => {
                 <>
                     {renderModelDivs()}
                     <button className={"save"} onClick={(e) => SendBank(e)}>
-                        حفظ
+                        {loading ? (
+                            <div className="loading-indicator">
+                                <span>.</span>
+                                <span>.</span>
+                                <span>.</span>
+                            </div>
+                        ) : (
+                            "حفظ"
+                        )}
                     </button>
                 </>
             )}

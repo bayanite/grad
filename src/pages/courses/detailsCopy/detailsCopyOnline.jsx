@@ -109,22 +109,22 @@ const DetailsCopyOnline = () => {
                     ))}
                 </div>
                 <div className="additional-info">
-                    <div className='AddOnlineCourse_Button'>
+                    <div className='AddOnlineCourse_Button-'>
                         <div>
-                            <div className='Form_Button'>
+                            <div className='Form_Button-show'>
                                 <FaFileAlt className='button-icon'/>
                             </div>
                             <p> {onlineInfo[0].form ? onlineInfo[0].form : 'لايوجد استمارة'}</p>
                         </div>
 
                         <div>
-                            <div className='Questionnaire_Button'>
+                            <div className='Questionnaire_Button-show'>
                                 <FaListAlt className='button-icon'/>
                             </div>
                             <p>{onlineInfo[0].poll ? onlineInfo[0].poll : 'لايوجد استبيان'}</p></div>
 
                         <div>
-                            <div className='Exam_Button'>
+                            <div className='Exam_Button-show'>
                                 <FaListAlt className='button-icon'/>
                             </div>
                             <p>{onlineInfo[0].examforcourse ? onlineInfo[0].examforcourse : 'لايوجد امتحان'}</p></div>

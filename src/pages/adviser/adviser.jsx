@@ -1,7 +1,7 @@
 import '../courses/view courses/courses.scss'
 import '../model/form/form.scss'
 import { useNavigate } from 'react-router-dom';
-import {FaPlus, FaTrashAlt} from "react-icons/fa";
+import {FaExclamationCircle, FaPlus, FaTrashAlt} from "react-icons/fa";
 import React, {useEffect, useRef, useState} from "react";
 import {MdMoreVert} from "react-icons/md";
 import AddDates from "./addDates";
@@ -20,6 +20,8 @@ const Adviser = () => {
     const [Adviser, setAdviser] = useState([]);
     const [openMenuIndex, setOpenMenuIndex] = useState(null);
     const [showAddDatesPopup, setShowAddDatesPopup] = useState(null);
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
     const { fetchAdvisers, deleteAdviser } = UseAdviser();
 
     const menuRefs = useRef([]);
@@ -77,16 +79,44 @@ const Adviser = () => {
     };
 
     useEffect(() => {
-        getAdviser()
+        checkServerConnectivity();
+        // getAdviser()
     }, [])
+    const checkServerConnectivity = async () => {
+        try {
+            // Make a simple GET request to check server status
+            const response = await fetch(`${process.env.REACT_APP_API_URL}adviser/index`); // Replace with a basic endpoint
+            // if (!response.ok) throw new Error('Server not reachable');
+
+            // If the server is reachable, proceed to fetch the forms
+            await getAdviser();
+        } catch (error) {
+            // Handle the error without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setLoading(false); // Stop the loading spinner
+        }
+    };
 
     const getAdviser = async () => {
+        setLoading(true);
+        setError(null);
         try {
             const data = await fetchAdvisers();
-            setAdviser(data);
+            if (!data || !data.data || !data.data.adviser || data.data.adviser.length === 0) {
+                setError("لا يوجد مستشارين ."); // Handle no data found
+            } else {
+                setAdviser(data);
+            }
         } catch (error) {
-            console.error('Error fetching courses:', error);
+            // Catch the error and handle it without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+        } finally {
+            setLoading(false);
         }
+        //     setAdviser(data);
+        // } catch (error) {
+        //     console.error('Error fetching courses:', error);
+        // }
     };
 
     useEffect(() => {
@@ -117,7 +147,17 @@ const Adviser = () => {
                 />
                 <p>إضافة مستشار </p>
             </div>
-            {advisers && Array.isArray(advisers) && advisers.map((item, index) => (
+            {loading ? (
+                <div className="spinner-container1">
+                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                </div>
+            ) : error ? (
+                <div className="spinner-container1">
+                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <p className="error-message-">{error}</p>
+                </div>
+            ) : (
+                advisers && Array.isArray(advisers) && advisers.map((item, index) => (
                 <div key={index} className={'template'} >
                     <img src={process.env.REACT_APP_API_PATH + "/Uploads/" +item.photo} className={'img_template'}
                          onClick={()=>handleClick1(item.id)}
@@ -147,7 +187,8 @@ const Adviser = () => {
                     )}
                     {showAddDatesPopup === index  && <AddDates onClose={() => toggleAddPopup(index)} name={item.name} id={item.id} />}
                 </div>
-            ))}
+            ))
+            )}
 
         </div>
     );

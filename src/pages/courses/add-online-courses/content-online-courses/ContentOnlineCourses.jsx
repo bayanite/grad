@@ -4,7 +4,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import './ContentOnlineCourses.scss'
 import {TfiTimer} from "react-icons/tfi";
 import {IoMdAdd} from "react-icons/io";
-import { FaTrashAlt} from "react-icons/fa";
+import {FaTrashAlt} from "react-icons/fa";
 import {useLocation, useNavigate} from "react-router-dom";
 import CourseOnline from "../../../../hooks/createCourseOnline";
 
@@ -24,7 +24,7 @@ const ContentOnlineCourses = () => {
     const [editMode, setEditMode] = useState(false);
     const [numberOfQuestions, setNumberOfQuestions] = useState('');
     const [duration, setDuration] = useState('');
-    const [numberVideos, setNumberVideos] = useState('0');
+    const [numberAllVideos, setNumberAllVideos] = useState('0');
     const [contentExam, setContentExam] = useState('');
     const [title, setTitle] = useState('عنوان المحتوى');
     const [totalDuration, setTotalDuration] = useState('');
@@ -32,6 +32,7 @@ const ContentOnlineCourses = () => {
     const [listExam, setListExam] = useState([]);
     const [error, setError] = useState(''); // New state variable for error messages
     const [selectedVideoIndex, setSelectedVideoIndex] = useState(null); // State to store the selected video index
+    const [selectedExam, setSelectedExam] = useState({id: null, title: ''});
 
 
     console.log("kkk", courseName)
@@ -90,10 +91,13 @@ const ContentOnlineCourses = () => {
             name: 'عنوان المحتوى',
             videoFiles: [],
             pdfFiles: [],
+            numberHours: '00:00',
+            numberVideos: '0',
             exam: '0',
             numberQuestion: '0',
             durationExam: '00:00',
         };
+
         setDynamicContent([...dynamicContent, newContent]);
         scrollToNewContent();
     };
@@ -144,7 +148,7 @@ const ContentOnlineCourses = () => {
                         name: file.name,
                         video: file, // Store file as object URL
                         duration: durationInMinutes,
-                        id_exam: null,
+                        id_exam: '',
                     };
                 } catch (error) {
                     console.error("Error occurred during file processing:", error);
@@ -163,6 +167,9 @@ const ContentOnlineCourses = () => {
                 ...(updatedContent[index].videoFiles || []),
                 ...filteredVideoFiles,
             ];
+
+            updatedContent[index].numberVideos = updatedContent[index].videoFiles.length;
+            updatedContent[index].numberHours = calculateTotalDuration(updatedContent[index].videoFiles);
             // Set the updated dynamic content
             setDynamicContent(updatedContent);
         } catch (error) {
@@ -190,20 +197,6 @@ const ContentOnlineCourses = () => {
         const updatedPdfFiles = [...contentToUpdate.pdfFiles];
         updatedPdfFiles.splice(pdfIndex, 1);
         contentToUpdate.pdfFiles = updatedPdfFiles;
-        setDynamicContent(updatedContent);
-    };
-
-    const handleNumberQuestionsChange = (index, event) => {
-        const value = event.target.value;
-        const updatedContent = [...dynamicContent];
-        updatedContent[index].numberQuestion = value;
-        setDynamicContent(updatedContent);
-    };
-
-    const handleExamDurationChange = (index, event) => {
-        const value = event.target.value;
-        const updatedContent = [...dynamicContent];
-        updatedContent[index].durationExam = value;
         setDynamicContent(updatedContent);
     };
 
@@ -241,7 +234,7 @@ const ContentOnlineCourses = () => {
     };
 
     useEffect(() => {
-        setNumberVideos(getTotalNumberOfVideos());
+        setNumberAllVideos(getTotalNumberOfVideos());
     }, [dynamicContent]);
 
     const getTotalNumberOfContent = () => {
@@ -276,29 +269,65 @@ const ContentOnlineCourses = () => {
         contentToUpdate.videoFiles = updatedVideoFiles;
         setDynamicContent(updatedContent);
     };
+
+    // const handleExamSelection = (index, id_exam, examTitle) => {
+    //     const updatedContent = [...dynamicContent];
+    //     const videoFile = updatedContent[index].videoFiles[selectedVideoIndex];
+    //
+    //     if (videoFile.examTitle === examTitle) {
+    //         // If the examTitle is already set, remove it
+    //         videoFile.id_exam = null;
+    //         videoFile.examTitle = null;
+    //         setSelectedExam(null); // Deselect the exam
+    //     } else {
+    //         // Otherwise, set the new examTitle
+    //         videoFile.id_exam = id_exam;
+    //         videoFile.examTitle = examTitle;
+    //         setSelectedExam(id_exam); // Set the selected exam
+    //     }
+    //
+    //     setDynamicContent(updatedContent);
+    //     setShowExamPopup(false);
+    // };
+
+    // const handleLinkExamWithVideo = (contentIndex, videoIndex) => {
+    //     setSelectedVideoIndex(videoIndex);
+    //     setShowExamPopup(true);
+    // };
+
+
     const handleExamSelection = (index, id_exam, examTitle) => {
         const updatedContent = [...dynamicContent];
-        const videoFile = updatedContent[index].videoFiles[selectedVideoIndex];
 
-        if (videoFile.examTitle === examTitle) {
-            // If the examTitle is already set, remove it
-            videoFile.id_exam = null;
-            videoFile.examTitle = null;
-        } else {
-            // Otherwise, set the new examTitle
-            videoFile.id_exam = id_exam;
-            videoFile.examTitle = examTitle;
+        if (index !== null && selectedVideoIndex !== null) {
+            const videoFile = updatedContent[index]?.videoFiles[selectedVideoIndex];
+
+            if (videoFile) {
+                if (videoFile.id_exam === id_exam) {
+                    // If the examTitle is already set, remove it
+                    videoFile.id_exam = null;
+                    videoFile.examTitle = null;
+                    setSelectedExam(null); // Deselect the exam
+                } else {
+                    // Otherwise, set the new examTitle
+                    videoFile.id_exam = id_exam;
+                    videoFile.examTitle = examTitle;
+                    setSelectedExam(id_exam); // Set the selected exam
+                }
+
+                setDynamicContent(updatedContent);
+            }
         }
 
-        setDynamicContent(updatedContent);
         setShowExamPopup(false);
     };
 
+
     const handleLinkExamWithVideo = (contentIndex, videoIndex) => {
         setSelectedVideoIndex(videoIndex);
+        setSelectedQuizIndex(contentIndex); // Store the content index
         setShowExamPopup(true);
     };
-
 
     const handleNext = (dynamicContent) => {
         // Initialize a new array to store error messages for each content item
@@ -324,12 +353,12 @@ const ContentOnlineCourses = () => {
         if (!hasErrors) {
             // If no errors, proceed with navigation
             navigate('/courses/add-online-courses/AddOnlineCourse', {
-                state: {dynamicContent, courseName, id, numberVideos, totalDuration}
+                state: {dynamicContent, courseName, id, numberAllVideos, totalDuration}
             });
         }
     };
 
-    const handleQuizChange = (index, numberQuestions, duration,exam) => {
+    const handleQuizChange = (index, numberQuestions, duration, exam) => {
         const updatedContent = [...dynamicContent];
         updatedContent[index].numberQuestion = numberQuestions;
         updatedContent[index].durationExam = duration;
@@ -338,6 +367,13 @@ const ContentOnlineCourses = () => {
     };
 
     const handleShowQuizPopup = (index) => {
+        const content = dynamicContent[index];
+        const isVideoLinkedToExam = content.videoFiles.some(video => video.id_exam);
+
+        if (!isVideoLinkedToExam) {
+            alert("يجب ربط فيديو باختبار قبل إضافة اختبار إلى المحتوى."); // Alert the user to link a video with an exam first
+            return;
+        }
         setSelectedQuizIndex(index);
         setShowPopup(true);
     };
@@ -352,7 +388,7 @@ const ContentOnlineCourses = () => {
     // };
     const handleSaveQuiz = () => {
         if (selectedQuizIndex !== null) {
-            handleQuizChange(selectedQuizIndex, numberOfQuestions, duration,1);
+            handleQuizChange(selectedQuizIndex, numberOfQuestions, duration, 1);
             setShowPopup(false);
             setNumberOfQuestions('');
             setDuration('');
@@ -368,8 +404,8 @@ const ContentOnlineCourses = () => {
         <div className={"ContentOnlineCourses"}>
             <div className={"ContentOnlineCourses_navbar"}>
                 <div className="navbar-title">
-                    <text>محتويات الدورة</text>
-                    <span>{numberVideos} فيديوهات / {getTotalNumberOfContent()} محتويات </span>
+                    <p>محتويات الدورة</p>
+                    <span>{numberAllVideos} فيديوهات / {getTotalNumberOfContent()} محتويات </span>
                 </div>
                 <div className="navbar-icon">
                     <TfiTimer/>
@@ -443,12 +479,29 @@ const ContentOnlineCourses = () => {
                             />
 
                             {/* DynamicContent-input-exam */}
-                            <div className={'dynamicContent-input-exam'}>
-                                <label className={"exam-label"} onClick={() => handleShowQuizPopup(index)}>
-                                    <IoMdAdd className="add-icon"/>
-                                    إضافة اختبار
-                                </label>
+                            {/* عرض معلومات الاختبار إذا كانت موجودة */}
+                            {content.exam === '1' && (
+                                <div className="quiz-info">
+                                    <p>عدد الأسئلة: {content.numberQuestion}</p>
+                                    <p>مدة الاختبار: {content.durationExam}</p>
+                                    <button onClick={() => handleShowQuizPopup(index)}>
+                                        تعديل معلومات الاختبار
+                                    </button>
+                                </div>
+                            )}
 
+                            {/* زر إضافة اختبار */}
+                            <div className={'dynamicContent-input-exam'}>
+                                <label
+                                    className={"exam-label"}
+                                    onClick={() => handleShowQuizPopup(index)}
+                                    style={{
+                                        color: content.videoFiles.some(video => video.id_exam) ? 'black' : 'gray',
+                                        cursor: content.videoFiles.some(video => video.id_exam) ? 'pointer' : 'not-allowed'
+                                    }}
+                                >
+                                    <IoMdAdd className="add-icon"/> إضافة اختبار
+                                </label>
                             </div>
 
                             {/* Quiz Popup */}
@@ -464,14 +517,17 @@ const ContentOnlineCourses = () => {
                                         />
                                         <label>المدة الزمنية للاختبار</label>
                                         <input
-                                            className={"typeTime"}
-                                            type="time"
+                                            type="text"
                                             value={duration}
-                                            step="60"                                            onChange={(e) => setDuration(e.target.value)}
+                                            placeholder="00:00"
+
+                                            onChange={(e) => setDuration(e.target.value)}
                                         />
                                         <div className="button-group">
                                             <button className="save-button" onClick={handleSaveQuiz}>حفظ</button>
-                                            <button className="cancel-button" onClick={() => setShowExamPopup(false)}>إلغاء</button>
+                                            <button className="cancel-button" onClick={() => setShowPopup(false)
+                                            }>إلغاء
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -479,15 +535,21 @@ const ContentOnlineCourses = () => {
 
                             {showExamPopup && (
                                 <div className="popup" onClick={() => setShowExamPopup(false)}>
-                                    <div className="popup-content">
+                                    <div className="popup-content" onClick={e => e.stopPropagation()}>
                                         <ul className="popup-list">
-                                            {listExam.map((exam, indexExam) => (
-                                                <li key={indexExam} onClick={() => handleExamSelection(index,exam.id,exam.title)}>
-                                                    {exam.title}
-                                                </li>
-                                            ))}
+                                            {listExam.map((exam, indexExam) => {
+                                                const isActive = dynamicContent[selectedQuizIndex]?.videoFiles[selectedVideoIndex]?.id_exam === exam.id;
+                                                return (
+                                                    <li
+                                                        key={indexExam}
+                                                        className={isActive ? 'active-item' : ''}
+                                                        onClick={() => handleExamSelection(selectedQuizIndex, exam.id, exam.title)}
+                                                    >
+                                                        {exam.title}
+                                                    </li>
+                                                );
+                                            })}
                                         </ul>
-                                        <button onClick={() => setShowExamPopup(false)}>Close</button>
                                     </div>
                                 </div>
                             )}

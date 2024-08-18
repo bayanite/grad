@@ -119,6 +119,7 @@ const Courses = () => {
         getCourses();
     }, []);
 
+
     return (
         <div className={'courses'}>
             {/*{loading ? (*/}
@@ -162,10 +163,10 @@ const Courses = () => {
                                             e.stopPropagation();
                                             handleAnnounceCourse(item.name, item.id);
                                         }}>اعلان عن دورة في المركز</p>
-                                        <p onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDelete(item.id);
-                                        }}>حذف</p>
+                                        {/*<p onClick={(e) => {*/}
+                                        {/*    e.stopPropagation();*/}
+                                        {/*    handleDelete(item.id);*/}
+                                        {/*}}>حذف</p>*/}
                                     </div>
                                 </div>
                             )}

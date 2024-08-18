@@ -4,7 +4,7 @@ import {FaCamera, FaLock, FaLockOpen, FaUser} from "react-icons/fa";
 import Account from "../../hooks/account";
 
 const AddAccount = ({toggle,onSave}) => {
-
+    const [loading1, setLoading1] = useState(false); // Loading state
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [selectedRole, setSelectedRole] = useState('1');
     const [nameEmp, setNameEmp] = useState('');
@@ -26,10 +26,13 @@ const AddAccount = ({toggle,onSave}) => {
 
     const handleAddAccount= async ()=>{
        try {
+           setLoading1(true); // Start the loading state
            await addAccount(nameEmp,passwordEm,selectedRole);
 
        } catch (error) {
            console.error('Error adding template:', error);
+       }finally {
+           setLoading1(false); // End the loading state
        }
     }
     const isFormValid = nameEmp !== '' && passwordEm !== '' && selectedRole !== '';
@@ -75,7 +78,15 @@ const AddAccount = ({toggle,onSave}) => {
                     {/*</div>*/}
                     <div style={{display: 'flex', justifyContent: 'space-between', marginRight: '190px'}}>
                         <button style={{ marginTop: '120px'}} type="submit" onClick={handleAddAccount}  disabled={!isFormValid}>
-                            حفظ
+                            {loading1 ? (
+                                <div className="loading-indicator">
+                                    <span>.</span>
+                                    <span>.</span>
+                                    <span>.</span>
+                                </div>
+                            ) : (
+                                "حفظ"
+                            )}
                         </button>
                         <button style={{ marginTop: '120px'}} type="button" onClick={toggle}>
                             إلغاء

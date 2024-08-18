@@ -1,12 +1,14 @@
+/* Base styles for the navbar button */
 .navbar-button- {
   display: flex;
-  //align-items: flex-end;
 }
+
+/* Styles for the button that shows on larger screens */
 .show {
-  font-size: large;
+  font-size: medium;
   background-color: darkblue;
   color: white;
-  padding: 10px 20px;
+  padding: 7px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -15,18 +17,22 @@
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Styles for the filter modal */
 .filter-modal {
-  //position: fixed;
-  top: 30%;
-  left: 30%;
-  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 100%; /* Adjusted to start right below the button */
+  right: 40%; /* Aligns with the left edge of the button */
+  transform: translateX(-50%); /* Center the modal relative to the button */
   background-color: white;
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  width: 300px; /* Added a width to ensure it doesn’t expand too much */
 }
 
+/* Styles for filter content */
 .filter-content {
+  font-family: Tajawal, sans-serif;
   display: flex;
   flex-direction: column;
 }
@@ -39,13 +45,116 @@
   margin-bottom: 10px;
 }
 
-.filter-content button {
-  margin-top: 10px;
+.filter-content select {
+  margin-bottom: 10px;
 }
-.filter-icon{
+
+/* Styles for buttons in the filter modal */
+.apply-filter, .close-filter {
+  padding: 10px;
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  font-family: Tajawal, sans-serif;
   cursor: pointer;
-  margin-right: auto;
-  margin-left: 30px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.apply-filter {
+  background-color: green;
+}
+
+.apply-filter:hover {
+  background-color: darkgreen;
+}
+
+.close-filter {
+  background-color: #bbbbbb;
+  color: #000000;
+}
+
+.close-filter:hover {
+  background-color: #aaaaaa;
+}
+
+/* Styles for the filter icon */
+.filter-icon {
+  color: darkblue;
+  cursor: pointer;
+  margin-left: 10px;
   font-size: 16px;
   font-family: Tajawal, sans-serif;
+}
+
+/* Styles for the search filter input */
+.search-filter {
+  background-color: #f2f2f2;
+  padding: 10px;
+  width: 50%; /* Full width on smaller screens */
+  max-width: 300px; /* Max width for larger screens */
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  font-size: 16px;
+  outline: none;
+  font-family: Tajawal, sans-serif;
+  margin-right: auto;
+  margin-left: 10px;
+}
+
+/* Placeholder styling for search filter input */
+.search-filter::placeholder {
+  color: #a8a8a8;
+  font-family: Tajawal, sans-serif;
+}
+
+/* Icon display styles */
+.icon-show {
+  display: none; /* Hide by default */
+  font-size: 24px;
+  color: darkblue;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Responsive design */
+@media screen and (min-width: 769px) {
+  .show {
+    display: block;
+  }
+  .search-filter {
+    width: auto; /* Ensure it doesn’t overflow on small screens */
+  }
+
+  .icon-show {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .show {
+    display: none; /* Hide button on tablets and mobile */
+  }
+
+  .icon-show {
+    display: block; /* Show icon on tablets and mobile */
+  }
+
+  .search-filter {
+    width: 70px; /* Ensure it doesn’t overflow on small screens */
+  }
+
+  .filter-modal {
+    width: 80%; /* Adjust width on smaller screens */
+    left: 50%; /* Center horizontally */
+    right: auto; /* Override the right alignment */
+    transform: translateX(-50%); /* Center horizontally */
+  }
+}
+
+/* Keyframe for fade-in effect */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

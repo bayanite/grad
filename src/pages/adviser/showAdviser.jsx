@@ -1,7 +1,7 @@
 import '../model/model.scss'
 import './addAdviser.scss'
 import '../courses/view courses/CreateTemplate.scss'
-import {FaArrowRight, FaCamera, FaRegCheckCircle, FaRegTimesCircle} from "react-icons/fa";
+import {FaArrowRight, FaCamera, FaExclamationCircle, FaRegCheckCircle, FaRegTimesCircle} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
 import {FiChevronLeft, FiChevronRight} from "react-icons/fi";
 import {useLocation} from "react-router-dom";
@@ -15,6 +15,8 @@ const ShowAdviser = () => {
         const [infoAppointments,setInfoAppointments]=useState([])
         const [timeCombinations, setTimeCombinations] = useState({});
         const [selectedDate, setSelectedDate] = useState(null);
+        const [loading, setLoading] = useState(true); // Loading state
+        const [error, setError] = useState(null); // Error state
 
         // Populate time combinations array
         const populateTimeCombinations = () => {
@@ -36,16 +38,44 @@ const ShowAdviser = () => {
             populateTimeCombinations();
         }, []);
         useEffect(() => {
-            showAdviser();
+            checkServerConnectivity();
+            // showAdviser();
         }, []);
+    const checkServerConnectivity = async () => {
+        try {
+            // Make a simple GET request to check server status
+            const response = await fetch(`${process.env.REACT_APP_API_URL}adviser/show/${id}`); // Replace with a basic endpoint
+            // if (!response.ok) throw new Error('Server not reachable');
+
+            // If the server is reachable, proceed to fetch the forms
+            await showAdviser();
+        } catch (error) {
+            // Handle the error without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setLoading(false); // Stop the loading spinner
+        }
+    };
 
     const showAdviser = async ()=>{
+        setLoading(true);
+        setError(null);
         try {
             const data = await detailsAdviser(id);
-            setInfoAdviser(data);
+            if (!data || !data.result || data.result.length === 0) {
+                setError("لا توجد بيانات."); // Handle no data found
+            } else {
+                setInfoAdviser(data);
+            }
         } catch (error) {
-            console.error('Error fetching :', error);
+            // Catch the error and handle it without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+        } finally {
+            setLoading(false);
         }
+        //     setInfoAdviser(data);
+        // } catch (error) {
+        //     console.error('Error fetching :', error);
+        // }
 
    }
    const showAppointments = async (date)=>{
@@ -290,73 +320,73 @@ const ShowAdviser = () => {
 
     const infoAdvisers = infoAdviser && infoAdviser.result ;
 
-        return (
-            <div className={"allSection"}>
-                <div>
-                    <FaArrowRight className="back-go" onClick={handleGoBack}/>
-                    {/* Back button */}
-                </div>
-                <div className="section">
-                    {infoAdvisers && Array.isArray(infoAdvisers) && infoAdvisers.map((item, index) => (
-                        <form className={"containForm"}>
-                        <div className="profile-picture-container">
-                                <label htmlFor="upload-input">
-                                <div className="profile-picture">
-                                        <img src={process.env.REACT_APP_API_PATH + "/Uploads/"+item.photo} alt="Profile" className="profile-image" />
-
-                                </div>
-                            </label>
-
-                        </div>
-                        <label>
-                            اسم المستشار:
-
-                        </label>
-                            <p className={"show-details"}> {item.name}</p>
-
-                            <label>
-                            اختصاص المستشار:
-
-                        </label>
-                            <p className={"show-details"}> {item.type}</p>
-                        <label>
-                            نبذة عن المستشار:
-
-                        </label>
-                            <p className={"show-details-about"}> {item.about} </p>
-
-                    </form>
-                                ))}
-                </div>
-
-                <div className="section">
-                    <div className="calendar">
-                        <div className="header">
-                            <FiChevronRight  className="prev" onClick={handleNextMonth}/>
-                            <label>{monthNamesArabic[month]} {year}</label>
-                            <FiChevronLeft  className="next" onClick={handlePrevMonth}/>
-                        </div>
-                        <div className="weekdays">
-                            {daysOfWeekArabic.map((day, index) => (
-                                <div key={index} className="weekday">{day}</div>
-                            ))}
-                        </div>
-                        <div className="days">
-                            {renderDays()}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="section">
-                    <div className={"show-appointment"}>
-                        {renderAppointments()}
-                    </div>
-                </div>
-
-
+    return (
+        <div className="allSection">
+            <div>
+                <FaArrowRight className="back-go" onClick={handleGoBack} />
+                {/* Back button */}
             </div>
-        );
 
+            {loading ? (
+                <div className="spinner-container2">
+                    <div className="spinner" /> {/* Correctly closing the spinner */}
+                </div>
+            ) : error ? (
+                <div className="spinner-container2">
+                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <p className="error-message">{error}</p>
+                </div>
+            ) : (
+                <>
+                    <div className="section">
+                        {infoAdvisers && Array.isArray(infoAdvisers) && infoAdvisers.map((item, index) => (
+                            <form key={index} className="containForm">
+                                <div className="profile-picture-container">
+                                    <label htmlFor="upload-input">
+                                        <div className="profile-picture">
+                                            <img src={process.env.REACT_APP_API_PATH + "/Uploads/" + item.photo} alt="Profile" className="profile-image" />
+                                        </div>
+                                    </label>
+                                </div>
+                                <label>اسم المستشار:</label>
+                                <p className="show-details">{item.name}</p>
+
+                                <label>اختصاص المستشار:</label>
+                                <p className="show-details">{item.type}</p>
+
+                                <label>نبذة عن المستشار:</label>
+                                <p className="show-details-about">{item.about}</p>
+                            </form>
+                        ))}
+                    </div>
+
+                    <div className="section">
+                        <div className="calendar">
+                            <div className="header">
+                                <FiChevronRight className="prev" onClick={handleNextMonth} />
+                                <label>{monthNamesArabic[month]} {year}</label>
+                                <FiChevronLeft className="next" onClick={handlePrevMonth} />
+                            </div>
+                            <div className="weekdays">
+                                {daysOfWeekArabic.map((day, index) => (
+                                    <div key={index} className="weekday">{day}</div>
+                                ))}
+                            </div>
+                            <div className="days">
+                                {renderDays()}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="section">
+                        <div className="show-appointment">
+                            {renderAppointments()}
+                        </div>
+                    </div>
+                </>
+            )}
+        </div>
+    );
 };
 
 export default ShowAdviser;

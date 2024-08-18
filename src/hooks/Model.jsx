@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 const Model = () => {
     const [error, setError] = useState(null);
@@ -11,7 +11,8 @@ const Model = () => {
         setError(null);
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}paper/indexname/${type}`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -32,9 +33,9 @@ const Model = () => {
         }
     };
 
-    const displayUser =async (id_user,id_online_center) => {
+    const displayUser = async (id_user, id_online_center) => {
         try {
-            const response= await fetch(`${process.env.REACT_APP_API_URL}paper/displayUser/${id_user}/${id_online_center}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/displayUser/${id_user}/${id_online_center}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -49,8 +50,8 @@ const Model = () => {
     }
 
     const deleteForm = async (id) => {
-        try{
-            const response= await fetch(`${process.env.REACT_APP_API_URL}paper/delete/${id}`,{
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/delete/${id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -59,7 +60,7 @@ const Model = () => {
                 },
             });
             if (!response.ok) {
-                throw new Error( 'Failed to delete course.');
+                throw new Error('Failed to delete course.');
             }
             return true
         } catch (error) {
@@ -69,7 +70,7 @@ const Model = () => {
 
     const allForm = async (type) => {
         try {
-            const response=  await fetch(`${process.env.REACT_APP_API_URL}paper/index/${type}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/index/${type}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -84,15 +85,15 @@ const Model = () => {
     }
 
     const detailsForm = async (id) => {
-        try{
-            const  response= await fetch(`${process.env.REACT_APP_API_URL}paper/show/${id}`,{
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/show/${id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-            }) ;
+            });
             // console.log(response.json())
             return await response.json();
         } catch (error) {
@@ -101,11 +102,11 @@ const Model = () => {
     }
 
     const deleteQuestion = async (id) => {
-        const d={
-            "ids":[id],
+        const d = {
+            "ids": [id],
         }
         try {
-            const response= await fetch(`${process.env.REACT_APP_API_URL}paper/deleteQusetions`,{
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/deleteQusetions`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -115,23 +116,23 @@ const Model = () => {
                 body: JSON.stringify(d)
             });
             if (!response.ok) {
-                throw new Error( 'Failed to delete course.');
+                throw new Error('Failed to delete course.');
             }
-            console.log("response.ok",response.ok)
+            console.log("response.ok", response.ok)
             return true
-        }catch (error) {
+        } catch (error) {
             console.error('Error:', error);
         }
     }
 
-    const addQuestion =async (id1,questions)=>{
+    const addQuestion = async (id1, questions) => {
 
         const data = {
-            "id_paper":id1,
-            "body":questions,
+            "id_paper": id1,
+            "body": questions,
         }
         try {
-            const response= await fetch(`${process.env.REACT_APP_API_URL}paper/addQuestions`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/addQuestions`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -143,7 +144,7 @@ const Model = () => {
 
             });
             if (!response.ok) {
-                throw new Error( 'Failed to delete course.');
+                throw new Error('Failed to delete course.');
             }
 
         } catch (error) {
@@ -151,16 +152,16 @@ const Model = () => {
         }
     }
 
-    const createModel =async (TypeName,inputValueTitle,inputValueDes,divValues)=>{
+    const createModel = async (TypeName, inputValueTitle, inputValueDes, divValues) => {
         const data = {
-            "type":TypeName,
+            "type": TypeName,
             "title": inputValueTitle,
             "description": inputValueDes,
-            "body":divValues,
+            "body": divValues,
         }
 
         try {
-            const response=  await fetch(`${process.env.REACT_APP_API_URL}paper/create`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/create`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -172,7 +173,7 @@ const Model = () => {
 
             });
             if (!response.ok) {
-                throw new Error( 'Failed to delete course.');
+                throw new Error('Failed to delete course.');
             }
 
         } catch (error) {
@@ -180,7 +181,37 @@ const Model = () => {
         }
     }
 
-    return { error, loading, data, fetchForm ,displayUser ,deleteForm,allForm,detailsForm,deleteQuestion,addQuestion,createModel};
+    const showReview =async (id_online_center) => {
+        try {
+            const response= await fetch(`${process.env.REACT_APP_API_URL}paper/displayPaper/${id_online_center}`, {
+            method: 'GET',
+                headers: {
+                'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+            },
+        });
+               return await response.json();
+           } catch (error) {
+           console.error(error);
+          }
+           }
+
+        return {
+    error,
+    loading,
+    data,
+    fetchForm,
+    displayUser,
+    deleteForm,
+    allForm,
+    detailsForm,
+    deleteQuestion,
+    addQuestion,
+    createModel,
+    showReview
 };
+}
+;
 
 export default Model;

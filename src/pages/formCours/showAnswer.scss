@@ -17,3 +17,26 @@
   border: 0 solid gray;
   border-radius: 0.50rem;
 }
+.list {
+  list-style-type: none; /* Removes bullet points */
+  padding-left: 0;       /* Removes padding on the left */
+  margin-left: 0;        /* Removes margin on the left */
+}
+
+.list-item {
+  margin-bottom: 8px;    /* Adds space between list items */
+}
+
+.circle {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background-color: #52958a;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+  font-size: 14px;
+}
+

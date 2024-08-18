@@ -70,7 +70,6 @@ const DashboardApi = () => {
             console.log("year",year)
             const response = await fetch(`${process.env.REACT_APP_API_URL}statistic/${year}`, {
                 method: 'GET',
-
                 headers: {
                     'Authorization': `Bearer ${token}`,
 
@@ -86,12 +85,60 @@ const DashboardApi = () => {
             setError(error);
         }
     };
+    const infoCenter =async () => {
+        try {
+            const response= await fetch(`${process.env.REACT_APP_API_URL}information/index`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    const updateInfoCenter=async (director,time,email,facebook,number,site) => {
+        const data = {
+            "director":director ,
+            "site": site,
+            "time": time,
+            "email": email,
+            "nubmer":number,
+            "facebook": facebook,
+        }
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}information/update`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify(data)
+
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete course.');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
     return {
         count,
         PieChart,
         statistics,
-        appointments
+        appointments,
+        infoCenter,
+        updateInfoCenter
+
     };
 };
 

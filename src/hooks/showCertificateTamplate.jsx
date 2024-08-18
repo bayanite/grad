@@ -78,8 +78,28 @@ const useCertificateTemplate = () => {
             return false; // Return false to indicate failure
         }
     }
+    const fetchCertificateUser = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}certificate/all`,
+                { headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
 
-    return { data, loading, error, addCertificate, fetchCertificate, deleteCertificate };
+            if (!response.ok) {
+                throw new Error('Failed to fetch certificate');
+            }
+            const data = await response.json();
+
+            return data;
+
+        } catch (error) {
+            setError(error.message || 'An error occurred while fetching the certificates.');
+        }
+    };
+
+
+    return { data, loading, error, addCertificate, fetchCertificate, deleteCertificate,fetchCertificateUser };
 };
 
 export default useCertificateTemplate;

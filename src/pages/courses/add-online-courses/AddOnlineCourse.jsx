@@ -13,25 +13,22 @@ const AddOnlineCourse = () => {
     const courseName = location.state?.courseName;
     const id = location.state?.id;
     const totalDuration = location.state?.totalDuration;
-    const numberVideos = location.state?.numberVideos;
+    const numberAllVideos = location.state?.numberAllVideos;
     const dynamicContent = location.state?.dynamicContent;
-    console.log("cfcfgv",dynamicContent)
-    console.log("numberVideos",numberVideos)
-    console.log("duration",totalDuration)
+    console.log("cfcfgv", dynamicContent)
+    console.log("numberVideos----------------------", numberAllVideos)
+    console.log("totalDuration----------------", totalDuration)
 
     const {fetchForm} = Model();
 
     const [isFree, setIsFree] = useState(true);
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState('0');
     const [isSeries, setIsSeries] = useState(false);
     const [selectedSeries, setSelectedSeries] = useState(0);
-    const [showPopup, setShowPopup] = useState(false);
-    const [numberOfQuestions, setNumberOfQuestions] = useState('');
-    const [durationMinut, setDurationMinut] = useState('');
+
     const [model, setModel] = useState([]);
-    const [contentExam, setContentExam] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [exam, setExam] = useState(0);
     const [nameCourse, setNameCourse] = useState([]);
     const [selectCourse, setSelectCourse] = useState('');
     const [showFormPopup, setShowFormPopup] = useState(false);
@@ -39,8 +36,22 @@ const AddOnlineCourse = () => {
     const formPopupRef = useRef(null);
     const questionnairePopupRef = useRef(null);
     const examPopupRef = useRef(null);
-    const [selectedForm, setSelectedForm] = useState({ id: null, title: '' });
-    const [selectedQuestionnaire, setSelectedQuestionnaire] = useState({ id: null, title: '' });
+    const [selectedForm, setSelectedForm] = useState({id: null, title: ''});
+    const [selectedQuestionnaire, setSelectedQuestionnaire] = useState({id: null, title: ''});
+    const [numberOfQuestions, setNumberOfQuestions] = useState('');
+    const [duration, setDuration] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
+    console.log("duration", duration)
+    console.log("numberOfQuestions", numberOfQuestions)
+
+
+    const handleSaveQuiz = () => {
+        setDuration(duration);
+        setNumberOfQuestions(numberOfQuestions);
+        setExam(1);
+        setShowPopup(false);
+
+    };
 
 
     const handleSelectCourse = (event) => {
@@ -51,44 +62,31 @@ const AddOnlineCourse = () => {
         setShowPopup(true);
     };
 
-    const handleContentExamChange = (event) => {
-        setContentExam(event.target.value);
-    };
-
-    const handleClosePopupEx = () => {
-        setShowPopup(false);
-    };
-
-    const handleSave = () => {
-        setShowPopup(false);
-    };
 
     const handleCourseTypeChange = (e) => {
         setIsSeries(e.target.value === 'series');
         setSelectedSeries(e.target.value === 'series' ? 1 : 0);
     };
 
+    // const handlePaymentTypeChange = (e) => {
+    //     if (e.target.value === 'free') {
+    //     setIsFree(e.target.value === 'free');
+    //
+    //         setPrice('0');
+    //     }
+    // };
     const handlePaymentTypeChange = (e) => {
-        setIsFree(e.target.value === 'free');
-        if (e.target.value === 'free') {
-            setPrice(0);
-        }
-    };
-
-    const handleNumberOfQuestionsChange = (event) => {
-        const inputValue = event.target.value;
-        let value = parseInt(inputValue);
-        if (!isNaN(value) && value >= 0) {
-            setNumberOfQuestions(value);
+        const paymentType = e.target.value;
+        console.log("paymentType" ,paymentType)
+        if (paymentType === 'free') {
+            setIsFree(true);
+            setPrice('0');
         } else {
-            setNumberOfQuestions('');
-        }
-    };
+            setIsFree(false);
+            setPrice(''); // Allow user to input price for paid option
 
-    const handleDurationChange = (event) => {
-        const inputValue = event.target.value;
-        let value = parseInt(inputValue);
-        setDurationMinut(value);
+            // Handle setting price for non-free options if needed
+        }
     };
 
     const handleContentCourse = () => {
@@ -96,18 +94,18 @@ const AddOnlineCourse = () => {
     };
     const handleFormClick = (id, title) => {
         if (selectedForm.id === id) {
-            setSelectedForm({ id: null, title: '' });
+            setSelectedForm({id: null, title: ''});
         } else {
-            setSelectedForm({ id, title });
+            setSelectedForm({id, title});
         }
         setShowFormPopup(false);
     };
 
     const handleQuestionnaireClick = (id, title) => {
         if (selectedQuestionnaire.id === id) {
-            setSelectedQuestionnaire({ id: null, title: '' });
+            setSelectedQuestionnaire({id: null, title: ''});
         } else {
-            setSelectedQuestionnaire({ id, title });
+            setSelectedQuestionnaire({id, title});
         }
         setShowQuestionnairePopup(false);
     };
@@ -182,7 +180,12 @@ const AddOnlineCourse = () => {
     const handleSaveCourse = async (e) => {
         e.preventDefault();
         try {
-            await createCourseOnline(0, price, selectedForm.id, selectedQuestionnaire.id, selectCourse, selectedSeries, id, duration, numberVideos, 0, 0, dynamicContent);
+            await createCourseOnline(
+                exam, price, selectedForm.id, selectedQuestionnaire.id,
+                selectCourse, selectedSeries, id, totalDuration, numberAllVideos,
+                numberOfQuestions, duration, dynamicContent);
+            navigate('/courses'); // Navigate to the desired route after saving
+
         } catch (error) {
             console.error('Error creating course:', error);
         }
@@ -256,7 +259,8 @@ const AddOnlineCourse = () => {
                             <FaFileAlt className={'button-icon'}/>
                         </div>
                         {showQuestionnairePopup && (
-                            <div className="popup" ref={questionnairePopupRef} onClick={() => setShowQuestionnairePopup(false)}>
+                            <div className="popup" ref={questionnairePopupRef}
+                                 onClick={() => setShowQuestionnairePopup(false)}>
                                 <div className="popup-content">
                                     <ul className="popup-list">
                                         {model.map((item, index) => (
@@ -283,20 +287,28 @@ const AddOnlineCourse = () => {
                     </div>
 
                     {showPopup && (
-                        <div className="popup" ref={examPopupRef} onClick={() => setShowPopup(false)}>
+                        <div className="popup">
                             <div className="popup-content">
-                                <label>
-                                    عدد الاسئلة
-                                    <input type="text" value={numberOfQuestions}
-                                           onChange={handleNumberOfQuestionsChange} required/>
-                                </label>
-                                <label>
-                                    مدة الامتحان (في الدقائق)
-                                    <input type="text" value={durationMinut} onChange={handleDurationChange} required/>
-                                </label>
-
-                                <button className={"cancel-button"} onClick={handleClosePopupEx}>إلغاء</button>
-                                <button className={"save-button"} onClick={handleSave}>حفظ</button>
+                                <label>عدد الأسئلة</label>
+                                <input
+                                    type="number"
+                                    value={numberOfQuestions}
+                                    onChange={(e) => setNumberOfQuestions(e.target.value)}
+                                    placeholder="0"
+                                />
+                                <label>المدة الزمنية للاختبار</label>
+                                <input
+                                    type="text"
+                                    value={duration}
+                                    placeholder="00:00"
+                                    step="60" onChange={(e) => setDuration(e.target.value)}
+                                />
+                                <div className="button-group">
+                                    <button className="save-button" onClick={handleSaveQuiz}>حفظ</button>
+                                    <button className="cancel-button" onClick={() => setShowPopup(false)
+                                    }>إلغاء
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

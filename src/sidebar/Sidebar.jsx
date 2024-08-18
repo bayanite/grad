@@ -63,15 +63,15 @@ const Sidebar = ({ children }) => {
                     className={"logo"}
                     alt=""
                 />
-                <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">
-                    {windowWidth > 570 && windowWidth <= 870 && (
-                        <FaBars className={"FaBars"} onClick={toggle} />
-                    )}
-                </div>
+                {/*<div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">*/}
+                {/*    {windowWidth > 570 && windowWidth <= 870 && (*/}
+                {/*        <FaBars className={"FaBars"} onClick={toggle} />*/}
+                {/*    )}*/}
+                {/*</div>*/}
             </div>
             {sideBarNav.map((item, index) => (
-                <NavLink to={item.path} key={index} className="link" activeclassname="active">
-                    <div className="icon">{item.icon}</div>
+                <NavLink to={item.path} key={index} className="link" activeclassname="active"   title={isOpen ? '' : item.name}>
+                    <div className="icon" >{item.icon}</div>
                     <div style={{ display: isOpen ? "inline-flex" : "none" }} className="link_text">
                         {item.name}
                     </div>

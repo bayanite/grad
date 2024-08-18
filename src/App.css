@@ -67,7 +67,7 @@
     padding: 5px 10px;
     border-radius: 6px;
     position: absolute;
-    z-index: 1;
+    z-index:10000;
     top: 125%; /* Position the tooltip below the icon */
     left: 50%;
     transform: translateX(-50%);
@@ -89,3 +89,160 @@
 }
 
 
+
+/*!* OffCanvas styling *!*/
+.offCanvas {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.offCanvas.show {
+    background-color: #4E4D4F;
+    transform: translateX(0);
+}
+
+.offCanvas-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.offCanvas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.offCanvas-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+}
+
+.close-icon {
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #2d2d2d;
+    transition: color 0.3s ease;
+}
+
+.close-icon:hover {
+    color: red;
+}
+
+.offCanvas-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.offCanvas-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.offCanvas-input[type="email"] {
+    width: calc(100% - 20px);
+}
+
+.offCanvas-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.offCanvas-button:hover {
+    opacity: 0.8;
+}
+
+.offCanvas-button:first-of-type {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.offCanvas-button:last-of-type {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.offCanvas-button:first-of-type:hover {
+    background-color: #0056b3;
+}
+
+.offCanvas-button:last-of-type:hover {
+    background-color: #5a6268;
+}
+
+.offCanvas-p {
+    margin: 10px 0;
+    font-size: 1em;
+    color: white;
+}
+
+.edit-mode {
+    display: flex;
+    flex-direction: column;
+}
+
+.view-mode {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-mode button,
+.view-mode button {
+    margin-top: 10px;
+}
+.result-message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+/*.notification-icon {*/
+/*    position: relative;*/
+/*    display: inline-block;*/
+/*    cursor: pointer;*/
+/*    margin-top: 20px; !* Adjust as needed *!*/
+/*}*/
+
+.notification-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+.notification-body {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    max-width: 300px;
+}

@@ -2,7 +2,7 @@ import '../model/model.scss'
 import React, {useEffect, useRef, useState} from "react";
 import { useLocation } from "react-router-dom";
 import {
-    FaArrowRight,
+    FaArrowRight, FaExclamationCircle,
     FaPlusCircle,
     FaRegCircle, FaRegDotCircle,
     FaTimes,
@@ -12,6 +12,9 @@ import Swal from "sweetalert2";
 
 
 const ShowBank = () => {
+    const [loading, setLoading] = useState(true); // Loading state
+    const [loading1, setLoading1] = useState(false); // Loading state
+    const [error, setError] = useState(null); // Error state
     const latestDivRef = useRef(null);
     const [questions, setQuestions] = useState([]);
     const [title, setTitle] = useState("");
@@ -37,18 +40,47 @@ const ShowBank = () => {
         }
         if(id1){
             setIdModel(id1);
-            ShowBank(id1)
+            // ShowBank(id1)
+            checkServerConnectivity();
         }
 
     }, [title1, description1,id1]);
 
+    const checkServerConnectivity = async () => {
+        try {
+            // Make a simple GET request to check server status
+            const response = await fetch(`${process.env.REACT_APP_API_URL}exam/show/${id1}`); // Replace with a basic endpoint
+            // if (!response.ok) throw new Error('Server not reachable');
+
+            // If the server is reachable, proceed to fetch the forms
+            await ShowBank(id1);
+        } catch (error) {
+            // Handle the error without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setLoading(false); // Stop the loading spinner
+        }
+    };
+
     const ShowBank = async (id) => {
+        setLoading(true);
+        setError(null);
         try {
             const data = await detailsBank(id);
-            setDataModel(data);
+            if (!data || !data.data || !data.data.exam || data.data.exam.length === 0) {
+                setError("لا توجد بيانات."); // Handle no data found
+            } else {
+                setDataModel(data);
+            }
         } catch (error) {
-            console.error('Error fetching :', error);
+            // Catch the error and handle it without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+        } finally {
+            setLoading(false);
         }
+        //     setDataModel(data);
+        // } catch (error) {
+        //     console.error('Error fetching :', error);
+        // }
     }
 
     const deleteQuestion = async (id) => {
@@ -152,6 +184,7 @@ const ShowBank = () => {
         }
 
         try {
+            setLoading1(true); // Start the loading state
             await addQuestionExam(id1,questions);
             await Swal.fire({
                 icon: 'success',
@@ -164,6 +197,8 @@ const ShowBank = () => {
 
         } catch (error) {
             console.error('Error fetching courses:', error);
+        }finally {
+            setLoading1(false); // End the loading state
         }
 
     };
@@ -281,6 +316,17 @@ const ShowBank = () => {
             <FaArrowRight className="back-button" onClick={handleGoBack}/>
             {/* Back button */}
             </div>
+            {loading ? (
+                <div className="spinner-container2">
+                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                </div>
+            ) : error ? (
+                <div className="spinner-container2">
+                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <p className="error-message-">{error}</p>
+                </div>
+            ) : (
+                <>
             <div className={"model-div title"}>
                 <h1 className={"showTitle"}>{title}</h1>
                 <p className={"showTitle"}>{description}</p>
@@ -291,9 +337,18 @@ const ShowBank = () => {
             {renderModelDivs()}
             {renderQuestions()}
             <button className={"save"}  onClick={(e)=>AddQuestion(e)} style={{ display: questions.length === 0 ? 'none' : 'block' }}>
-                حفظ
+                {loading1 ? (
+                    <div className="loading-indicator">
+                        <span>.</span>
+                        <span>.</span>
+                        <span>.</span>
+                    </div>
+                ) : (
+                    "حفظ"
+                )}
             </button>
-
+                </>
+            )}
         </div>
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { FaArrowRight, FaEye, FaEyeSlash, FaPen, FaPlus, FaTrashAlt } from 'react-icons/fa';
+import {FaArrowRight, FaExclamationCircle, FaEye, FaEyeSlash, FaPen, FaPlus, FaTrashAlt} from 'react-icons/fa';
 import '../courses/show-copy/ShowCopy.scss';
 import './acouunt.scss';
 import '../courses/view courses/courses.scss';
@@ -8,6 +8,8 @@ import Account from "../../hooks/account";
 import Swal from "sweetalert2";
 
 const ShowAccount = () => {
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
     const [userAccount, setUserAccount] = useState([]);
     const [search, setSearch] = useState('');
     const [visiblePasswords, setVisiblePasswords] = useState({});
@@ -74,23 +76,51 @@ const ShowAccount = () => {
     };
 
     const filteredRows = userAccount && userAccount.data ? userAccount.data.filter((row) => {
-        const matchesSearch = search === '' || row.name.toLowerCase().includes(search.toLowerCase());
+        const matchesSearch = search === '' || row.name?.toLowerCase().includes(search.toLowerCase());
         const matchesRole = roleFilter === '' || row.role === roleFilter;
         return matchesSearch && matchesRole;
     }) : [];
 
-    useEffect(() => {
-        getAccount();
-    }, []);
 
+    useEffect(() => {
+        checkServerConnectivity();
+        // getAccount();
+    }, []);
+    const checkServerConnectivity = async () => {
+        try {
+            // Make a simple GET request to check server status
+            const response = await fetch(`${process.env.REACT_APP_API_URL}employee/indexAll`); // Replace with a basic endpoint
+            // if (!response.ok) throw new Error('Server not reachable');
+
+            // If the server is reachable, proceed to fetch the forms
+            await getAccount();
+        } catch (error) {
+            // Handle the error without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setLoading(false); // Stop the loading spinner
+        }
+    };
     const getAccount = async () =>
     {
+        setLoading(true);
+        setError(null);
         try {
             const data = await getAllAccount();
-            setUserAccount(data);
+            if (!data || !data.data || !data.data || data.data.length === 0) {
+                setError("لا توجد بيانات."); // Handle no data found
+            } else {
+                setUserAccount(data);
+            }
         } catch (error) {
-            console.error('Error fetching courses:', error);
+            // Catch the error and handle it without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+        } finally {
+            setLoading(false);
         }
+        //     setUserAccount(data);
+        // } catch (error) {
+        //     console.error('Error fetching courses:', error);
+        // }
     };
 
     const changePassword = async (id, oldPassword, newPassword) => {
@@ -148,6 +178,17 @@ const ShowAccount = () => {
 
     return (
         <div className={'ShowCopys'}>
+            {loading ? (
+                <div className="spinner-container2">
+                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                </div>
+            ) : error ? (
+                <div className="spinner-container2">
+                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <p className="error-message-">{error}</p>
+                </div>
+            ) : (
+                <>
             <div className="navbar">
                 <FaArrowRight className="arrow-icon"  onClick={handleGoBack} />
                 <div className="buttons-container">
@@ -215,6 +256,8 @@ const ShowAccount = () => {
                     </tbody>
                 </table>
             </div>
+                </>
+            )}
         </div>
     );
 };

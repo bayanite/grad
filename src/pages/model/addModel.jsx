@@ -19,6 +19,7 @@ import Model from "../../hooks/Model";
 const AddModel = () => {
     const location = useLocation();
     const TypeName = location.state?.TypeName
+    const [loading, setLoading] = useState(false); // New loading state
 
     const latestDivRef = useRef(null);
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -132,7 +133,7 @@ const AddModel = () => {
     const TimeInput=()=> {
         return (
             <div className={"DateInput"}>
-                <input type="time"  disabled />
+                <input className={"input-time"} type="time"  disabled />
                 <FaClock className={"FaClock"} />
             </div>
         );
@@ -355,10 +356,13 @@ const AddModel = () => {
             return; // Exit the function if required fields are empty
         }
         try {
+            setLoading(true); // Start the loading state
             await createModel(TypeName,inputValueTitle,inputValueDes,divValues);
             handleGoBack();
         } catch (error) {
             console.error('Error fetching courses:', error);
+        }finally {
+            setLoading(false); // End the loading state
         }
 
     };
@@ -398,7 +402,15 @@ const AddModel = () => {
                 <>
                     {renderModelDivs()}
                     <button className={"save"} onClick={(e) => SendModel(e)}>
-                        حفظ
+                        {loading ? (
+                            <div className="loading-indicator">
+                                <span>.</span>
+                                <span>.</span>
+                                <span>.</span>
+                            </div>
+                        ) : (
+                            "حفظ"
+                        )}
                     </button>
                 </>
             )}
