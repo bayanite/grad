@@ -59,8 +59,11 @@ function App() {
 
     if (loading) {
         return (
-            <div className="spinner-container">
-                <Spinner size={120} visible={true}/>
+            // <div className="spinner-container">
+            //     <Spinner size={120} visible={true}/>
+            // </div>
+            <div className="spinner-container2">
+                <div className="spinner"/> {/* Loading spinner */}
             </div>
         ); // or a loading spinner
     }

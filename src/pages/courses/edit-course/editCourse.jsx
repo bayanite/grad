@@ -10,6 +10,7 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
     const [teacher, setTeacher] = useState(courseData ? courseData.teacher : '');
     const [textCertificate, setTextCertificate] = useState(courseData ? courseData.text : '');
     const [isFormValid, setIsFormValid] = useState(false);
+    const [loading1, setLoading1] = useState(false);
 
     useEffect(() => {
         if (courseData) {
@@ -35,6 +36,8 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setLoading1(true);
+
             const formData = new FormData();
             formData.append('name', nameOfCourse);
             formData.append('about', aboutOfCourse);
@@ -59,6 +62,9 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
             onSave();
         } catch (error) {
             console.error('Error editing course:', error);
+        }
+        finally {
+            setLoading1(false); // End the loading state
         }
     };
 
@@ -128,8 +134,21 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
                         />
                     </label>
                     <div style={{display: 'flex', justifyContent: 'space-between', marginRight: '190px'}}>
-                        <button type="submit" disabled={!isFormValid}>
-                            تحديث
+                        {/*<button type="submit" disabled={!isFormValid}>*/}
+                        {/*    تحديث*/}
+                        {/*</button>*/}
+                        <button
+                            type="submit"
+                            disabled={!isFormValid}                        >
+                            {loading1 ? (
+                                <div className="loading-indicator">
+                                    <span>.</span>
+                                    <span>.</span>
+                                    <span>.</span>
+                                </div>
+                            ) : (
+                                "تحديث"
+                            )}
                         </button>
                         <button type="button" onClick={toggle}>
                             إلغاء

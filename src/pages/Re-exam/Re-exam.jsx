@@ -114,49 +114,57 @@
 //
 // export default Re_exam;
 import React, {useEffect, useState} from 'react';
-import { FaArrowRight, FaRegCheckCircle, FaRegTimesCircle } from 'react-icons/fa';
+import {FaArrowRight, FaExclamationCircle, FaRegCheckCircle, FaRegTimesCircle} from 'react-icons/fa';
 import ReExam from "../../hooks/Re-exam";
 import Spinner from "react-spinner-material";
 
 const Re_exam = () => {
-
     const [orderReExam, setOrderReExam] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [hasInternet, setHasInternet] = useState(true);
+    const [search, setSearch] = useState('');
+    const [error, setError] = useState(null);
+    const [noData, setNoData] = useState(null); // State for handling "no data" message
 
-    const {fetchOrderReExam, checkOrder} = ReExam();
+    const { fetchOrderReExam, checkOrder } = ReExam();
 
     const getOrder = async () => {
+        setLoading(true); // Ensure loading state is set before fetching data
         try {
             const data = await fetchOrderReExam();
-            setOrderReExam(data.data);
-            setLoading(false);
+
+            // Check the actual response structure
+            console.log('Fetched data:', data);
+
+            if (data && data.data) {
+                setOrderReExam(data.data);
+                setNoData(data.data.length === 0 ? 'لا توجد بيانات لعرضها' : null);
+            } else {
+                setError('فشل الاتصال بالخادم');
+            }
         } catch (error) {
-            console.error('Error fetching courses:', error);
-            setLoading(false);
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم');
+            }
+        } finally {
+            setLoading(false); // Ensure loading state is reset regardless of success or failure
         }
     };
 
     const checkOrderExam = async (id, status) => {
         try {
-            const data = await checkOrder(id, status);
-            getOrder();
-            console.log("User status updated:", data);
+            await checkOrder(id, status);
+            getOrder(); // Refresh the list after updating status
         } catch (error) {
-            console.error('Error checking user:', error);
+            console.error('Error checking order:', error);
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم');
+            }
         }
     };
-
-    useEffect(() => {
-        if (!navigator.onLine) {
-            setHasInternet(false);
-            setLoading(false);
-        } else {
-            getOrder();
-        }
-    }, []);
-
-    const [search, setSearch] = useState('');
 
     const handleGoBack = () => {
         window.history.back();
@@ -171,71 +179,70 @@ const Re_exam = () => {
         row.course_name?.toLowerCase().includes(search.toLowerCase())
     );
 
-    console.log('orderReExam length:', orderReExam.length); // Debugging line
+    useEffect(() => {
+        getOrder();
+    }, []);
 
     return (
         <div className="ShowCopys">
-            {loading ? (
-                <div className="spinner-container">
-                    <Spinner size={120} visible={true} />
-                </div>
-            ) : (
-                <>
-                    {!hasInternet ? (
-                        <div className="no-internet">No Internet</div>
-                    ) : (
-                        <>
-                            <div className="ShowCopy-navbar">
-                                <FaArrowRight className="arrow-icon" onClick={handleGoBack} />
-                                {` طلبات إعادة الامتحان `}
-                                <input
-                                    type="text"
-                                    placeholder="بحث..."
-                                    className="search-input"
-                                    onChange={handleSearch}
-                                />
-                            </div>
-                            <div className="table-container">
-                                {orderReExam.length === 0  ? (
-                                    <div className="no-data">لا يوجد طلبات امتحان</div>
-                                ) : (
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th>اسم الطالب</th>
-                                            <th>اسم الدورة</th>
-                                            <th>تاريخ الدورة</th>
-                                            <th>عدد مرات الاعادة</th>
-                                            <th>حالة الطلب</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {filteredRows.map((row, index) => (
-                                            <tr key={index}>
-                                                <td>{row.user_name} {row.user_lastname}</td>
-                                                <td>{row.course_name}</td>
-                                                <td>{row.created_at}</td>
-                                                <td>{row.count}</td>
-                                                <td>
-                                                    <FaRegCheckCircle
-                                                        className="FaRegCheckCircle-"
-                                                        onClick={() => checkOrderExam(row.id, 1)}
-                                                    />
-                                                    <FaRegTimesCircle
-                                                        className="FaRegTimesCircle-"
-                                                        onClick={() => checkOrderExam(row.id, 0)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </table>
-                                )}
-                            </div>
-                        </>
-                    )}
-                </>
-            )}
+            <div className="ShowCopy-navbar">
+                <FaArrowRight className="arrow-icon" onClick={handleGoBack} />
+                {` طلبات إعادة الامتحان `}
+                <input
+                    type="text"
+                    placeholder="بحث..."
+                    className="search-input"
+                    onChange={handleSearch}
+                />
+            </div>
+            <div className="table-container">
+                {loading ? (
+                    <div className="spinner-container2">
+                        <div className="spinner" /> {/* Loading spinner */}
+                    </div>
+                ) : error ? (
+                    <div className="spinner-container2">
+                        <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                        <p className="error-message-">{error}</p>
+                    </div>
+                ) : noData ? (
+                    <div className="spinner-container2">
+                        <p className="error-message-">{noData}</p>
+                    </div>
+                ) : (
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>اسم الطالب</th>
+                            <th>اسم الدورة</th>
+                            <th>تاريخ الدورة</th>
+                            <th>عدد مرات الاعادة</th>
+                            <th>حالة الطلب</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {filteredRows.map((row, index) => (
+                            <tr key={index}>
+                                <td>{row.user_name} {row.user_lastname}</td>
+                                <td>{row.course_name}</td>
+                                <td>{row.created_at}</td>
+                                <td>{row.count}</td>
+                                <td>
+                                    <FaRegCheckCircle
+                                        className="FaRegCheckCircle-"
+                                        onClick={() => checkOrderExam(row.id, 1)}
+                                    />
+                                    <FaRegTimesCircle
+                                        className="FaRegTimesCircle-"
+                                        onClick={() => checkOrderExam(row.id, 0)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
         </div>
     );
 };

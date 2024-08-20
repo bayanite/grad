@@ -12,6 +12,8 @@ const CreateTemplate = ({toggle, onSave}) => {
     const [textCertificate, setTextCertificate] = useState('');
     const [teacher, setTeacher] = useState('');
     const [isFormValid, setIsFormValid] = useState(false);
+    const [loading1, setLoading1] = useState(false); // Loading state
+
 
     useEffect(() => {
         // Check if all fields are filled
@@ -33,11 +35,15 @@ const CreateTemplate = ({toggle, onSave}) => {
         e.preventDefault();
         if (isFormValid) {
             try {
+                setLoading1(true);
                 await addTemplate(nameOfCourse, image, aboutOfCourse, textCertificate, teacher);
                 toggle();
                 onSave();
             } catch (error) {
                 console.error('Error adding template:', error);
+            }
+            finally {
+                setLoading1(false); // End the loading state
             }
         }
     };
@@ -99,8 +105,21 @@ const CreateTemplate = ({toggle, onSave}) => {
                         />
                     </label>
                     <div style={{display: 'flex', justifyContent: 'space-between', marginRight: '190px'}}>
-                        <button type="submit" onClick={handleSubmit} disabled={!isFormValid}>
-                            حفظ
+                        <button
+                            type="submit"
+                            onClick={(e) => handleSubmit(e)}
+                            disabled={!isFormValid}
+                        >
+                                {/*حفظ*/}
+                            {loading1 ? (
+                                <div className="loading-indicator">
+                                    <span>.</span>
+                                    <span>.</span>
+                                    <span>.</span>
+                                </div>
+                            ) : (
+                                "حفظ"
+                            )}
                         </button>
                         <button type="button" onClick={toggle}>
                             إلغاء

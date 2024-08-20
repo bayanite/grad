@@ -41,9 +41,9 @@ const AddOnlineCourse = () => {
     const [numberOfQuestions, setNumberOfQuestions] = useState('');
     const [duration, setDuration] = useState('');
     const [showPopup, setShowPopup] = useState(false);
+    const [loading1, setLoading1] = useState(false); // Loading state
     console.log("duration", duration)
     console.log("numberOfQuestions", numberOfQuestions)
-
 
     const handleSaveQuiz = () => {
         setDuration(duration);
@@ -180,6 +180,7 @@ const AddOnlineCourse = () => {
     const handleSaveCourse = async (e) => {
         e.preventDefault();
         try {
+            setLoading1(true);
             await createCourseOnline(
                 exam, price, selectedForm.id, selectedQuestionnaire.id,
                 selectCourse, selectedSeries, id, totalDuration, numberAllVideos,
@@ -188,6 +189,9 @@ const AddOnlineCourse = () => {
 
         } catch (error) {
             console.error('Error creating course:', error);
+        }
+        finally {
+            setLoading1(false); // End the loading state
         }
     };
 
@@ -352,7 +356,17 @@ const AddOnlineCourse = () => {
                         )}
                     </div>
                 </div>
-                <button className={"save-"} onClick={handleSaveCourse}>حفظ</button>
+                <button className={"save-"} onClick={handleSaveCourse}>
+                    {loading1 ? (
+                        <div className="loading-indicator">
+                            <span>.</span>
+                            <span>.</span>
+                            <span>.</span>
+                        </div>
+                    ) : (
+                        "حفظ"
+                    )}
+                </button>
             </div>
         </div>
     );

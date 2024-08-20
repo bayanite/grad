@@ -26,11 +26,11 @@ const CopyHooks = () => {
             return data;
         } catch (error) {
             setError(error.message);
-            await Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: error.message,
-            });
+            // await Swal.fire({
+            //     icon: 'error',
+            //     title: 'ببببببب',
+            //     text: error.message,
+            // });
         } finally {
             setLoading(false);
         }
@@ -55,11 +55,11 @@ const CopyHooks = () => {
             return data;
         } catch (error) {
             setError(error.message);
-            await Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: error.message,
-            });
+            // await Swal.fire({
+            //     icon: 'error',
+            //     title: 'Error',
+            //     text: error.message,
+            // });
         } finally {
             setLoading(false);
         }
@@ -84,11 +84,11 @@ const CopyHooks = () => {
             return data;
         } catch (error) {
             setError(error.message);
-            await Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: error.message,
-            });
+            // await Swal.fire({
+            //     icon: 'error',
+            //     title: 'Error',
+            //     text: error.message,
+            // });
         } finally {
             setLoading(false);
         }

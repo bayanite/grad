@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FaArrowRight, FaPen } from "react-icons/fa";
+import {FaArrowRight, FaExclamationCircle, FaPen} from "react-icons/fa";
 import CopyHooks from "../../../hooks/copyHooks";
 import { useLocation } from "react-router-dom";
-import Spinner from "react-spinner-material";
 import './ShowRegistered.scss';
 
 const ShowRegistered = () => {
@@ -11,8 +10,8 @@ const ShowRegistered = () => {
     const [loading, setLoading] = useState(true);
     const [marks, setMarks] = useState({}); // State to store marks
     const [editingRowId, setEditingRowId] = useState(null); // State to track which row is being edited
-    const [hasInternet, setHasInternet] = useState(true); // State to track internet connectivity
-
+    const [error, setError] = useState(null);
+    const [noData, setNoData] = useState(null); // State for handling "no data" message
     const location = useLocation();
     const { fetchRegister, saveMark } = CopyHooks(); // Assuming saveMark is a function to save the mark
     const id = location.state?.id;
@@ -21,19 +20,31 @@ const ShowRegistered = () => {
     const getRegister = async () => {
         try {
             const data = await fetchRegister(id);
-            if (Array.isArray(data.data.data)) {
-                setRegister(data.data.data);
-                setLoading(false);
+
+            if (data && data.data) {
+                const registeredData = data.data.data;
+
+                if (Array.isArray(registeredData)) {
+                    setRegister(registeredData);
+                    setNoData(registeredData.length === 0 ? 'لا توجد بيانات لعرضها' : null);
+                } else {
+                    setNoData('لا توجد بيانات لعرضها'); // حالة عدم وجود بيانات مسجلين
+                }
             } else {
-                setRegister([]);
-                setLoading(false);
+                setError('فشل في جلب البيانات من الخادم');
             }
         } catch (error) {
-            console.error('Error fetching copy data', error);
-            setRegister([]); // Reset state in case of an error
-            setLoading(false);
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم');
+            }
+        } finally {
+            setLoading(false); // تأكد من إعادة تعيين حالة التحميل بغض النظر عن النجاح أو الفشل
         }
     };
+
+
 
     useEffect(() => {
         if (id) {
@@ -41,21 +52,7 @@ const ShowRegistered = () => {
         }
     }, [id]);
 
-    useEffect(() => {
-        const handleOnlineStatus = () => {
-            setHasInternet(navigator.onLine);
-        };
 
-        handleOnlineStatus(); // Check internet status on component mount
-
-        window.addEventListener('online', handleOnlineStatus);
-        window.addEventListener('offline', handleOnlineStatus);
-
-        return () => {
-            window.removeEventListener('online', handleOnlineStatus);
-            window.removeEventListener('offline', handleOnlineStatus);
-        };
-    }, []);
 
     const handleGoBack = () => {
         window.history.back(); // Go back to the previous page
@@ -87,11 +84,12 @@ const ShowRegistered = () => {
         setMarks({ ...marks, [rowId]: currentMark || '' }); // Initialize with the current mark if exists
     };
 
-    const filteredRegister = register.filter((val) => {
+    const filteredRegister = Array.isArray(register) ? register.filter((val) => {
         return search.toLowerCase() === '' || !val.date
             ? true
             : val.date.toLowerCase().includes(search.toLowerCase());
-    });
+    }) : [];
+
 
     return (
         <div className="showRegistered">
@@ -107,18 +105,19 @@ const ShowRegistered = () => {
             </div>
 
             {loading ? (
-                <div className="spinner-container">
-                    <Spinner size={120} visible={true} />
+                <div className="spinner-container2">
+                    <div className="spinner" /> {/* Loading spinner */}
                 </div>
-            ) : !hasInternet ? (
-                <div className="no-data">
-                    <p>لا يوجد إنترنت</p>
+            ) : error ? (
+                <div className="spinner-container2">
+                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <p className="error-message-">{error}</p>
                 </div>
-            ) : register.length === 0 ? (
-                <div className="no-data">
-                    <p>لا يوجد مسجلين</p>
+            ) : noData ? (
+                <div className="spinner-container2">
+                    <p className="error-message-">{noData}</p>
                 </div>
-            ) : (
+            ): (
                 <div className="table-container">
                     <table>
                         <thead>

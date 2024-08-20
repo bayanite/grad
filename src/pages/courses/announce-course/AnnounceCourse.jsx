@@ -28,6 +28,7 @@ const AnnounceCourse = () => {
     const [selectedForm, setSelectedForm] = useState({ id: null, title: '' });
     const [selectedQuestionnaire, setSelectedQuestionnaire] = useState({ id: null, title: '' });
     const questionnairePopupRef = useRef(null);
+    const [loading1, setLoading1] = useState(false); // Loading state
 
     const handleFormButtonClick = async () => {
         try {
@@ -119,6 +120,7 @@ const AnnounceCourse = () => {
         const questionnaireId = selectedQuestionnaire.id ? selectedQuestionnaire.id : null;
 
         try {
+            setLoading1(true);
             await createCourseCenter(
                 beginningOfRegistration,
                 endingOfRegistration,
@@ -133,6 +135,9 @@ const AnnounceCourse = () => {
 
         } catch (error) {
             console.error('Error adding template:', error);
+        }
+        finally {
+            setLoading1(false); // End the loading state
         }
     };
 
@@ -273,7 +278,17 @@ const AnnounceCourse = () => {
                         )}
                     </div>
                 </div>
-            <button className={"save-"} onClick={handleSaveCourse}>حفظ</button>
+                <button className={"save-"} onClick={handleSaveCourse}>
+                    {loading1 ? (
+                        <div className="loading-indicator">
+                            <span>.</span>
+                            <span>.</span>
+                            <span>.</span>
+                        </div>
+                    ) : (
+                        "حفظ"
+                    )}
+                </button>
             </div>
         </div>
     );

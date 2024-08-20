@@ -218,11 +218,11 @@ const Form = ({ TypeName }) => {
             </div>
 
             {loading ? (
-                <div className="spinner-container1">
+                <div className="spinner-container2">
                     <div className="spinner"/> {/* Correctly closing the spinner */}
                 </div>
             ) : error ? (
-                <div className="spinner-container1">
+                <div className="spinner-container2">
                     <FaExclamationCircle className="error-icon" /> {/* Error icon */}
                     <p className="error-message-">{error}</p>
                 </div>
