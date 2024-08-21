@@ -1,4 +1,3 @@
-
 import './form.scss';
 import '../../courses/view courses/courses.scss';
 import {useNavigate} from 'react-router-dom';

@@ -1,4 +1,3 @@
-
 import React, {useEffect, useRef, useState} from 'react';
 import {FaArrowRight, FaCloudUploadAlt, FaExclamationCircle} from 'react-icons/fa';
 import '../courses/view courses/courses.scss';

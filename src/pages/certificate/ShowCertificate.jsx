@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {FaArrowRight, FaExclamationCircle, FaEye, FaFilter} from "react-icons/fa";

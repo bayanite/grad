@@ -1,4 +1,3 @@
-
 import React, {useEffect, useRef, useState} from 'react';
 import {FaExclamationCircle, FaPlus} from 'react-icons/fa';
 import './courses.scss';

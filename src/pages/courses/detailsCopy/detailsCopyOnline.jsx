@@ -1,5 +1,3 @@
-
-
 import React, {useEffect, useState} from 'react';
 import {FiChevronDown, FiChevronUp} from 'react-icons/fi';
 import {FaArrowRight, FaExclamationCircle, FaFileAlt, FaListAlt} from "react-icons/fa";
