@@ -1,6 +1,6 @@
 import './model.scss'
-import React, { useRef, useState} from "react";
-import { useLocation } from "react-router-dom";
+import React, {useRef, useState} from "react";
+import {useLocation} from "react-router-dom";
 import {
     FaArrowRight,
     FaClock,
@@ -23,11 +23,15 @@ const AddModel = () => {
 
     const latestDivRef = useRef(null);
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [divValues, setDivValues] = useState([{ question: "", select: "خيار متعدد", options: [{ index:"",value: ""}] ,required: 0}]);
+    const [divValues, setDivValues] = useState([{
+        question: "",
+        select: "خيار متعدد",
+        options: [{index: "", value: ""}],
+        required: 0
+    }]);
     const [activationStates, setActivationStates] = useState(Array(divValues.length).fill(false));
-    console.log("divValues",divValues)
 
-    const {createModel}=Model();
+    const {createModel} = Model();
 
     const toggleActivation = (index) => {
         setActivationStates(prevStates => {
@@ -68,10 +72,10 @@ const AddModel = () => {
                 </select>
                 {renderQuestionType(index)}
                 <div className={"bottom_nav"}>
-                    <FaPlusCircle className={"FaPlusCircle"} onClick={() => handleAddModelDiv(index)} />
-                    <FaTrashAlt className={"FaPlusCircle"}  onClick={() => handleRemoveModelDiv(index)} />
+                    <FaPlusCircle className={"FaPlusCircle"} onClick={() => handleAddModelDiv(index)}/>
+                    <FaTrashAlt className={"FaPlusCircle"} onClick={() => handleRemoveModelDiv(index)}/>
                     <div className={"require"}>
-                        <label style={{ "padding": "5px" }}>مطلوب</label>
+                        <label style={{"padding": "5px"}}>مطلوب</label>
                         {activationStates[index] ? (
                             <FaToggleOn
                                 className={"FaToggleOn"}
@@ -92,11 +96,16 @@ const AddModel = () => {
 
     const handleAddModelDiv = () => {
         const newDivValues = [...divValues];
-         const requiredValue = activationStates[divValues.length] ? 1 : 0; // 1 for true, 0 for false
-        newDivValues.push({ question: "", select: "خيار متعدد", options: [{ index:"",value: ""}], required: requiredValue  });
+        const requiredValue = activationStates[divValues.length] ? 1 : 0; // 1 for true, 0 for false
+        newDivValues.push({
+            question: "",
+            select: "خيار متعدد",
+            options: [{index: "", value: ""}],
+            required: requiredValue
+        });
         setDivValues(newDivValues);
         if (latestDivRef.current) {
-            latestDivRef.current.scrollIntoView({ behavior: "smooth" });
+            latestDivRef.current.scrollIntoView({behavior: "smooth"});
         }
     };
 
@@ -114,7 +123,7 @@ const AddModel = () => {
         const newDivValues = [...divValues];
         const selectedType = event.target.value;
         newDivValues[index].select = event.target.value;
-         if (["إجابة قصيرة", "تاريخ", "وقت"].includes(selectedType)) {
+        if (["إجابة قصيرة", "تاريخ", "وقت"].includes(selectedType)) {
             newDivValues[index].options = [];
         } else {
             // If not "short answer", "date", or "time", create default option
@@ -123,32 +132,32 @@ const AddModel = () => {
                 newDivValues[index].options = [newDivValues[index].options[0]];
             } else {
                 // If options array is empty, create a default option
-                newDivValues[index].options = [{ index: "", value: "" }];
+                newDivValues[index].options = [{index: "", value: ""}];
             }
         }
         setDivValues(newDivValues);
     };
 
 
-    const TimeInput=()=> {
+    const TimeInput = () => {
         return (
             <div className={"DateInput"}>
-                <input className={"input-time"} type="time"  disabled />
-                <FaClock className={"FaClock"} />
+                <input className={"input-time"} type="time" disabled/>
+                <FaClock className={"FaClock"}/>
             </div>
         );
     }
 
-    const DateInput=()=> {
+    const DateInput = () => {
         return (
             <div className={"DateInput"}>
-                <input type="date"  disabled />
-                <FaRegCalendarAlt className={"FaRegCalendarAlt"} />
+                <input type="date" disabled/>
+                <FaRegCalendarAlt className={"FaRegCalendarAlt"}/>
             </div>
         );
     }
 
-    const ShortAnswer=()=> {
+    const ShortAnswer = () => {
         return (
             <div className={"shortAnswer"}>
                 <textarea placeholder="نص الإجابة" readOnly/>
@@ -156,12 +165,12 @@ const AddModel = () => {
         );
     }
 
-    const Dropdown = ( questionIndex ) => {
+    const Dropdown = (questionIndex) => {
         const question = divValues[questionIndex];
 
         const handleAddDropdowns = () => {
             const newDivValues = [...divValues];
-            newDivValues[questionIndex].options.push({ index: newDivValues[questionIndex].options.length, value: "" });
+            newDivValues[questionIndex].options.push({index: newDivValues[questionIndex].options.length, value: ""});
             setDivValues(newDivValues);
         };
 
@@ -183,7 +192,8 @@ const AddModel = () => {
             <div className={"MultipleChoice"}>
                 {question.options.map((choice, choiceIndex) => (
                     <div key={choice.index} className={"MultipleChoiceBody"}>
-                        <span className="dropdown-number">{choiceIndex + 1}.</span> {/* Use choiceIndex instead of index */}
+                        <span
+                            className="dropdown-number">{choiceIndex + 1}.</span> {/* Use choiceIndex instead of index */}
                         <input
                             type="text"
                             value={choice.value}
@@ -191,7 +201,7 @@ const AddModel = () => {
                             required
                         />
                         {choiceIndex === 0 ? null : ( // Render delete icon for non-first options
-                            <FaTimes onClick={() => removeInputDropdown(questionIndex, choiceIndex)} />
+                            <FaTimes onClick={() => removeInputDropdown(questionIndex, choiceIndex)}/>
                         )}
                     </div>
                 ))}
@@ -203,12 +213,12 @@ const AddModel = () => {
         );
     };
 
-    const MultipleChoice = ( questionIndex ) => {
+    const MultipleChoice = (questionIndex) => {
         const question = divValues[questionIndex];
 
         const handleAddChoice = (questionIndex) => {
             const newDivValues = [...divValues];
-            newDivValues[questionIndex].options.push({ index: newDivValues[questionIndex].options.length , value: "" });
+            newDivValues[questionIndex].options.push({index: newDivValues[questionIndex].options.length, value: ""});
             setDivValues(newDivValues);
         };
 
@@ -235,7 +245,7 @@ const AddModel = () => {
             <div className={"MultipleChoice"}>
                 {question.options.map((choice, choiceIndex) => (
                     <div key={choice.index} className={"MultipleChoiceBody"}>
-                        <FaRegCircle className={"FaRegCircle"} />
+                        <FaRegCircle className={"FaRegCircle"}/>
                         <input
                             type="text"
                             value={choice.value}
@@ -243,12 +253,12 @@ const AddModel = () => {
                             required
                         />
                         {choiceIndex === 0 ? null : ( // Render delete icon for non-first options
-                            <FaTimes onClick={() => removeInputMultipleChoice(questionIndex, choiceIndex)} />
+                            <FaTimes onClick={() => removeInputMultipleChoice(questionIndex, choiceIndex)}/>
                         )}
                     </div>
                 ))}
                 <div className={"MultipleChoiceBody"}>
-                    <FaRegCircle className={"FaRegCircle"} />
+                    <FaRegCircle className={"FaRegCircle"}/>
                     <button onClick={() => handleAddChoice(questionIndex)}>إضافة خيار</button>
                 </div>
             </div>
@@ -256,19 +266,19 @@ const AddModel = () => {
         );
     };
 
-    const CheckBoxes =(questionIndex) => {
+    const CheckBoxes = (questionIndex) => {
         const question = divValues[questionIndex];
 
         const handleAddCheckBoxes = (index) => {
             const newDivValues = [...divValues];
-            newDivValues[index].options.push({ index: newDivValues[index].options.length, value: "" });
+            newDivValues[index].options.push({index: newDivValues[index].options.length, value: ""});
             setDivValues(newDivValues);
         };
 
         const handleChoiceChange = (event, questionIndex, choiceIndex) => {
             const newDivValues = [...divValues];
             newDivValues[questionIndex].options[choiceIndex].value = event.target.value;
-            newDivValues[questionIndex].options[choiceIndex].index =choiceIndex;
+            newDivValues[questionIndex].options[choiceIndex].index = choiceIndex;
             setDivValues(newDivValues);
         };
         const removeInputCheckBoxes = (questionIndex, choiceIndex) => {
@@ -281,7 +291,7 @@ const AddModel = () => {
             <div className={"MultipleChoice"}>
                 {question.options.map((choice, choiceIndex) => (
                     <div key={choiceIndex} className={"MultipleChoiceBody"}>
-                        <FaRegSquare className={"FaRegCircle"} />
+                        <FaRegSquare className={"FaRegCircle"}/>
                         <input
                             type="text"
                             value={choice.value}
@@ -289,33 +299,33 @@ const AddModel = () => {
                             required
                         />
                         {choiceIndex === 0 ? null : ( // Render delete icon for non-first options
-                            <FaTimes onClick={() => removeInputCheckBoxes(questionIndex, choiceIndex)} />
+                            <FaTimes onClick={() => removeInputCheckBoxes(questionIndex, choiceIndex)}/>
                         )}
                     </div>
                 ))}
                 <div className={"MultipleChoiceBody"}>
-                    <FaRegSquare className={"FaRegCircle"} />
+                    <FaRegSquare className={"FaRegCircle"}/>
                     <button onClick={() => handleAddCheckBoxes(questionIndex)}>إضافة خيار</button>
                 </div>
             </div>
         );
     }
 
-    const renderQuestionType = (index) =>{
+    const renderQuestionType = (index) => {
         const selectValue = divValues[index].select;
         switch (selectValue) {
             case "خيار متعدد":
-                return MultipleChoice (index);
+                return MultipleChoice(index);
             case "مربعات اختيار":
-                return CheckBoxes (index);
+                return CheckBoxes(index);
             case "قائمة منسدلة":
-                return Dropdown (index);
+                return Dropdown(index);
             case "إجابة قصيرة":
                 return ShortAnswer();
             case "تاريخ":
-                return DateInput ();
+                return DateInput();
             case "وقت":
-                return TimeInput ();
+                return TimeInput();
             default:
                 return null;
         }
@@ -338,17 +348,17 @@ const AddModel = () => {
     const SendModel = async (e) => {
         e.preventDefault();
         // Check if any required fields are empty
-        const requiredFieldsEmpty = divValues.some((value) =>{
-        if (value.question.trim() === '' || value.select.trim() === '') {
-            return true; // If question or select field is empty, return true
-        }
-        // If select field is not empty and options are required
-        if (['خيار متعدد', 'مربعات اختيار', 'قائمة منسدلة'].includes(value.select.trim())) {
-            // Check if any option is empty
-            return value.options.some(option => option.value.trim() === '');
-        }
-        return false; // If all conditions pass, return false
-    });
+        const requiredFieldsEmpty = divValues.some((value) => {
+            if (value.question.trim() === '' || value.select.trim() === '') {
+                return true; // If question or select field is empty, return true
+            }
+            // If select field is not empty and options are required
+            if (['خيار متعدد', 'مربعات اختيار', 'قائمة منسدلة'].includes(value.select.trim())) {
+                // Check if any option is empty
+                return value.options.some(option => option.value.trim() === '');
+            }
+            return false; // If all conditions pass, return false
+        });
         const titleEmpty = inputValueTitle.trim() === '';
         const descriptionEmpty = inputValueDes.trim() === '';
         if (titleEmpty || descriptionEmpty || requiredFieldsEmpty) {
@@ -357,11 +367,11 @@ const AddModel = () => {
         }
         try {
             setLoading(true); // Start the loading state
-            await createModel(TypeName,inputValueTitle,inputValueDes,divValues);
+            await createModel(TypeName, inputValueTitle, inputValueDes, divValues);
             handleGoBack();
         } catch (error) {
             console.error('Error fetching courses:', error);
-        }finally {
+        } finally {
             setLoading(false); // End the loading state
         }
 
@@ -395,7 +405,7 @@ const AddModel = () => {
                     required
                 />
                 <div className={"add-button-container"}>
-                    <FaPlusCircle className={"add-button"} onClick={handleAddModelDiv} />
+                    <FaPlusCircle className={"add-button"} onClick={handleAddModelDiv}/>
                 </div>
             </div>
             {divValues.length > 0 && (

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Swal from 'sweetalert2';
 
 const CopyHooks = () => {
@@ -7,9 +7,7 @@ const CopyHooks = () => {
     const [error, setError] = useState(null);
     const token = localStorage.getItem('token');
     const fetchCopy = async (id) => {
-        console.log("fetchCopy");
 
-        console.log("idddddddd", id);
         setLoading(true);
         setError(null);
         try {
@@ -22,57 +20,22 @@ const CopyHooks = () => {
                 throw new Error('Failed to fetch copy');
             }
             const data = await response.json();
-            console.log("eeeeeeeeeee", JSON.stringify(data));
             return data;
         } catch (error) {
             setError(error.message);
-            // await Swal.fire({
-            //     icon: 'error',
-            //     title: 'ببببببب',
-            //     text: error.message,
-            // });
+
         } finally {
             setLoading(false);
         }
     };
     const fetchInfoOnlineCopy = async (id) => {
-        console.log("fetchInfoOnlineCopy");
 
-        console.log("idddddddd", id);
         setLoading(true);
         setError(null);
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}course/detailsOnlineCopy/${id}`,
-                { headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-            if (!response.ok) {
-                throw new Error('Failed to fetch copy');
-            }
-            const data = await response.json();
-            console.log("eeeeeeeeeee", JSON.stringify(data));
-            return data;
-        } catch (error) {
-            setError(error.message);
-            // await Swal.fire({
-            //     icon: 'error',
-            //     title: 'Error',
-            //     text: error.message,
-            // });
-        } finally {
-            setLoading(false);
-        }
-    };
-    const fetchInfoCenterCopy = async (id) => {
-        console.log("fetchInfoCenterCopy");
-
-        console.log("idddddddd", id);
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}course/detailsCenterCopy/${id}`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -80,15 +43,33 @@ const CopyHooks = () => {
                 throw new Error('Failed to fetch copy');
             }
             const data = await response.json();
-            console.log("eeeeeeeeeee", JSON.stringify(data));
             return data;
         } catch (error) {
             setError(error.message);
-            // await Swal.fire({
-            //     icon: 'error',
-            //     title: 'Error',
-            //     text: error.message,
-            // });
+
+        } finally {
+            setLoading(false);
+        }
+    };
+    const fetchInfoCenterCopy = async (id) => {
+
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}course/detailsCenterCopy/${id}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+            if (!response.ok) {
+                throw new Error('Failed to fetch copy');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            setError(error.message);
+
         } finally {
             setLoading(false);
         }
@@ -98,7 +79,8 @@ const CopyHooks = () => {
     const fetchRegister = async (id) => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}booking/indexOk/${id}`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -108,7 +90,6 @@ const CopyHooks = () => {
             }
 
             const data = await response.json();
-            console.log("Data received:", JSON.stringify(data));
 
             return data;
         } catch (error) {
@@ -118,19 +99,17 @@ const CopyHooks = () => {
     };
 
     const deleteCopy = async (id) => {
-        console.log("gggggggg", id)
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}course/deleteCopy/${id}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`,
 
                 },
             });
             const responseData = await response.json();
-            console.log("-----------------", responseData)
 
             if (!response.ok) {
                 throw new Error(responseData.message || 'Failed to delete course.');
@@ -143,8 +122,7 @@ const CopyHooks = () => {
     }
 
     const activationCopy = async (id, isopen) => {
-        console.log("id", id);
-        console.log("isopen", isopen);
+
         setLoading(true);
         setError(null);
 
@@ -167,8 +145,7 @@ const CopyHooks = () => {
             }
 
             const responseData = await response.json();
-            console.log("hhhhhhh", responseData);
-            console.log("ffffffffffff", data);
+
             setData(responseData);
 
             // Show success message based on the isopen
@@ -200,7 +177,7 @@ const CopyHooks = () => {
         }
     };
 
-    return {error, fetchCopy,fetchInfoOnlineCopy,fetchInfoCenterCopy, activationCopy, fetchRegister, deleteCopy};
+    return {error, fetchCopy, fetchInfoOnlineCopy, fetchInfoCenterCopy, activationCopy, fetchRegister, deleteCopy};
 };
 
 export default CopyHooks;

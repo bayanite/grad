@@ -56,12 +56,12 @@ const Review = () => {
     const [error, setError] = useState(null); // Error state
     const location = useLocation();
     const id_online_center = location.state?.id_online_center
-    const {showReview}=Model();
+    const {showReview} = Model();
 
-        useEffect(() => {
-            checkServerConnectivity();
-            // show();
-        }, []);
+    useEffect(() => {
+        checkServerConnectivity();
+        // show();
+    }, []);
     const checkServerConnectivity = async () => {
         try {
             // Make a simple GET request to check server status
@@ -76,29 +76,25 @@ const Review = () => {
             setLoading(false); // Stop the loading spinner
         }
     };
-        const show= async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const data = await showReview(id_online_center);
-                if (!data  || data.length === 0) {
-                    setError("لا توجد بيانات."); // Handle no data found
-                } else {
-                    setGetReview(data);
-                }
-            } catch (error) {
-                // Catch the error and handle it without logging it to the console
-                setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
-            } finally {
-                setLoading(false);
+    const show = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await showReview(id_online_center);
+            if (!data || data.length === 0) {
+                setError("لا توجد بيانات."); // Handle no data found
+            } else {
+                setGetReview(data);
             }
-            //     setGetReview(data)
-            //     console.log(getReview)
-            // } catch (error) {
-            //     console.error('Error fetching courses:', error);
-            // }
-
+        } catch (error) {
+            // Catch the error and handle it without logging it to the console
+            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+        } finally {
+            setLoading(false);
         }
+
+
+    }
 
     const handleGoBack = () => {
         window.history.back(); // Go back to the previous page
@@ -107,16 +103,17 @@ const Review = () => {
     return (
         <div className="model">
             <div className="go">
-                <FaArrowRight className="back-button" onClick={handleGoBack} />
+                <FaArrowRight className="back-button" onClick={handleGoBack}/>
                 {/* Back button */}
             </div>
             {loading ? (
                 <div className="spinner-container2">
-                    <div className="spinner" /> {/* Correctly closing the spinner */}
+                    <div className="spinner"/>
+                    {/* Correctly closing the spinner */}
                 </div>
             ) : error ? (
                 <div className="spinner-container2">
-                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <FaExclamationCircle className="error-icon"/> {/* Error icon */}
                     <p className="error-message-">{error}</p>
                 </div>
             ) : (

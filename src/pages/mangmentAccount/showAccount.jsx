@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {FaArrowRight, FaExclamationCircle, FaEye, FaEyeSlash, FaPen, FaPlus, FaTrashAlt} from 'react-icons/fa';
 import '../courses/show-copy/ShowCopy.scss';
 import './acouunt.scss';
@@ -19,7 +19,7 @@ const ShowAccount = () => {
     const [editedPasswords, setEditedPasswords] = useState({});
     const inputRefs = useRef({});
 
-     const {getAllAccount,updatePassword,deleteAccount}=Account();
+    const {getAllAccount, updatePassword, deleteAccount} = Account();
 
     const togglePasswordVisibility = (index) => {
         setVisiblePasswords((prevState) => ({
@@ -54,9 +54,9 @@ const ShowAccount = () => {
             // Update the user password in the state
             setUserAccount((prevState) => {
                 const updatedData = prevState.data.map((user, i) =>
-                    i === index ? { ...user, password: editedPasswords[index] } : user
+                    i === index ? {...user, password: editedPasswords[index]} : user
                 );
-                return { ...prevState, data: updatedData };
+                return {...prevState, data: updatedData};
             });
         }
     };
@@ -92,16 +92,13 @@ const ShowAccount = () => {
             const response = await fetch(`${process.env.REACT_APP_API_URL}employee/indexAll`); // Replace with a basic endpoint
             // if (!response.ok) throw new Error('Server not reachable');
 
-            // If the server is reachable, proceed to fetch the forms
             await getAccount();
         } catch (error) {
-            // Handle the error without logging it to the console
             setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
             setLoading(false); // Stop the loading spinner
         }
     };
-    const getAccount = async () =>
-    {
+    const getAccount = async () => {
         setLoading(true);
         setError(null);
         try {
@@ -117,15 +114,12 @@ const ShowAccount = () => {
         } finally {
             setLoading(false);
         }
-        //     setUserAccount(data);
-        // } catch (error) {
-        //     console.error('Error fetching courses:', error);
-        // }
+
     };
 
     const changePassword = async (id, oldPassword, newPassword) => {
         try {
-            return  await updatePassword(id, oldPassword, newPassword);
+            return await updatePassword(id, oldPassword, newPassword);
         } catch (error) {
             console.error('Error fetching courses:', error);
         }
@@ -156,7 +150,7 @@ const ShowAccount = () => {
                     });
                     setUserAccount(prevState => {
                         const updatedData = prevState.data.filter(item => item.id !== id);
-                        return { ...prevState, data: updatedData };
+                        return {...prevState, data: updatedData};
                     });//remove without refresh all page
                 } else {
                     Swal.fire({
@@ -180,82 +174,86 @@ const ShowAccount = () => {
         <div className={'ShowCopys'}>
             {loading ? (
                 <div className="spinner-container2">
-                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                    <div className="spinner"/>
+                    {/* Correctly closing the spinner */}
                 </div>
             ) : error ? (
                 <div className="spinner-container2">
-                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <FaExclamationCircle className="error-icon"/> {/* Error icon */}
                     <p className="error-message-">{error}</p>
                 </div>
             ) : (
                 <>
-            <div className="navbar">
-                <FaArrowRight className="arrow-icon"  onClick={handleGoBack} />
-                <div className="buttons-container">
-                    <div className="filter-button" onClick={() => setRoleFilter('موظف')}>موظف</div>
-                    <div className="filter-button" onClick={() => setRoleFilter('مدير')}>مدير</div>
-                    <div className="filter-button" onClick={() => setRoleFilter('')}>الكل</div>
-                </div>
-                <div className={"div-add"}>
-                    <input
-                        type="text"
-                        placeholder="بحث..."
-                        className="search-input"
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <div className={"plus-user"} onClick={toggle}>
-                        <FaPlus className={"plus-user-role"} />
-                        {isOpen && <AddAccount toggle={toggle} onSave={getAccount} />}
+                    <div className="navbar">
+                        <FaArrowRight className="arrow-icon" onClick={handleGoBack}/>
+                        <div className="buttons-container">
+                            <div className="filter-button" onClick={() => setRoleFilter('موظف')}>موظف</div>
+                            <div className="filter-button" onClick={() => setRoleFilter('مدير')}>مدير</div>
+                            <div className="filter-button" onClick={() => setRoleFilter('')}>الكل</div>
+                        </div>
+                        <div className={"div-add"}>
+                            <input
+                                type="text"
+                                placeholder="بحث..."
+                                className="search-input"
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <div className={"plus-user"} onClick={toggle}>
+                                <FaPlus className={"plus-user-role"}/>
+                                {isOpen && <AddAccount toggle={toggle} onSave={getAccount}/>}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div className="table-container">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>اسم المستخدم</th>
-                        <th>دوره</th>
-                        <th>كلمة السر</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {filteredRows && Array.isArray(filteredRows) && filteredRows.map((row, index) => (
-                        <tr key={index}>
-                            <td>{row.name}</td>
-                            <td>{row.role}</td>
-                            <td className={!visiblePasswords[index] ? 'hidden-password' : ''}>
-                                {editMode[index] ? (
-                                    <input
-                                        className={"input_pass"}
-                                        type="text"
-                                        value={editedPasswords[index]}
-                                        onChange={(e) => handlePasswordChange(index, e.target.value)}
-                                        onKeyDown={(e) => handleKeyDown(index,row, e)}
-                                        // style={{ width: '100%' }}
-                                        ref={(el) => (inputRefs.current[index] = el)}
-                                        onBlur={() => handleSaveClick(index,row)}
-                                    />
-                                ) : (
-                                    visiblePasswords[index] ? row.password : '••••••••'
-                                )}
-                            </td>
-                            <td>
-                                {visiblePasswords[index] ? (
-                                    <FaEyeSlash className={"FaEyeSlash"} onClick={() => togglePasswordVisibility(index)} />
-                                ) : (
-                                    <FaEye className={"FaEyeSlash"} onClick={() => togglePasswordVisibility(index)} />
-                                )}
+                    <div className="table-container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>اسم المستخدم</th>
+                                <th>دوره</th>
+                                <th>كلمة السر</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {filteredRows && Array.isArray(filteredRows) && filteredRows.map((row, index) => (
+                                <tr key={index}>
+                                    <td>{row.name}</td>
+                                    <td>{row.role}</td>
+                                    <td className={!visiblePasswords[index] ? 'hidden-password' : ''}>
+                                        {editMode[index] ? (
+                                            <input
+                                                className={"input_pass"}
+                                                type="text"
+                                                value={editedPasswords[index]}
+                                                onChange={(e) => handlePasswordChange(index, e.target.value)}
+                                                onKeyDown={(e) => handleKeyDown(index, row, e)}
+                                                // style={{ width: '100%' }}
+                                                ref={(el) => (inputRefs.current[index] = el)}
+                                                onBlur={() => handleSaveClick(index, row)}
+                                            />
+                                        ) : (
+                                            visiblePasswords[index] ? row.password : '••••••••'
+                                        )}
+                                    </td>
+                                    <td>
+                                        {visiblePasswords[index] ? (
+                                            <FaEyeSlash className={"FaEyeSlash"}
+                                                        onClick={() => togglePasswordVisibility(index)}/>
+                                        ) : (
+                                            <FaEye className={"FaEyeSlash"}
+                                                   onClick={() => togglePasswordVisibility(index)}/>
+                                        )}
 
-                                    <FaPen className={"FaPen"} onClick={() => handleEditClick(index, row.password)} />
-                                <FaTrashAlt className={"FaTrashAlt1"} onClick={()=>deleteUser(row.id)} />
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
+                                        <FaPen className={"FaPen"}
+                                               onClick={() => handleEditClick(index, row.password)}/>
+                                        <FaTrashAlt className={"FaTrashAlt1"} onClick={() => deleteUser(row.id)}/>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </>
             )}
         </div>

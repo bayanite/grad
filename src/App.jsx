@@ -1,9 +1,8 @@
 import './App.css'
 import './assets/Font.css';
-import {FaBell, FaInfoCircle, FaSignOutAlt, FaUser} from "react-icons/fa";
-import Spinner from "react-spinner-material";
+import {FaInfoCircle, FaSignOutAlt, FaUser} from "react-icons/fa";
 import {MdQuiz} from "react-icons/md";
-import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
+import {BrowserRouter, Route, Routes, useNavigate} from 'react-router-dom';
 import Sidebar from "./sidebar/Sidebar";
 import Courses from "./pages/courses/view courses/courses";
 import DashboardPage from "./pages/dashboard/Dashboard";
@@ -63,7 +62,8 @@ function App() {
             //     <Spinner size={120} visible={true}/>
             // </div>
             <div className="spinner-container2">
-                <div className="spinner"/> {/* Loading spinner */}
+                <div className="spinner"/>
+                {/* Loading spinner */}
             </div>
         ); // or a loading spinner
     }

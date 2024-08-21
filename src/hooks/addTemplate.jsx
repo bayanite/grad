@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import Swal from 'sweetalert2';
 
 const useAddTemplate = () => {
@@ -48,7 +48,7 @@ const useAddTemplate = () => {
         }
     };
 
-    return { addTemplate, data, loading, error };
+    return {addTemplate, data, loading, error};
 };
 
 export default useAddTemplate;

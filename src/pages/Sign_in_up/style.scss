@@ -1,11 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
-//* {
-////  direction: ltr;
-//  margin: 0;
-//  padding: 0;
-//  box-sizing: border-box;
-//}
 
 .error-message {
   color: red;
@@ -102,18 +96,22 @@
   color: #c4c1c1;
   font-size: 1.1rem;
 }
-.input-field .icon:hover{
+
+.input-field .icon:hover {
   cursor: pointer;
 }
+
 .input-field input::placeholder {
   color: #aaa;
   font-weight: 500;
 }
-.Account{
+
+.Account {
   font-family: Tajawal, sans-serif;
   margin-top: 20%;
   border: 1px solid #3C7168;
 }
+
 .social-text {
   padding: 0.7rem 0;
   font-size: 1rem;
@@ -145,7 +143,7 @@
 }
 
 .btn {
-  font-family:Tajawal, sans-serif; ;
+  font-family: Tajawal, sans-serif;;
   width: 150px;
   background-color: #52958a;
   border: none;
@@ -163,6 +161,7 @@
 .btn:hover {
   background-color: #3C7168;
 }
+
 .panels-container {
   direction: ltr;
   position: absolute;

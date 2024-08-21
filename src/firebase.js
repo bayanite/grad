@@ -1,6 +1,6 @@
 // firebase.js
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import {initializeApp} from 'firebase/app';
+import {getMessaging, getToken} from 'firebase/messaging';
 
 
 const firebaseConfig = {
@@ -12,7 +12,7 @@ const firebaseConfig = {
     storageBucket: 'larapushnati.appspot.com',
     measurementId: 'G-X39508JT03',
 };
-const vapidkey="BEF60idpPb8BxKtZLebEiOS0n5CpLd1Jo2g3ARkyqQLZyxm5cXwDjnb23YCkl6-R_oTjoLT0EXIQbHnoM4Jbp4Q"
+const vapidkey = "BEF60idpPb8BxKtZLebEiOS0n5CpLd1Jo2g3ARkyqQLZyxm5cXwDjnb23YCkl6-R_oTjoLT0EXIQbHnoM4Jbp4Q"
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
@@ -20,9 +20,8 @@ const messaging = getMessaging(app);
 export const getFCMToken = async () => {
     try {
         // Request permission to display notifications
-        const currentToken = await getToken(messaging, { vapidKey: vapidkey });
+        const currentToken = await getToken(messaging, {vapidKey: vapidkey});
         if (currentToken) {
-            console.log('FCM Token:', currentToken);
             return currentToken;
         } else {
             console.log('No registration token available. Request permission to generate one.');

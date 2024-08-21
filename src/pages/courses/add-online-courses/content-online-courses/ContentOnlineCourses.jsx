@@ -10,6 +10,7 @@ import CourseOnline from "../../../../hooks/createCourseOnline";
 
 const ContentOnlineCourses = () => {
 
+
     const {fetchNameExam} = CourseOnline();
     const containerRef = useRef(null);
     const location = useLocation();
@@ -33,10 +34,6 @@ const ContentOnlineCourses = () => {
     const [error, setError] = useState(''); // New state variable for error messages
     const [selectedVideoIndex, setSelectedVideoIndex] = useState(null); // State to store the selected video index
     const [selectedExam, setSelectedExam] = useState({id: null, title: ''});
-
-
-    console.log("kkk", courseName)
-    console.log("totalDuration--------------------", totalDuration)
 
     const scrollToNewContent = () => {
         const container = containerRef.current;
@@ -122,11 +119,9 @@ const ContentOnlineCourses = () => {
     }
 
     const fetchExams = async () => {
-        console.log("ppppppp", id)
         try {
             const data = await fetchNameExam();
             setListExam(data.data.exam);
-            console.log("KKKKKKKKKKKKKK", listExam)
         } catch (error) {
             console.error('Error fetching data:', error);
         }

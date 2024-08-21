@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './CreateTemplate.scss';
 import {IoClose} from "react-icons/io5";
 import {FaCamera} from 'react-icons/fa';
@@ -41,8 +41,7 @@ const CreateTemplate = ({toggle, onSave}) => {
                 onSave();
             } catch (error) {
                 console.error('Error adding template:', error);
-            }
-            finally {
+            } finally {
                 setLoading1(false); // End the loading state
             }
         }
@@ -110,7 +109,7 @@ const CreateTemplate = ({toggle, onSave}) => {
                             onClick={(e) => handleSubmit(e)}
                             disabled={!isFormValid}
                         >
-                                {/*حفظ*/}
+                            {/*حفظ*/}
                             {loading1 ? (
                                 <div className="loading-indicator">
                                     <span>.</span>

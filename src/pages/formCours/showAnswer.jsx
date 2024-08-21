@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {Outlet, useLocation} from "react-router-dom";
-import {FaArrowRight, FaExclamationCircle, FaPlusCircle, FaToggleOff, FaToggleOn, FaTrashAlt} from "react-icons/fa";
+import {useLocation} from "react-router-dom";
+import {FaArrowRight, FaExclamationCircle} from "react-icons/fa";
 import "./showAnswer.scss"
 import Model from "../../hooks/Model";
+
 const ShowAnswer = () => {
     const [activationStates, setActivationStates] = useState(false);
     const [getFormUser, setGetFormUser] = useState([]);
@@ -11,7 +12,7 @@ const ShowAnswer = () => {
     const location = useLocation();
     const id_user = location.state?.id_user
     const id_online_center = location.state?.id_online_center
-    const {displayUser}=Model();
+    const {displayUser} = Model();
 
     useEffect(() => {
         checkServerConnectivity();
@@ -31,25 +32,20 @@ const ShowAnswer = () => {
             setLoading(false); // Stop the loading spinner
         }
     };
-    const show= async () => {
+    const show = async () => {
         try {
-            const data = await displayUser(id_user,id_online_center);
-            if (!data  || data.length === 0) {
+            const data = await displayUser(id_user, id_online_center);
+            if (!data || data.length === 0) {
                 setError("لا توجد بيانات."); // Handle no data found
             } else {
                 setGetFormUser(data);
             }
         } catch (error) {
-            // Catch the error and handle it without logging it to the console
             setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
         } finally {
             setLoading(false);
         }
-        //     console.log("kkkk",data)
-        //     setGetFormUser(data)
-        // } catch (error) {
-        //     console.error('Error fetching courses:', error);
-        // }
+
 
     }
     const handleGoBack = () => {
@@ -60,23 +56,24 @@ const ShowAnswer = () => {
     return (
         <div className="model">
             <div className="go">
-                <FaArrowRight className="back-button" onClick={handleGoBack} />
+                <FaArrowRight className="back-button" onClick={handleGoBack}/>
                 {/* Back button */}
             </div>
             {loading ? (
                 <div className="spinner-container2">
-                    <div className="spinner" /> {/* Correctly closing the spinner */}
+                    <div className="spinner"/>
+                    {/* Correctly closing the spinner */}
                 </div>
             ) : error ? (
                 <div className="spinner-container2">
-                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <FaExclamationCircle className="error-icon"/> {/* Error icon */}
                     <p className="error-message">{error}</p>
                 </div>
             ) : (
                 getFormUsers && Array.isArray(getFormUsers) && getFormUsers.length > 0 && (
                     <>
                         <div className="model-div title">
-                            <h2 className="show-model" style={{ color: "#D2B260" }}>
+                            <h2 className="show-model" style={{color: "#D2B260"}}>
                                 {getFormUsers[0].name} {getFormUsers[0].lastName}
                             </h2>
                             <h4 className="show-model">{getFormUsers[0].title}</h4>
@@ -97,7 +94,6 @@ const ShowAnswer = () => {
             )}
         </div>
     );
-
 
 
 }

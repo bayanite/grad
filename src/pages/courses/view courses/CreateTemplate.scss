@@ -12,10 +12,7 @@
 }
 
 .popup-inner {
-  //align-items: center;
-  //justify-content: center;
-  //flex-direction: column;
-  //display: flex;
+
   background-color: #ffffff;
   position: absolute;
   left: 50%;
@@ -29,12 +26,14 @@
   cursor: auto;
 
 }
-.popcourse{
+
+.popcourse {
   display: flex;
   flex-direction: column;
 
 }
-.form-{
+
+.form- {
   padding-top: 90px;
 }
 
@@ -156,6 +155,7 @@
 .camera-icon {
   color: #D2B260;
 }
+
 .default-profile-image {
   display: flex;
   align-items: center;
@@ -188,7 +188,7 @@
 
 
 .popup-inner form {
-    overflow: auto;
+  overflow: auto;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -196,11 +196,13 @@
 
   //margin-top: auto;
 }
-.about{
+
+.about {
   max-height: 70px;
   resize: vertical;
 }
-.about1{
+
+.about1 {
   margin: 10px;
   border-radius: 5px;
   width: 94%;

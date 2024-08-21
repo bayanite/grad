@@ -1,7 +1,7 @@
 import '../courses/view courses/courses.scss'
 import '../model/form/form.scss'
-import { useNavigate } from 'react-router-dom';
-import {FaExclamationCircle, FaPlus, FaTrashAlt} from "react-icons/fa";
+import {useNavigate} from 'react-router-dom';
+import {FaExclamationCircle, FaPlus} from "react-icons/fa";
 import React, {useEffect, useRef, useState} from "react";
 import {MdMoreVert} from "react-icons/md";
 import AddDates from "./addDates";
@@ -14,7 +14,7 @@ const Adviser = () => {
         navigate('/adviser/addAdviser');
     };
     const handleClick1 = (id) => {
-        navigate('/adviser/showAdviser',{state: {id} });
+        navigate('/adviser/showAdviser', {state: {id}});
     };
 
     const [Adviser, setAdviser] = useState([]);
@@ -22,12 +22,10 @@ const Adviser = () => {
     const [showAddDatesPopup, setShowAddDatesPopup] = useState(null);
     const [loading, setLoading] = useState(true); // Loading state
     const [error, setError] = useState(null); // Error state
-    const { fetchAdvisers, deleteAdviser } = UseAdviser();
+    const {fetchAdvisers, deleteAdviser} = UseAdviser();
 
     const menuRefs = useRef([]);
 
-    console.log("showAddDatesPopup",showAddDatesPopup);
-    // console.log("openMenuIndex",openMenuIndex);
 
     const toggleMenu = (index) => {
         setOpenMenuIndex(openMenuIndex === index ? null : index);
@@ -36,7 +34,7 @@ const Adviser = () => {
     const toggleAddPopup = (index) => {
         setShowAddDatesPopup(showAddDatesPopup === index ? null : index);
     };
-    const adviserDelete = async (e,id) => {
+    const adviserDelete = async (e, id) => {
         const result = await Swal.fire({
             title: 'هل أنت متأكد؟',
             text: "لن تتمكن من التراجع عن هذا!",
@@ -50,7 +48,7 @@ const Adviser = () => {
 
         if (result.isConfirmed) {
             try {
-                const isDeleted = await deleteAdviser(e,id);
+                const isDeleted = await deleteAdviser(e, id);
                 if (isDeleted) {
                     Swal.fire({
                         icon: 'success',
@@ -60,7 +58,7 @@ const Adviser = () => {
                     });
                     setAdviser(prevState => {
                         const updatedExam = prevState.data.adviser.filter(item => item.id !== id);
-                        return { ...prevState, data: { ...prevState.data, adviser: updatedExam } };
+                        return {...prevState, data: {...prevState.data, adviser: updatedExam}};
                     });//remove without refresh all page
                     setOpenMenuIndex(null); // Close the menu after deletion
                 } else {
@@ -108,7 +106,6 @@ const Adviser = () => {
                 setAdviser(data);
             }
         } catch (error) {
-            // Catch the error and handle it without logging it to the console
             setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
         } finally {
             setLoading(false);
@@ -138,7 +135,6 @@ const Adviser = () => {
     }, [openMenuIndex]);
 
     const advisers = Adviser && Adviser.data && Adviser.data.adviser;
-    console.log(advisers)
     return (
         <div className={"form"}>
             <div className={"create_template"}>
@@ -149,45 +145,47 @@ const Adviser = () => {
             </div>
             {loading ? (
                 <div className="spinner-container2">
-                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                    <div className="spinner"/>
+                    {/* Correctly closing the spinner */}
                 </div>
             ) : error ? (
                 <div className="spinner-container2">
-                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <FaExclamationCircle className="error-icon"/> {/* Error icon */}
                     <p className="error-message-">{error}</p>
                 </div>
             ) : (
                 advisers && Array.isArray(advisers) && advisers.map((item, index) => (
-                <div key={index} className={'template'} >
-                    <img src={process.env.REACT_APP_API_PATH + "/Uploads/" +item.photo} className={'img_template'}
-                         onClick={()=>handleClick1(item.id)}
-                    />
-                    <div className={'content'}>
-                        <h1 className={'name_template'}>{item.name}</h1>
-                        <h5 className={'title_template'}>أخصائي/ة {item.type}</h5>
-                        <text className={'about_template'}>{item.about}</text>
-                    </div>
-                    <MdMoreVert
-                        className={'MdMoreVert'}
-                        onClick={() => toggleMenu(index)}
-                    />
-                    {/*<div className="trash-circle">*/}
-                    {/*    <FaTrashAlt className={"FaTrashAlt"} onClick={(e)=>deleteAdviser(e,item.id)} />*/}
-                    {/*</div>*/}
-                    {openMenuIndex === index && (
-                        <div className="menu">
-                            <div className="menu-content">
-                                <p onClick={(e)=>adviserDelete(e,item.id)}>حذف</p>
-                                <p onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleAddPopup(index);
-                                }}>إضافة مواعيد</p>
-                            </div>
+                    <div key={index} className={'template'}>
+                        <img src={process.env.REACT_APP_API_PATH + "/Uploads/" + item.photo} className={'img_template'}
+                             onClick={() => handleClick1(item.id)}
+                        />
+                        <div className={'content'}>
+                            <h1 className={'name_template'}>{item.name}</h1>
+                            <h5 className={'title_template'}>أخصائي/ة {item.type}</h5>
+                            <text className={'about_template'}>{item.about}</text>
                         </div>
-                    )}
-                    {showAddDatesPopup === index  && <AddDates onClose={() => toggleAddPopup(index)} name={item.name} id={item.id} />}
-                </div>
-            ))
+                        <MdMoreVert
+                            className={'MdMoreVert'}
+                            onClick={() => toggleMenu(index)}
+                        />
+                        {/*<div className="trash-circle">*/}
+                        {/*    <FaTrashAlt className={"FaTrashAlt"} onClick={(e)=>deleteAdviser(e,item.id)} />*/}
+                        {/*</div>*/}
+                        {openMenuIndex === index && (
+                            <div className="menu">
+                                <div className="menu-content">
+                                    <p onClick={(e) => adviserDelete(e, item.id)}>حذف</p>
+                                    <p onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleAddPopup(index);
+                                    }}>إضافة مواعيد</p>
+                                </div>
+                            </div>
+                        )}
+                        {showAddDatesPopup === index &&
+                        <AddDates onClose={() => toggleAddPopup(index)} name={item.name} id={item.id}/>}
+                    </div>
+                ))
             )}
 
         </div>

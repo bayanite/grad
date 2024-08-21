@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useRef, useState} from 'react';
 import '../add-online-courses/AddOnlineCourse.scss';
 import '../view courses/courses.scss';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { FaListAlt, FaFileAlt, FaPlus, FaStepBackward, FaArrowRight } from 'react-icons/fa';
+import {useLocation, useNavigate} from 'react-router-dom';
+import {FaArrowRight, FaFileAlt} from 'react-icons/fa';
 import CourseCenter from "../../../hooks/createCourseCenter";
 import Model from "../../../hooks/Model";
 
 const AnnounceCourse = () => {
-    const { fetchForm } = Model();
+    const {fetchForm} = Model();
     const navigate = useNavigate();
     const location = useLocation();
     const courseName = location.state?.courseName;
@@ -25,8 +25,8 @@ const AnnounceCourse = () => {
     const formPopupRef = useRef(null);
     const [showFormPopup, setShowFormPopup] = useState(false);
     const [model, setModel] = useState([]);
-    const [selectedForm, setSelectedForm] = useState({ id: null, title: '' });
-    const [selectedQuestionnaire, setSelectedQuestionnaire] = useState({ id: null, title: '' });
+    const [selectedForm, setSelectedForm] = useState({id: null, title: ''});
+    const [selectedQuestionnaire, setSelectedQuestionnaire] = useState({id: null, title: ''});
     const questionnairePopupRef = useRef(null);
     const [loading1, setLoading1] = useState(false); // Loading state
 
@@ -51,7 +51,6 @@ const AnnounceCourse = () => {
             if (data && data.data && Array.isArray(data.data.paper)) {
                 setModel(data.data.paper);
             } else {
-                console.error('Unexpected data structure:', data);
                 setModel([]);
             }
             setShowQuestionnairePopup(true);
@@ -94,7 +93,6 @@ const AnnounceCourse = () => {
 
     const handlePaymentTypeChange = (e) => {
         const paymentType = e.target.value;
-        console.log("paymentType" ,paymentType)
         if (paymentType === 'free') {
             setIsFree(true);
             setPrice('0');
@@ -110,7 +108,7 @@ const AnnounceCourse = () => {
         navigate('/courses');
     };
 
-    const { createCourseCenter } = CourseCenter();
+    const {createCourseCenter} = CourseCenter();
 
     const handleSaveCourse = async (e) => {
         e.preventDefault();
@@ -135,26 +133,25 @@ const AnnounceCourse = () => {
 
         } catch (error) {
             console.error('Error adding template:', error);
-        }
-        finally {
+        } finally {
             setLoading1(false); // End the loading state
         }
     };
 
     const handleFormClick = (id, title) => {
         if (selectedForm.id === id) {
-            setSelectedForm({ id: null, title: '' });
+            setSelectedForm({id: null, title: ''});
         } else {
-            setSelectedForm({ id, title });
+            setSelectedForm({id, title});
         }
         setShowFormPopup(false);
     };
 
     const handleQuestionnaireClick = (id, title) => {
         if (selectedQuestionnaire.id === id) {
-            setSelectedQuestionnaire({ id: null, title: '' });
+            setSelectedQuestionnaire({id: null, title: ''});
         } else {
-            setSelectedQuestionnaire({ id, title });
+            setSelectedQuestionnaire({id, title});
         }
         setShowQuestionnairePopup(false);
     };
@@ -164,7 +161,7 @@ const AnnounceCourse = () => {
             <div className={'AddOnlineCourse-navbar'}>
                 <FaArrowRight className="arrow-icon" onClick={handlePrevious}/>
                 {`الإعلان عن دورة في المركز لدورة  `}
-                <span style={{ color: '#D2B260', fontWeight: 'bold' }}>{courseName}</span>
+                <span style={{color: '#D2B260', fontWeight: 'bold'}}>{courseName}</span>
             </div>
             <div className={'AddOnlineCourse_container'}>
                 <div className={"AddOnlineCourse_Content"}>
@@ -236,7 +233,8 @@ const AnnounceCourse = () => {
                             <FaFileAlt className={'button-icon'}/>
                         </div>
                         {showQuestionnairePopup && (
-                            <div className="popup" ref={questionnairePopupRef} onClick={() => setShowQuestionnairePopup(false)}>
+                            <div className="popup" ref={questionnairePopupRef}
+                                 onClick={() => setShowQuestionnairePopup(false)}>
                                 <div className="popup-content">
                                     <ul className="popup-list">
                                         {model.map((item, index) => (

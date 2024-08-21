@@ -1,13 +1,15 @@
-.show-model{
+.show-model {
   margin: 12px;
   font-family: Tajawal, sans-serif;
 }
-.show-model-question{
+
+.show-model-question {
   padding: 2%;
   //border: 1px solid green;
   font-family: Tajawal, sans-serif;
 }
-.jf{
+
+.jf {
   font-size: 18px;
   padding: 1%;
   width: 58%;
@@ -17,14 +19,15 @@
   border: 0 solid gray;
   border-radius: 0.50rem;
 }
+
 .list {
   list-style-type: none; /* Removes bullet points */
-  padding-left: 0;       /* Removes padding on the left */
-  margin-left: 0;        /* Removes margin on the left */
+  padding-left: 0; /* Removes padding on the left */
+  margin-left: 0; /* Removes margin on the left */
 }
 
 .list-item {
-  margin-bottom: 8px;    /* Adds space between list items */
+  margin-bottom: 8px; /* Adds space between list items */
 }
 
 .circle {

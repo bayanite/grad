@@ -1,6 +1,4 @@
-
-
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Swal from "sweetalert2";
 
 const CourseCenter = () => {
@@ -10,11 +8,9 @@ const CourseCenter = () => {
     const [error, setError] = useState(null);
 
     const createCourseCenter = async (start, end, numberHours, numberContents, id_course, id_form, id_poll, price) => {
-        console.log("=============")
         try {
             const token = localStorage.getItem('token');
             setLoading(true); // Set loading to true when starting the request
-            console.log("++++++++++++++")
 
             const courseData = {
                 price: price,
@@ -63,11 +59,11 @@ const CourseCenter = () => {
                 timer: 1500,
                 text: error.message || 'An error occurred while creating the course center.',
             });
-        }finally {
+        } finally {
             setLoading(false); // Set loading to false after request is completed
         }
     };
-        return { createCourseCenter, data, loading, error };
+    return {createCourseCenter, data, loading, error};
 };
 
 export default CourseCenter;

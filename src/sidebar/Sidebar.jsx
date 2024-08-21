@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import sidebarNav from '../configs/sidebarNav';
 import './sidebar.scss';
 import logo from '../assets/images/logo.png';
-import { FaBars } from "react-icons/fa";
-import {  NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
-const Sidebar = ({ children }) => {
+const Sidebar = ({children}) => {
     const [isOpen, setIsOpen] = useState(true);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -50,7 +49,7 @@ const Sidebar = ({ children }) => {
     // };
 
     return (
-        <div style={{ width: isOpen ? "250px" : "60px" }} className="sidebar">
+        <div style={{width: isOpen ? "250px" : "60px"}} className="sidebar">
             <div className="top_section">
                 <img
                     style={{
@@ -70,9 +69,10 @@ const Sidebar = ({ children }) => {
                 {/*</div>*/}
             </div>
             {sideBarNav.map((item, index) => (
-                <NavLink to={item.path} key={index} className="link" activeclassname="active"   title={isOpen ? '' : item.name}>
-                    <div className="icon" >{item.icon}</div>
-                    <div style={{ display: isOpen ? "inline-flex" : "none" }} className="link_text">
+                <NavLink to={item.path} key={index} className="link" activeclassname="active"
+                         title={isOpen ? '' : item.name}>
+                    <div className="icon">{item.icon}</div>
+                    <div style={{display: isOpen ? "inline-flex" : "none"}} className="link_text">
                         {item.name}
                     </div>
                 </NavLink>

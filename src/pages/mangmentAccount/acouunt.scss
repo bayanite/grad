@@ -5,38 +5,44 @@
 //  color:#3C7168;
 //  cursor: pointer;
 //}
-.FaEyeSlash{
+.FaEyeSlash {
   font-size: 20px;
   margin: 5px;
   color: #8700fd;
   cursor: pointer;
 }
-.FaPen{
+
+.FaPen {
   font-size: 20px;
   margin: 5px;
   color: #FF9066;
   cursor: pointer;
 }
-.FaTrashAlt1{
+
+.FaTrashAlt1 {
   font-size: 20px;
   margin: 5px;
   color: red;
   cursor: pointer;
 }
-.FaEyeSlash:hover,.FaTrashAlt1:hover ,.FaPen:hover {
+
+.FaEyeSlash:hover, .FaTrashAlt1:hover, .FaPen:hover {
   transform: translateY(-3px);
 
 }
+
 .hidden-password {
   font-size: 1.6em; /* Adjust the size as needed */
 }
-.input_pass{
+
+.input_pass {
   text-align: center;
   padding: 8px;
   border: none;
   width: 90%;
   outline: none;
 }
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -48,6 +54,7 @@
   margin: 10px 0;
   //background-color: #f1f1f1;
 }
+
 .buttons-container {
   display: flex;
   justify-content: center;
@@ -57,7 +64,8 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
   overflow: hidden; /* Ensures the buttons are contained within the oval */
 }
-.navbar input{
+
+.navbar input {
   width: 200px;
   background-color: #eaeaea;
   border-radius: 25px;
@@ -100,10 +108,11 @@
 //  border: 1px solid #ccc; /* Border color */
 //  width: 200px; /* Adjust the width as needed */
 //}
-.div-add{
+.div-add {
   display: flex;
 }
-.plus-user{
+
+.plus-user {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,13 +121,16 @@
   width: 20%;
   cursor: pointer;
 }
-.plus-user-role{
-  color:white;
+
+.plus-user-role {
+  color: white;
 }
-.btn .solid{
+
+.btn .solid {
   font-family: Tajawal, sans-serif;
 
 }
+
 /* Responsive Styles */
 @media screen and (max-width: 800px) {
   .navbar {

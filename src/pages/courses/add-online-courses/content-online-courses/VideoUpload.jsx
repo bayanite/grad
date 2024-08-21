@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaCloudUploadAlt, FaLink, FaTrashAlt } from "react-icons/fa";
+import {FaCloudUploadAlt, FaLink, FaTrashAlt} from "react-icons/fa";
 import './ContentOnlineCourses.scss';
 
 const VideoUpload = ({
@@ -23,12 +23,14 @@ const VideoUpload = ({
                              onDragOver={(e) => handleVideoDragOver(e)}
                              onDrop={(e) => handleVideoDrop(e, index, fileIndex)}>
                             <span className={"cont_icon"}>
-                            <span onClick={() => handleDeleteVideo(index, fileIndex)}><FaTrashAlt /></span>
-                            {file.examTitle ? (
-                                <span className="link-exam" onClick={() => handleLinkExamWithVideo(index, fileIndex)}>{file.examTitle}</span>
-                            ) : (
-                                <span className="link-exam" onClick={() => handleLinkExamWithVideo(index, fileIndex)}><FaLink /></span>
-                            )}
+                            <span onClick={() => handleDeleteVideo(index, fileIndex)}><FaTrashAlt/></span>
+                                {file.examTitle ? (
+                                    <span className="link-exam"
+                                          onClick={() => handleLinkExamWithVideo(index, fileIndex)}>{file.examTitle}</span>
+                                ) : (
+                                    <span className="link-exam"
+                                          onClick={() => handleLinkExamWithVideo(index, fileIndex)}><FaLink/></span>
+                                )}
                             </span>
 
                             <span>{file.name}</span>
@@ -38,7 +40,7 @@ const VideoUpload = ({
                 </div>
             )}
             <label htmlFor={`video-upload-${index}`}>
-                <FaCloudUploadAlt className="add-icon" />
+                <FaCloudUploadAlt className="add-icon"/>
                 إضافة فيديوهات
             </label>
             <input
@@ -46,7 +48,7 @@ const VideoUpload = ({
                 type="file"
                 accept="video/*"
                 multiple
-                style={{ display: 'none' }}
+                style={{display: 'none'}}
                 onChange={(event) => handleFileUpload(index, event)}
             />
         </div>

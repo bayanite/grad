@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {FaArrowRight, FaExclamationCircle, FaPen} from "react-icons/fa";
 import CopyHooks from "../../../hooks/copyHooks";
-import { useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import './ShowRegistered.scss';
 
 const ShowRegistered = () => {
@@ -13,7 +13,7 @@ const ShowRegistered = () => {
     const [error, setError] = useState(null);
     const [noData, setNoData] = useState(null); // State for handling "no data" message
     const location = useLocation();
-    const { fetchRegister, saveMark } = CopyHooks(); // Assuming saveMark is a function to save the mark
+    const {fetchRegister, saveMark} = CopyHooks(); // Assuming saveMark is a function to save the mark
     const id = location.state?.id;
     const copyType = location.state?.type; // Get the type (online or center)
 
@@ -45,13 +45,11 @@ const ShowRegistered = () => {
     };
 
 
-
     useEffect(() => {
         if (id) {
             getRegister();
         }
     }, [id]);
-
 
 
     const handleGoBack = () => {
@@ -63,7 +61,7 @@ const ShowRegistered = () => {
     };
 
     const handleMarkChange = (e, rowId) => {
-        setMarks({ ...marks, [rowId]: e.target.value });
+        setMarks({...marks, [rowId]: e.target.value});
     };
 
     const handleKeyPress = async (e, rowId) => {
@@ -81,7 +79,7 @@ const ShowRegistered = () => {
 
     const handleEditClick = (rowId, currentMark) => {
         setEditingRowId(rowId); // Set the current row to be editable
-        setMarks({ ...marks, [rowId]: currentMark || '' }); // Initialize with the current mark if exists
+        setMarks({...marks, [rowId]: currentMark || ''}); // Initialize with the current mark if exists
     };
 
     const filteredRegister = Array.isArray(register) ? register.filter((val) => {
@@ -94,7 +92,7 @@ const ShowRegistered = () => {
     return (
         <div className="showRegistered">
             <div className="ShowCopy-navbar">
-                <FaArrowRight className="arrow-icon" onClick={handleGoBack} />
+                <FaArrowRight className="arrow-icon" onClick={handleGoBack}/>
                 <input
                     type="text"
                     placeholder="بحث..."
@@ -106,18 +104,19 @@ const ShowRegistered = () => {
 
             {loading ? (
                 <div className="spinner-container2">
-                    <div className="spinner" /> {/* Loading spinner */}
+                    <div className="spinner"/>
+                    {/* Loading spinner */}
                 </div>
             ) : error ? (
                 <div className="spinner-container2">
-                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <FaExclamationCircle className="error-icon"/> {/* Error icon */}
                     <p className="error-message-">{error}</p>
                 </div>
             ) : noData ? (
                 <div className="spinner-container2">
                     <p className="error-message-">{noData}</p>
                 </div>
-            ): (
+            ) : (
                 <div className="table-container">
                     <table>
                         <thead>

@@ -8,13 +8,10 @@ const CourseOnline = () => {
     const [error, setError] = useState(null);
     const token = localStorage.getItem('token');
     const createCourseOnline = async (exam, price, id_form, id_poll, id_prefix, serial, id_course, numberHours, numberVideos, numberQuestion, durationExam, content) => {
-        console.log("=============")
         try {
             setLoading(true); // Set loading to true when starting the request
-            console.log("connnnnnnt", content)
 
             const formData = new FormData();
-            console.log("55555555555");
             formData.append('exam', exam)
             formData.append('price', price)
             formData.append('id_form', id_form)
@@ -35,14 +32,12 @@ const CourseOnline = () => {
                 formData.append(`content[${index}][numberQuestion]`, item.numberQuestion);
                 formData.append(`content[${index}][durationExam]`, item.durationExam);
 
-                console.log("llll",  item.videoFiles)
                 item.videoFiles.forEach((videoFile, i) => {
                     formData.append(`content[${index}][videoFiles][${i}][name]`, videoFile.name);
                     formData.append(`content[${index}][videoFiles][${i}][video]`, videoFile.video);
                     formData.append(`content[${index}][videoFiles][${i}][id_exam]`, videoFile.id_exam);
                     formData.append(`content[${index}][videoFiles][${i}][duration]`, videoFile.duration);
                 });
-                console.log("llll",  item.pdfFiles)
 
                 // Append each PDF file
                 item.pdfFiles.forEach((pdfFile, i) => {
@@ -51,9 +46,6 @@ const CourseOnline = () => {
                 });
             });
 
-            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            // console.log("xxxxxxxxxxx",courseData)
-            // console.log("vvvv",JSON.stringify(courseData.content))
 
 
             const response = await fetch(`${process.env.REACT_APP_API_URL}online/create`, {
@@ -71,7 +63,6 @@ const CourseOnline = () => {
                 setError(errorData.message);
             } else {
                 const responseData = await response.json();
-                console.log("responseData999999", responseData);
 
                 setData(responseData);
 
@@ -93,18 +84,17 @@ const CourseOnline = () => {
     const fetchNameCourse = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}course/indexname`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
-            // console.log("response",response)
 
             if (!response.ok) {
                 throw new Error('Failed to fetch course');
             }
             const data = await response.json();
 
-            console.log("ddd", JSON.stringify(data))
             return data;
 
         } catch (error) {
@@ -113,7 +103,6 @@ const CourseOnline = () => {
         }
     };
     const fetchNameExam = async () => {
-        console.log("not");
 
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}exam/index`,
@@ -123,15 +112,12 @@ const CourseOnline = () => {
                     },
 
                 });
-            // console.log("response",response)
 
             if (!response.ok) {
-                console.log("not");
                 throw new Error('Failed to fetch course');
             }
             const data = await response.json();
 
-            console.log("notnotnot", JSON.stringify(data))
             return data;
 
         } catch (error) {
@@ -142,7 +128,8 @@ const CourseOnline = () => {
     const fetchContentCourse = async (id) => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}online/showContent/${id}`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -152,7 +139,6 @@ const CourseOnline = () => {
             }
             const data = await response.json();
 
-            console.log("ddd", JSON.stringify(data))
             return data;
 
         } catch (error) {
@@ -160,7 +146,7 @@ const CourseOnline = () => {
         } finally {
         }
     };
-    return {createCourseOnline,fetchNameCourse,fetchNameExam,fetchContentCourse, data, loading, error};
+    return {createCourseOnline, fetchNameCourse, fetchNameExam, fetchContentCourse, data, loading, error};
 };
 
 export default CourseOnline;

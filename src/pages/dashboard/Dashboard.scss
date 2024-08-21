@@ -159,7 +159,7 @@
   margin-bottom: 15px;
   padding: 20px;
   background-color: #d8ffc8;
-  box-shadow: 5px 5px 10px rgba(36, 88, 81,0.25);
+  box-shadow: 5px 5px 10px rgba(36, 88, 81, 0.25);
 
   transition: transform 1s ease, box-shadow 1s ease;
 }
@@ -204,6 +204,7 @@
   //flex: 0 0 auto;
   //margin-left: 5px; /* Space between info and time */
 }
+
 .no-appointment {
   display: flex;
   justify-content: center;
@@ -322,6 +323,7 @@
     width: 100%;
   }
 }
+
 /* Styles for larger screens */
 //.chart-container {
 //  display: flex;

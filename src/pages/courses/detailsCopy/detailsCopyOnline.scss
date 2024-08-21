@@ -43,7 +43,7 @@
 
 
   justify-content: start;
-  margin: 10px  5px;
+  margin: 10px 5px;
 }
 
 .folder-menu {
@@ -99,11 +99,13 @@
 .folder-header:hover {
   background-color: #fafafa;
 }
+
 .AddOnlineCourse_Button- {
   display: flex;
 
   flex-direction: column;
 }
+
 .AddOnlineCourse_Button- > div {
   margin: auto;
 }
@@ -168,6 +170,7 @@
   color: #444;
   font-size: 14px;
 }
+
 .video-details {
   font-family: Tajawal, sans-serif;
   display: flex;
@@ -180,6 +183,7 @@
 .video-details p {
   margin: 5px 0; /* Add some space between the paragraphs */
 }
+
 @media screen and (max-width: 1024px) {
   .detailsCopy {
     flex-direction: column;
@@ -193,7 +197,7 @@
 
   .additional-info {
     display: flex;
-    margin:  auto;
+    margin: auto;
     justify-content: space-between;
     flex-direction: row;
   }
@@ -202,13 +206,13 @@
     width: 90%;
     margin: 20px auto;
   }
-  .AddOnlineCourse_Button-{
+  .AddOnlineCourse_Button- {
     display: flex;
     flex-direction: row;
     margin: 30px 0 0 0;
 
   }
-  .AddOnlineCourse_Button- > div{
+  .AddOnlineCourse_Button- > div {
     margin: auto;
   }
 }
@@ -227,7 +231,8 @@
     justify-content: flex-start;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #c6c6c6;  }
+    border: 1px solid #c6c6c6;
+  }
 
   //.container-images {
   //  height: auto;
@@ -292,14 +297,16 @@
     margin: auto;
   }
 
-   .flex-input- {
+  .flex-input- {
     width: 100%;
-    margin:auto;
+    margin: auto;
   }
-  .additional-info{display: flex;
-    margin:  auto;
+  .additional-info {
+    display: flex;
+    margin: auto;
     justify-content: space-between;
-    flex-direction: row;}
+    flex-direction: row;
+  }
 
 
   .row_inpout {

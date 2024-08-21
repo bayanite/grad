@@ -6,20 +6,16 @@
 }
 
 .arrow-icon {
-  font-size:20px ;
+  font-size: 20px;
   cursor: pointer;
   transition: transform 0.3s ease; /* Add a smooth transition effect */
 
-  //margin: 0px 0px -5px 5px ;
-  //width: 20px;
-  //height: 20px;
 }
 
 .arrow-icon:hover {
   color: #EAD078;
   transform: scale(1.1);
-  //background: rgba(224, 224, 224, 0.77);
-  //border-radius: 50px;
+
 
 
 }
@@ -27,7 +23,6 @@
 .AddOnlineCourse_container {
   display: flex;
 }
-
 
 
 .AddOnlineCourse_Content.dynamic-content {
@@ -113,11 +108,11 @@
 }
 
 .AddOnlineCourse_input_info {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   //margin: 20px;
- }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  //margin: 20px;
+}
 
 .AddOnlineCourse_input label {
   display: block;
@@ -297,6 +292,7 @@
 .error-input {
   border: 1px solid red;
 }
+
 .save- {
   margin: 40% 0 0 35px;
   width: 80px;
@@ -310,10 +306,12 @@
   font-family: Tajawal, sans-serif;
   cursor: pointer;
 }
-.save-:hover{
+
+.save-:hover {
   background-color: #b39942;
 }
-.save-:active{
+
+.save-:active {
   background-color: #b39942;
   transform: translateY(4px);
 }
@@ -332,6 +330,7 @@
   display: flex;
   overflow-y: scroll;
 }
+
 //.AddOnlineCourse_Content {
 //  background-color: #D3EDE8;
 //  width: 60%;
@@ -345,7 +344,6 @@
 //  display: flex;
 //  overflow-y: scroll;
 //}
-
 
 
 .AddOnlineCourse_input_info label {

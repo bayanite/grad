@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { IoClose } from "react-icons/io5";
-import { FaCamera } from 'react-icons/fa';
+import React, {useEffect, useState} from 'react';
+import {IoClose} from "react-icons/io5";
+import {FaCamera} from 'react-icons/fa';
 import useEditTemplate from "../../../hooks/editTemplate";
 
-const EditCourse = ({ toggle, onSave, courseData }) => {
+const EditCourse = ({toggle, onSave, courseData}) => {
     const [image, setImage] = useState(courseData ? courseData.photo : '');
     const [nameOfCourse, setNameOfCourse] = useState(courseData ? courseData.name : '');
     const [aboutOfCourse, setAboutOfCourse] = useState(courseData ? courseData.about : '');
@@ -31,7 +31,7 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
         setImage(selectedImage);
     };
 
-    const { editCourse } = useEditTemplate();
+    const {editCourse} = useEditTemplate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,8 +62,7 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
             onSave();
         } catch (error) {
             console.error('Error editing course:', error);
-        }
-        finally {
+        } finally {
             setLoading1(false); // End the loading state
         }
     };
@@ -82,7 +81,7 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
             <div className="popup-inner popcourse">
                 <nav className="popup-navbar">
                     <h5>{'تعديل دورة'}</h5>
-                    <IoClose className="IoClose" onClick={toggle} />
+                    <IoClose className="IoClose" onClick={toggle}/>
                 </nav>
                 <form className="form-" onSubmit={handleSubmit}>
                     <div className="profile-picture-container">
@@ -102,7 +101,7 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
                             type="file"
                             accept="image/*"
                             onChange={handleImageChange}
-                            style={{ display: 'none' }}
+                            style={{display: 'none'}}
                         />
                     </div>
                     <label>اسم الدورة:
@@ -139,7 +138,7 @@ const EditCourse = ({ toggle, onSave, courseData }) => {
                         {/*</button>*/}
                         <button
                             type="submit"
-                            disabled={!isFormValid}                        >
+                            disabled={!isFormValid}>
                             {loading1 ? (
                                 <div className="loading-indicator">
                                     <span>.</span>

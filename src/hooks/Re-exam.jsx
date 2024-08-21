@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Swal from "sweetalert2";
 
 const ReExam = () => {
@@ -10,7 +10,8 @@ const ReExam = () => {
     const fetchOrderReExam = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}reExam/index`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -28,8 +29,7 @@ const ReExam = () => {
     };
 
     const checkOrder = async (id_reExam, status) => {
-        console.log("id_reExam", id_reExam)
-        console.log("status", status)
+
         setLoading(true);
         setError(null); // Reset error before making a new request
 
@@ -51,8 +51,6 @@ const ReExam = () => {
                 throw new Error(errorData.message);
             } else {
                 const responseData = await response.json();
-                console.log("hhhhhhh", responseData)
-                console.log("ffffffffffff", data)
                 setData(responseData);
 
                 // Show success message based on the status
@@ -85,7 +83,7 @@ const ReExam = () => {
         }
     };
 
-    return { data, loading, error, fetchOrderReExam ,checkOrder};
+    return {data, loading, error, fetchOrderReExam, checkOrder};
 };
 
 export default ReExam;

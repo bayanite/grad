@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './style.scss';
-import { FaLock, FaLockOpen, FaUser } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import {FaLock, FaLockOpen, FaUser} from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
 import Login from "../../hooks/login";
 
-const SignInUp = ({ setIsAuthenticated }) => {
+const SignInUp = ({setIsAuthenticated}) => {
     const [nameEmp, setNameEmp] = useState('');
     const [passwordEmp, setPasswordEmp] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -14,11 +14,11 @@ const SignInUp = ({ setIsAuthenticated }) => {
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
     };
-     const {login}=Login(setIsAuthenticated);
+    const {login} = Login(setIsAuthenticated);
 
-    const signIn =async (e)=>{
+    const signIn = async (e) => {
         try {
-          const mes= await login(e,nameEmp,passwordEmp);
+            const mes = await login(e, nameEmp, passwordEmp);
             setErrorMessage(mes);
         } catch (error) {
             console.error('Error adding template:', error);
@@ -32,7 +32,7 @@ const SignInUp = ({ setIsAuthenticated }) => {
                     <form action="#" className="form1 sign-in-form" onSubmit={signIn}>
                         <h2 className="title1">تسجيل الدخول</h2>
                         <div className="input-field">
-                            <FaUser className="icon" />
+                            <FaUser className="icon"/>
                             <input
                                 type="text"
                                 placeholder="اسم المستخدم"
@@ -46,13 +46,13 @@ const SignInUp = ({ setIsAuthenticated }) => {
                                 onChange={(e) => setPasswordEmp(e.target.value)}
                             />
                             {isPasswordVisible ? (
-                                <FaLockOpen className="icon" onClick={togglePasswordVisibility} />
+                                <FaLockOpen className="icon" onClick={togglePasswordVisibility}/>
                             ) : (
-                                <FaLock className="icon" onClick={togglePasswordVisibility} />
+                                <FaLock className="icon" onClick={togglePasswordVisibility}/>
                             )}
                         </div>
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
-                        <input type="submit" value="تسجيل دخول" className="btn solid" />
+                        <input type="submit" value="تسجيل دخول" className="btn solid"/>
                     </form>
                 </div>
             </div>
@@ -62,7 +62,7 @@ const SignInUp = ({ setIsAuthenticated }) => {
                         <h3>مرحبًا بعودتك</h3>
                         <p> لتبقى على اتصال معنا يرجى ادخال معلوماتك لتسجيل الدخول. </p>
                     </div>
-                    <img src={"/images/log.svg"} className="image" alt="" />
+                    <img src={"/images/log.svg"} className="image" alt=""/>
                 </div>
             </div>
         </div>

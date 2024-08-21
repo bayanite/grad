@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Swal from "sweetalert2";
 
 const useSetting = () => {
@@ -7,12 +7,12 @@ const useSetting = () => {
     const [data, setData] = useState(null);
     const token = localStorage.getItem('token');
 
-    console.log("API URL:", process.env.REACT_APP_API_URL);
 
     const fetchUser = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}booking/indexNew`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -22,7 +22,6 @@ const useSetting = () => {
             }
 
             const data = await response.json();
-            console.log("Data received:", JSON.stringify(data));
 
             return data;
         } catch (error) {
@@ -32,10 +31,8 @@ const useSetting = () => {
     };
 
 
-
     const checkUser = async (id, status) => {
-        console.log("id", id)
-        console.log("status", status)
+
         setLoading(true);
         setError(null); // Reset error before making a new request
 
@@ -57,8 +54,7 @@ const useSetting = () => {
                 throw new Error(errorData.message);
             } else {
                 const responseData = await response.json();
-                console.log("hhhhhhh", responseData)
-                console.log("ffffffffffff", data)
+
                 setData(responseData);
 
                 // Show success message based on the status

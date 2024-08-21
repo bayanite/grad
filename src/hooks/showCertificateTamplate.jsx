@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 const useCertificateTemplate = () => {
     const [data, setData] = useState(null);
@@ -17,9 +17,9 @@ const useCertificateTemplate = () => {
                 body: formData,
 
                 headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -39,7 +39,8 @@ const useCertificateTemplate = () => {
     const fetchCertificate = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}certificate/index`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -57,7 +58,6 @@ const useCertificateTemplate = () => {
     };
 
     const deleteCertificate = async (id) => {
-        console.log("gggggggg", id)
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}certificate/delete/${id}`, {
                 method: 'GET',
@@ -81,7 +81,8 @@ const useCertificateTemplate = () => {
     const fetchCertificateUser = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}certificate/all`,
-                { headers: {
+                {
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
@@ -99,7 +100,7 @@ const useCertificateTemplate = () => {
     };
 
 
-    return { data, loading, error, addCertificate, fetchCertificate, deleteCertificate,fetchCertificateUser };
+    return {data, loading, error, addCertificate, fetchCertificate, deleteCertificate, fetchCertificateUser};
 };
 
 export default useCertificateTemplate;

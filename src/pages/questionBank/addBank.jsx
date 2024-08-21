@@ -1,27 +1,18 @@
 import '../model/model.scss';
 import React, {useEffect, useRef, useState} from "react";
-import {
-    FaArrowRight,
-    FaPlusCircle,
-    FaRegCircle,
-    FaRegDotCircle,
-    FaTimes,
-    FaTrashAlt,
-} from "react-icons/fa";
+import {FaArrowRight, FaPlusCircle, FaRegCircle, FaRegDotCircle, FaTimes, FaTrashAlt,} from "react-icons/fa";
 import Exam from "../../hooks/Exam";
-
 
 
 const AddBank = () => {
 
     const latestDivRef = useRef(null);
-    const [divValues, setDivValues] = useState([{ question: "", options: [{ option: "", correct: "0" }] }]);
+    const [divValues, setDivValues] = useState([{question: "", options: [{option: "", correct: "0"}]}]);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [saveDisabled, setSaveDisabled] = useState(true);
     const [loading, setLoading] = useState(false); // New loading state
-    const {addBank}=Exam();
+    const {addBank} = Exam();
 
-    console.log("saveDisabled",saveDisabled)
     useEffect(() => {
         checkSaveButtonState(); // Check initial state of save button
     }, [divValues]); // Re-run when divValues change
@@ -35,7 +26,8 @@ const AddBank = () => {
 
     const renderModelDivs = () => {
         return divValues.map((value, index) => (
-            <div key={index} className={"model-div body bank"} ref={index === divValues.length - 1 ? latestDivRef : null}>
+            <div key={index} className={"model-div body bank"}
+                 ref={index === divValues.length - 1 ? latestDivRef : null}>
                 <input
                     className={`model-title question  ${formSubmitted && (value.question.trim() === '') ? 'required-field' : ''}`}
                     type={"text"}
@@ -45,8 +37,8 @@ const AddBank = () => {
                 />
                 {MultipleChoice(index)}
                 <div className={"bottom_nav"}>
-                    <FaPlusCircle className={"FaPlusCircle"} onClick={() => handleAddModelDiv(index)} />
-                    <FaTrashAlt className={"FaPlusCircle"} onClick={() => handleRemoveModelDiv(index)} />
+                    <FaPlusCircle className={"FaPlusCircle"} onClick={() => handleAddModelDiv(index)}/>
+                    <FaTrashAlt className={"FaPlusCircle"} onClick={() => handleRemoveModelDiv(index)}/>
                 </div>
             </div>
         ));
@@ -54,10 +46,10 @@ const AddBank = () => {
 
     const handleAddModelDiv = () => {
         const newDivValues = [...divValues];
-        newDivValues.push({ question: "", options: [{ option: "", correct: "0" }] });
+        newDivValues.push({question: "", options: [{option: "", correct: "0"}]});
         setDivValues(newDivValues);
         if (latestDivRef.current) {
-            latestDivRef.current.scrollIntoView({ behavior: "smooth" });
+            latestDivRef.current.scrollIntoView({behavior: "smooth"});
         }
         checkSaveButtonState();
     };
@@ -82,7 +74,7 @@ const AddBank = () => {
         const question = divValues[questionIndex];
 
         const handleInputChange = (event, choiceIndex) => {
-            const { value } = event.target;
+            const {value} = event.target;
             const newDivValues = [...divValues];
             newDivValues[questionIndex].options[choiceIndex].option = value;
             setDivValues(newDivValues);
@@ -90,7 +82,7 @@ const AddBank = () => {
 
         const handleAddChoice = () => {
             const newDivValues = [...divValues];
-            newDivValues[questionIndex].options.push({ option: "", correct: "0" });
+            newDivValues[questionIndex].options.push({option: "", correct: "0"});
             setDivValues(newDivValues);
             checkSaveButtonState();
         };
@@ -105,9 +97,9 @@ const AddBank = () => {
             const newDivValues = [...divValues];
             newDivValues[questionIndex].options = newDivValues[questionIndex].options.map((option, index) => {
                 if (index === choiceIndex) {
-                    return { ...option, correct: option.correct ? 0 : 1 }; // Toggle between 1 and 0
+                    return {...option, correct: option.correct ? 0 : 1}; // Toggle between 1 and 0
                 }
-                return { ...option, correct: 0 }; // Set other options to 0
+                return {...option, correct: 0}; // Set other options to 0
             });
             setDivValues(newDivValues);
             checkSaveButtonState();
@@ -117,9 +109,11 @@ const AddBank = () => {
                 {question.options.map((choice, choiceIndex) => (
                     <div key={choiceIndex} className={"MultipleChoiceBody"}>
                         {choice.correct === 1 ? (
-                            <FaRegDotCircle className={"FaRegDotCircle"} onClick={() => handleToggleIcon(questionIndex, choiceIndex)} />
+                            <FaRegDotCircle className={"FaRegDotCircle"}
+                                            onClick={() => handleToggleIcon(questionIndex, choiceIndex)}/>
                         ) : (
-                            <FaRegCircle className={"FaRegCircle"} onClick={() => handleToggleIcon(questionIndex, choiceIndex)} />
+                            <FaRegCircle className={"FaRegCircle"}
+                                         onClick={() => handleToggleIcon(questionIndex, choiceIndex)}/>
                         )}
                         <input
                             type="text"
@@ -128,18 +122,17 @@ const AddBank = () => {
                             required
                         />
                         {choiceIndex === 0 ? null : ( // Render delete icon for non-first options
-                            <FaTimes onClick={() => handleRemoveChoice(choiceIndex)} />
+                            <FaTimes onClick={() => handleRemoveChoice(choiceIndex)}/>
                         )}
                     </div>
                 ))}
                 <div className={"MultipleChoiceBody button"}>
-                    <FaRegCircle className={"FaRegCircle"} />
+                    <FaRegCircle className={"FaRegCircle"}/>
                     <button onClick={() => handleAddChoice(questionIndex)}>إضافة خيار</button>
                 </div>
             </div>
         );
     };
-
 
 
     const [inputValueTitle, setInputValueTitle] = useState('');
@@ -190,7 +183,7 @@ const AddBank = () => {
             handleGoBack();
         } catch (error) {
             console.error("Error saving bank:", error);
-        }finally {
+        } finally {
             setLoading(false); // End the loading state
         }
 
@@ -225,7 +218,7 @@ const AddBank = () => {
                     required
                 />
                 <div className={"add-button-container"}>
-                    <FaPlusCircle className={"add-button"} onClick={handleAddModelDiv} />
+                    <FaPlusCircle className={"add-button"} onClick={handleAddModelDiv}/>
                 </div>
             </div>
             {divValues.length > 0 && (

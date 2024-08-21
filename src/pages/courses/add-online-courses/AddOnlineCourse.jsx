@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './AddOnlineCourse.scss';
 import '../view courses/courses.scss';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {FaListAlt, FaFileAlt, FaPlus, FaArrowRight} from 'react-icons/fa';
+import {FaArrowRight, FaFileAlt, FaListAlt, FaPlus} from 'react-icons/fa';
 import {MdVideoLibrary} from "react-icons/md";
 import CourseOnline from "../../../hooks/createCourseOnline";
 import Model from "../../../hooks/Model";
@@ -15,9 +15,6 @@ const AddOnlineCourse = () => {
     const totalDuration = location.state?.totalDuration;
     const numberAllVideos = location.state?.numberAllVideos;
     const dynamicContent = location.state?.dynamicContent;
-    console.log("cfcfgv", dynamicContent)
-    console.log("numberVideos----------------------", numberAllVideos)
-    console.log("totalDuration----------------", totalDuration)
 
     const {fetchForm} = Model();
 
@@ -42,8 +39,6 @@ const AddOnlineCourse = () => {
     const [duration, setDuration] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [loading1, setLoading1] = useState(false); // Loading state
-    console.log("duration", duration)
-    console.log("numberOfQuestions", numberOfQuestions)
 
     const handleSaveQuiz = () => {
         setDuration(duration);
@@ -77,7 +72,6 @@ const AddOnlineCourse = () => {
     // };
     const handlePaymentTypeChange = (e) => {
         const paymentType = e.target.value;
-        console.log("paymentType" ,paymentType)
         if (paymentType === 'free') {
             setIsFree(true);
             setPrice('0');
@@ -113,7 +107,6 @@ const AddOnlineCourse = () => {
     const handleQuestionnaireButtonClick = async () => {
         try {
             const data = await fetchForm('استبيان');
-            console.log('Fetched questionnaire data:', data); // Log fetched data
             if (data && data.data && Array.isArray(data.data.paper)) {
                 setModel(data.data.paper);
             } else {
@@ -133,7 +126,6 @@ const AddOnlineCourse = () => {
             if (data && data.data && Array.isArray(data.data.paper)) {
                 setModel(data.data.paper);
             } else {
-                console.error('Unexpected data structure:', data);
                 setModel([]);
             }
             setShowFormPopup(true);
@@ -189,8 +181,7 @@ const AddOnlineCourse = () => {
 
         } catch (error) {
             console.error('Error creating course:', error);
-        }
-        finally {
+        } finally {
             setLoading1(false); // End the loading state
         }
     };

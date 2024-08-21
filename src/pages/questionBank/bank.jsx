@@ -1,8 +1,8 @@
 import '../courses/view courses/courses.scss';
 import '../model/form/form.scss';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {FaExclamationCircle, FaPlus, FaTrashAlt} from "react-icons/fa";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Swal from "sweetalert2";
 import Exam from "../../hooks/Exam";
 
@@ -12,14 +12,14 @@ const Bank = () => {
     const [loading, setLoading] = useState(true); // Loading state
     const [error, setError] = useState(null); // Error state
 
-    const { deleteBank, allExam } = Exam();
+    const {deleteBank, allExam} = Exam();
 
     const handleClick = () => {
         navigate('/questionBank/addBank');
     };
 
     const handleClick1 = (title, description, id) => {
-        navigate('/questionBank/showBank', { state: { title, description, id } });
+        navigate('/questionBank/showBank', {state: {title, description, id}});
     };
 
     const deleteExam = async (id) => {
@@ -46,7 +46,7 @@ const Bank = () => {
                     });
                     setExams(prevState => {
                         const updatedExam = prevState.data.exam.filter(item => item.id !== id);
-                        return { ...prevState, data: { ...prevState.data, exam: updatedExam } };
+                        return {...prevState, data: {...prevState.data, exam: updatedExam}};
                     });
                 } else {
                     Swal.fire({
@@ -104,29 +104,31 @@ const Bank = () => {
     return (
         <div className="form">
             <div className="create_template">
-                <FaPlus className="FaPlus" onClick={handleClick} />
+                <FaPlus className="FaPlus" onClick={handleClick}/>
                 <p>إنشاء نموذج امتحان </p>
             </div>
 
             {loading ? (
                 <div className="spinner-container2">
-                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                    <div className="spinner"/>
+                    {/* Correctly closing the spinner */}
                 </div>
             ) : error ? (
                 <div className="spinner-container2">
-                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <FaExclamationCircle className="error-icon"/> {/* Error icon */}
                     <p className="error-message-">{error}</p>
                 </div>
             ) : (
                 exams && Array.isArray(exams) && exams.map((item, index) => (
                     <div key={index} className="template">
-                        <img src={"/images/exam.jpg"} className="img_template" onClick={() => handleClick1(item.title, item.description, item.id)} />
+                        <img src={"/images/exam.jpg"} className="img_template"
+                             onClick={() => handleClick1(item.title, item.description, item.id)}/>
                         <div className="content">
                             <h1 className="name_template">{item.title}</h1>
                             <text className="about_template">{item.description}</text>
                         </div>
                         <div className="trash-circle">
-                            <FaTrashAlt className="FaTrashAlt" onClick={() => deleteExam(item.id)} />
+                            <FaTrashAlt className="FaTrashAlt" onClick={() => deleteExam(item.id)}/>
                         </div>
                     </div>
                 ))

@@ -1,29 +1,31 @@
-.form{
+.form {
   display: flex;
   flex-wrap: wrap;
 }
 
-  .trash-circle {
-    position: absolute;
-    bottom: -10px;
-    left: -20px; /* Adjust the amount of shift */
-    width: 40px; /* Adjust size of the circle */
-    height: 40px; /* Adjust size of the circle */
-    border-radius: 50%; /* Makes the square shape a circle */
-    background-color: #f00; /* Adjust circle background color */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.trash-circle {
+  position: absolute;
+  bottom: -10px;
+  left: -20px; /* Adjust the amount of shift */
+  width: 40px; /* Adjust size of the circle */
+  height: 40px; /* Adjust size of the circle */
+  border-radius: 50%; /* Makes the square shape a circle */
+  background-color: #f00; /* Adjust circle background color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .FaTrashAlt {
-    /* Adjust icon size and color */
-    font-size: 20px;
-    color: #fff;
-  }
+.FaTrashAlt {
+  /* Adjust icon size and color */
+  font-size: 20px;
+  color: #fff;
+}
+
 .FaTrashAlt:hover {
   cursor: pointer;
 }
+
 .spinner-container1 {
   display: flex;
   justify-content: center;
@@ -31,6 +33,7 @@
   height: 70vh; /* Full viewport height */
   width: 90vh;
 }
+
 .spinner-container2 {
   position: absolute; /* اجعل العنصر مطلق لتحديده بشكل دقيق داخل .sub-container */
   display: flex;
@@ -51,6 +54,7 @@
   height: 40px;
   animation: spin 1s linear infinite;
 }
+
 .error-icon {
   color: #d33; /* Red color for the error */
   font-size: 40px; /* Size of the icon */

@@ -1,20 +1,19 @@
 import React, {useState} from 'react';
 import {IoClose} from "react-icons/io5";
-import {FaCamera, FaLock, FaLockOpen, FaUser} from "react-icons/fa";
+import {FaLock, FaLockOpen, FaUser} from "react-icons/fa";
 import Account from "../../hooks/account";
 
-const AddAccount = ({toggle,onSave}) => {
+const AddAccount = ({toggle, onSave}) => {
     const [loading1, setLoading1] = useState(false); // Loading state
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [selectedRole, setSelectedRole] = useState('1');
     const [nameEmp, setNameEmp] = useState('');
     const [passwordEm, setPasswordEmp] = useState('');
- console.log("select",selectedRole)
     const handleSelectChange = (event) => {
-     if(event.target.value ==='موظف')
-        setSelectedRole('1');
-     else
-         setSelectedRole('0');
+        if (event.target.value === 'موظف')
+            setSelectedRole('1');
+        else
+            setSelectedRole('0');
     };
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(!isPasswordVisible);
@@ -22,18 +21,18 @@ const AddAccount = ({toggle,onSave}) => {
     const handlePopupClick = (event) => {
         event.stopPropagation();
     };
-    const {addAccount}=Account(toggle,onSave);
+    const {addAccount} = Account(toggle, onSave);
 
-    const handleAddAccount= async ()=>{
-       try {
-           setLoading1(true); // Start the loading state
-           await addAccount(nameEmp,passwordEm,selectedRole);
+    const handleAddAccount = async () => {
+        try {
+            setLoading1(true); // Start the loading state
+            await addAccount(nameEmp, passwordEm, selectedRole);
 
-       } catch (error) {
-           console.error('Error adding template:', error);
-       }finally {
-           setLoading1(false); // End the loading state
-       }
+        } catch (error) {
+            console.error('Error adding template:', error);
+        } finally {
+            setLoading1(false); // End the loading state
+        }
     }
     const isFormValid = nameEmp !== '' && passwordEm !== '' && selectedRole !== '';
 
@@ -46,7 +45,7 @@ const AddAccount = ({toggle,onSave}) => {
                 </nav>
                 <div className="form1 sign-in-form">
                     <div className="input-field Account">
-                        <FaUser className="icon" />
+                        <FaUser className="icon"/>
                         <input
                             type="text"
                             placeholder="اسم المستخدم"
@@ -60,9 +59,9 @@ const AddAccount = ({toggle,onSave}) => {
                             onChange={(e) => setPasswordEmp(e.target.value)}
                         />
                         {isPasswordVisible ? (
-                            <FaLockOpen className="icon" onClick={togglePasswordVisibility} />
+                            <FaLockOpen className="icon" onClick={togglePasswordVisibility}/>
                         ) : (
-                            <FaLock className="icon" onClick={togglePasswordVisibility} />
+                            <FaLock className="icon" onClick={togglePasswordVisibility}/>
                         )}
                     </div>
                     {/*<div className="input-field Account">*/}
@@ -77,7 +76,8 @@ const AddAccount = ({toggle,onSave}) => {
 
                     {/*</div>*/}
                     <div style={{display: 'flex', justifyContent: 'space-between', marginRight: '190px'}}>
-                        <button style={{ marginTop: '120px'}} type="submit" onClick={handleAddAccount}  disabled={!isFormValid}>
+                        <button style={{marginTop: '120px'}} type="submit" onClick={handleAddAccount}
+                                disabled={!isFormValid}>
                             {loading1 ? (
                                 <div className="loading-indicator">
                                     <span>.</span>
@@ -88,7 +88,7 @@ const AddAccount = ({toggle,onSave}) => {
                                 "حفظ"
                             )}
                         </button>
-                        <button style={{ marginTop: '120px'}} type="button" onClick={toggle}>
+                        <button style={{marginTop: '120px'}} type="button" onClick={toggle}>
                             إلغاء
                         </button>
                     </div>

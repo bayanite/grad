@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getFCMToken } from '../firebase'; // Import the function to get the FCM token
-
+import {useNavigate} from 'react-router-dom';
+import {getFCMToken} from '../firebase'; // Import the function to get the FCM token
 
 
 const Login = (setIsAuthenticated) => {
@@ -83,12 +82,10 @@ const Login = (setIsAuthenticated) => {
                 }
             } else {
                 const errorData = await response.json();
-                setMessage(errorData.errors.data );
-                console.error("Login failed:", response.statusText);
+                setMessage(errorData.errors.data);
             }
         } catch (error) {
             setMessage("حدث خطأ. حاول مرة اخرى.");
-            console.error(error);
         }
         return message;
     }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import Swal from 'sweetalert2';
 
 const useEditTemplate = () => {
@@ -57,7 +57,7 @@ const useEditTemplate = () => {
         }
     };
 
-    return { editCourse, data, loading, error };
+    return {editCourse, data, loading, error};
 };
 
 export default useEditTemplate;

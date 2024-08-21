@@ -1,13 +1,11 @@
-
 import '../model/model.scss'
 import './addAdviser.scss'
 import '../courses/view courses/CreateTemplate.scss'
 import {FaArrowRight, FaCamera} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
 import {FiChevronDown, FiChevronLeft, FiChevronRight, FiChevronUp} from "react-icons/fi";
-import showCertificateTamplate from "../../hooks/showCertificateTamplate";
 import UseAdviser from "../../hooks/useAdviser";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const AddAdviser = () => {
     const [imageAdviser, setImageAdviser] = useState(null);
@@ -18,14 +16,9 @@ const AddAdviser = () => {
     const [loading1, setLoading1] = useState(false); // Loading state
     const navigate = useNavigate();
 
-    console.log("imageAdviser",imageAdviser)
-    console.log("nameAdviser",nameAdviser)
-    console.log("specializationAdviser",specializationAdviser)
-    console.log("aboutAdviser",aboutAdviser)
-
     const handleImageChange = (e) => {
         const selectedImage = e.target.files[0];
-         setImageAdviser(selectedImage);
+        setImageAdviser(selectedImage);
     };
 
     const [timeCombinations, setTimeCombinations] = useState({});
@@ -34,8 +27,8 @@ const AddAdviser = () => {
     const populateTimeCombinations = () => {
         const combinations = [];
         for (let hour = 0; hour < 24; hour++) {
-            for (let minute = 0; minute < 60; minute +=15) {
-                const formattedHour = hour < 10 ?  "0" +hour : hour;
+            for (let minute = 0; minute < 60; minute += 15) {
+                const formattedHour = hour < 10 ? "0" + hour : hour;
                 const formattedMinute = minute < 10 ? "0" + minute : minute;
                 combinations.push(`${formattedHour}:${formattedMinute}`);
             }
@@ -50,32 +43,26 @@ const AddAdviser = () => {
 
     const scrollToTop = () => {
         const timeContainer = document.querySelector(".time-container");
-        console.log("pp",timeContainer)
         if (timeContainer) {
             // Scroll to the top of the container
-            timeContainer.scrollTop =timeContainer.clientHeight - timeContainer.scrollHeight ;
+            timeContainer.scrollTop = timeContainer.clientHeight - timeContainer.scrollHeight;
         }
     };
 
     const scrollToBottom = () => {
         const timeContainer = document.querySelector(".time-container");
-        console.log("ll",timeContainer)
         if (timeContainer) {
             // Scroll to the maximum scroll height, which will be the bottom
             timeContainer.scrollTop = timeContainer.scrollHeight - timeContainer.clientHeight;
         }
     };
     const currentMonthIndex = new Date().getMonth();
-    console.log("currentMonthIndex",currentMonthIndex)
     const [month, setMonth] = useState(currentMonthIndex);
     const [year, setYear] = useState(new Date().getFullYear());
     const [selectedDay, setSelectedDay] = useState(null);
     // const [selectedTime, setSelectedTime] = useState([]);
 
-    console.log("selectedDay",selectedDay);
-    console.log("month",month);
-    console.log("year",year);
-    console.log("selectedTime",selectedTimesByDay);
+
 
     const monthNamesArabic = [
         'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
@@ -114,7 +101,6 @@ const AddAdviser = () => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
-    console.log("lllll",currentMonth)
     const currentDay = currentDate.getDate();
 
 // Check if a given date is before the current date
@@ -163,18 +149,18 @@ const AddAdviser = () => {
                     if (lastRange && lastRange.to === null && lastRange.from < time) {
                         // Update the 'to' time if the last range is incomplete
                         updatedSelectedTimes[existingDayIndex].times = existingRanges.map((range) =>
-                            range === lastRange ? { ...range, to: time } : range
+                            range === lastRange ? {...range, to: time} : range
                         );
-                    }  else if (!lastRange || lastRange.to !== null) {
+                    } else if (!lastRange || lastRange.to !== null) {
                         // If there is no last range or it is complete, add a new range
-                        const newTimeRange = { from: time, to: null };
+                        const newTimeRange = {from: time, to: null};
                         updatedSelectedTimes[existingDayIndex].times.push(newTimeRange);
                     }
 
                 }
             } else {
                 // Create a new entry if no selected times exist for the day
-                updatedSelectedTimes.push({ day: date, times: [{ from: time, to: null }] });
+                updatedSelectedTimes.push({day: date, times: [{from: time, to: null}]});
             }
 
             return updatedSelectedTimes;
@@ -195,12 +181,12 @@ const AddAdviser = () => {
         const days = [];
 
         for (let i = 0; i < firstDay; i++) {
-            days.push(<div key={`empty-${i}`} className="day empty" />);
+            days.push(<div key={`empty-${i}`} className="day empty"/>);
         }
 
         for (let i = 1; i <= totalDays; i++) {
             const isActive = !isDateBeforeCurrent(year, month, i); // Check if date is active
-            const isSelected =isActive && i === selectedDay; // Check if date is selected
+            const isSelected = isActive && i === selectedDay; // Check if date is selected
             const handleClick = isActive ? () => handleDayClick(i) : () => handleDayClick(null); // Conditionally assign onClick handler
             days.push(
                 <div
@@ -223,7 +209,7 @@ const AddAdviser = () => {
     const {SendAdviser} = UseAdviser();
 
     const handleUpload = async (e) => {
-       e.preventDefault();
+        e.preventDefault();
 
         if (!imageAdviser || !nameAdviser || !specializationAdviser || !aboutAdviser) {
             alert('الرجاء تعبئة جميع الحقول');
@@ -231,11 +217,11 @@ const AddAdviser = () => {
         }
         try {
             setLoading1(true); // Start the loading state
-            await SendAdviser(e,imageAdviser,nameAdviser,specializationAdviser,aboutAdviser,selectedTimesByDay);
+            await SendAdviser(e, imageAdviser, nameAdviser, specializationAdviser, aboutAdviser, selectedTimesByDay);
             handleGoBack(); // Navigate back to the previous page
         } catch (error) {
             console.error('Error adding template:', error);
-        }finally {
+        } finally {
             setLoading1(false); // End the loading state
         }
     };
@@ -251,10 +237,11 @@ const AddAdviser = () => {
                         <label htmlFor="upload-input">
                             <div className="profile-picture">
                                 {imageAdviser ? (
-                                    <img src={URL.createObjectURL(imageAdviser)} alt="Profile" className="profile-image" />
+                                    <img src={URL.createObjectURL(imageAdviser)} alt="Profile"
+                                         className="profile-image"/>
                                 ) : (
                                     <div className="default-profile-image">
-                                        <FaCamera className="camera-icon" />
+                                        <FaCamera className="camera-icon"/>
                                     </div>
                                 )}
                             </div>
@@ -286,15 +273,15 @@ const AddAdviser = () => {
                         </select>
                     </label>
                     <label>
-                    نبذة عن المستشار:
-                    <textarea className={"about1"}
-                              value={aboutAdviser}
-                              onChange={(e) => setAboutAdviser(e.target.value)}
-                    />
-                </label>
+                        نبذة عن المستشار:
+                        <textarea className={"about1"}
+                                  value={aboutAdviser}
+                                  onChange={(e) => setAboutAdviser(e.target.value)}
+                        />
+                    </label>
 
                 </form>
-                <button className={"save1"} onClick={(e)=> handleUpload(e)}>
+                <button className={"save1"} onClick={(e) => handleUpload(e)}>
                     {loading1 ? (
                         <div className="loading-indicator">
                             <span>.</span>
@@ -310,9 +297,9 @@ const AddAdviser = () => {
             <div className="section">
                 <div className="calendar">
                     <div className="header">
-                        <FiChevronRight  className="prev" onClick={handleNextMonth}/>
+                        <FiChevronRight className="prev" onClick={handleNextMonth}/>
                         <label>{monthNamesArabic[month]} {year}</label>
-                        <FiChevronLeft  className="next" onClick={handlePrevMonth}/>
+                        <FiChevronLeft className="next" onClick={handlePrevMonth}/>
                     </div>
                     <div className="weekdays">
                         {daysOfWeekArabic.map((day, index) => (
@@ -329,14 +316,14 @@ const AddAdviser = () => {
                 {selectedDay !== null && (
                     <div className="time-picker">
                         <div className="scroll-arrow up" onClick={() => scrollToTop()}>
-                            <FiChevronUp className="scroll-icon" />
+                            <FiChevronUp className="scroll-icon"/>
                         </div>
                         <div className="time-container">
                             {timeCombinations.map((time, index) => {
-                                const isBetweenRanges = getSelectedTimesForDay(selectedDay,month+1,year).some(
+                                const isBetweenRanges = getSelectedTimesForDay(selectedDay, month + 1, year).some(
                                     (range) => range.from < time && range.to > time
                                 );
-                                const isSelected = getSelectedTimesForDay(selectedDay,month+1,year).some(
+                                const isSelected = getSelectedTimesForDay(selectedDay, month + 1, year).some(
                                     (range) => range.from === time || range.to === time
                                 );
                                 const className = isSelected
@@ -349,16 +336,16 @@ const AddAdviser = () => {
                                     <div
                                         key={index}
                                         className={`time ${className}`}
-                                        onClick={() => handleTimeClickForDay(selectedDay,month+1,year,time)}
+                                        onClick={() => handleTimeClickForDay(selectedDay, month + 1, year, time)}
                                     >
-                                        {isBetweenRanges && <div className={"display-div"} />}
+                                        {isBetweenRanges && <div className={"display-div"}/>}
                                         {time}
                                     </div>
                                 );
                             })}
                         </div>
                         <div className="scroll-arrow down" onClick={() => scrollToBottom()}>
-                            <FiChevronDown className="scroll-icon" />
+                            <FiChevronDown className="scroll-icon"/>
                         </div>
                     </div>
                 )}

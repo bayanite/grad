@@ -1,12 +1,7 @@
 import '../model/model.scss'
 import React, {useEffect, useRef, useState} from "react";
-import { useLocation } from "react-router-dom";
-import {
-    FaArrowRight, FaExclamationCircle,
-    FaPlusCircle,
-    FaRegCircle, FaRegDotCircle,
-    FaTimes,
-} from "react-icons/fa";
+import {useLocation} from "react-router-dom";
+import {FaArrowRight, FaExclamationCircle, FaPlusCircle, FaRegCircle, FaRegDotCircle, FaTimes,} from "react-icons/fa";
 import Exam from "../../hooks/Exam";
 import Swal from "sweetalert2";
 
@@ -30,21 +25,22 @@ const ShowBank = () => {
     const description1 = location.state?.description
     const id1 = location.state?.id
 
-    const {detailsBank,deleteQuestionExam,addQuestionExam}=Exam();
+    const {detailsBank, deleteQuestionExam, addQuestionExam} = Exam();
 
     useEffect(() => {
         if (title1) {
-            setTitle(title1);}
-        if(description1){
+            setTitle(title1);
+        }
+        if (description1) {
             setDescription(description1);
         }
-        if(id1){
+        if (id1) {
             setIdModel(id1);
             // ShowBank(id1)
             checkServerConnectivity();
         }
 
-    }, [title1, description1,id1]);
+    }, [title1, description1, id1]);
 
     const checkServerConnectivity = async () => {
         try {
@@ -52,10 +48,8 @@ const ShowBank = () => {
             const response = await fetch(`${process.env.REACT_APP_API_URL}exam/show/${id1}`); // Replace with a basic endpoint
             // if (!response.ok) throw new Error('Server not reachable');
 
-            // If the server is reachable, proceed to fetch the forms
             await ShowBank(id1);
         } catch (error) {
-            // Handle the error without logging it to the console
             setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
             setLoading(false); // Stop the loading spinner
         }
@@ -72,15 +66,11 @@ const ShowBank = () => {
                 setDataModel(data);
             }
         } catch (error) {
-            // Catch the error and handle it without logging it to the console
             setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
         } finally {
             setLoading(false);
         }
-        //     setDataModel(data);
-        // } catch (error) {
-        //     console.error('Error fetching :', error);
-        // }
+
     }
 
     const deleteQuestion = async (id) => {
@@ -129,14 +119,14 @@ const ShowBank = () => {
     const renderModelDivs = () => {
         return examData && Array.isArray(examData) && examData.map((value1, index1) => (
             <div key={index1} className={"model-div body "}>
-                <p className={"showQuestion"} >{value1.question}</p>
-                <FaTimes className={"close"} onClick={(e)=>deleteQuestion(value1.id)}/>
+                <p className={"showQuestion"}>{value1.question}</p>
+                <FaTimes className={"close"} onClick={(e) => deleteQuestion(value1.id)}/>
                 {MultipleChoice(index1)} {/* Pass options array to renderQuestionType */}
             </div>
         ));
     };
 
-    const MultipleChoice = ( index ) => {
+    const MultipleChoice = (index) => {
         const question = examData[index];
         if (question) {
             return (
@@ -144,9 +134,9 @@ const ShowBank = () => {
                     {question.option.map((option, optionIndex) => (
                         <div key={optionIndex} className={"MultipleChoiceBody"}>
                             {option.correct === "1" ? (
-                                <FaRegDotCircle className={"FaRegDotCircle"} />
+                                <FaRegDotCircle className={"FaRegDotCircle"}/>
                             ) : (
-                                <FaRegCircle className={"FaRegCircle"} />
+                                <FaRegCircle className={"FaRegCircle"}/>
                             )}
                             <option>{option.option}</option>
                         </div>
@@ -158,7 +148,7 @@ const ShowBank = () => {
 
     //***************** add question *****************//
 
-    console.log("saveDisabled",saveDisabled)
+    console.log("saveDisabled", saveDisabled)
     useEffect(() => {
         checkSaveButtonState(); // Check initial state of save button
     }, [questions]); // Re-run when divValues change
@@ -185,7 +175,7 @@ const ShowBank = () => {
 
         try {
             setLoading1(true); // Start the loading state
-            await addQuestionExam(id1,questions);
+            await addQuestionExam(id1, questions);
             await Swal.fire({
                 icon: 'success',
                 title: 'تمت الإضافة بنجاح',
@@ -197,7 +187,7 @@ const ShowBank = () => {
 
         } catch (error) {
             console.error('Error fetching courses:', error);
-        }finally {
+        } finally {
             setLoading1(false); // End the loading state
         }
 
@@ -209,10 +199,10 @@ const ShowBank = () => {
 
     const handleAddModelDiv = () => {
         const newDivValues = [...questions];
-        newDivValues.push({ question: "",  options: [{ option: "", correct: "0" }] });
+        newDivValues.push({question: "", options: [{option: "", correct: "0"}]});
         setQuestions(newDivValues);
         if (latestDivRef.current) {
-            latestDivRef.current.scrollIntoView({ behavior: "smooth" });
+            latestDivRef.current.scrollIntoView({behavior: "smooth"});
         }
         checkSaveButtonState();
     };
@@ -229,7 +219,7 @@ const ShowBank = () => {
         const question = questions[questionIndex];
 
         const handleInputChange = (event, choiceIndex) => {
-            const { value } = event.target;
+            const {value} = event.target;
             const newDivValues = [...questions];
             newDivValues[questionIndex].options[choiceIndex].option = value;
             setQuestions(newDivValues);
@@ -237,7 +227,7 @@ const ShowBank = () => {
 
         const handleAddChoice = () => {
             const newDivValues = [...questions];
-            newDivValues[questionIndex].options.push({ option: "", correct: "0" });
+            newDivValues[questionIndex].options.push({option: "", correct: "0"});
             setQuestions(newDivValues);
             checkSaveButtonState();
         };
@@ -252,9 +242,9 @@ const ShowBank = () => {
             const newDivValues = [...questions];
             newDivValues[questionIndex].options = newDivValues[questionIndex].options.map((option, index) => {
                 if (index === choiceIndex) {
-                    return { ...option, correct: option.correct ? 0 : 1 }; // Toggle between 1 and 0
+                    return {...option, correct: option.correct ? 0 : 1}; // Toggle between 1 and 0
                 }
-                return { ...option, correct: 0 }; // Set other options to 0
+                return {...option, correct: 0}; // Set other options to 0
             });
             setQuestions(newDivValues);
             checkSaveButtonState();
@@ -264,9 +254,11 @@ const ShowBank = () => {
                 {question.options.map((choice, choiceIndex) => (
                     <div key={choiceIndex} className={"MultipleChoiceBody"}>
                         {choice.correct === 1 ? (
-                            <FaRegDotCircle className={"FaRegDotCircle"} onClick={() => handleToggleIcon(questionIndex, choiceIndex)} />
+                            <FaRegDotCircle className={"FaRegDotCircle"}
+                                            onClick={() => handleToggleIcon(questionIndex, choiceIndex)}/>
                         ) : (
-                            <FaRegCircle className={"FaRegCircle"} onClick={() => handleToggleIcon(questionIndex, choiceIndex)} />
+                            <FaRegCircle className={"FaRegCircle"}
+                                         onClick={() => handleToggleIcon(questionIndex, choiceIndex)}/>
                         )}
                         <input
                             type="text"
@@ -275,12 +267,12 @@ const ShowBank = () => {
                             required
                         />
                         {choiceIndex === 0 ? null : ( // Render delete icon for non-first options
-                            <FaTimes onClick={() => handleRemoveChoice(choiceIndex)} />
+                            <FaTimes onClick={() => handleRemoveChoice(choiceIndex)}/>
                         )}
                     </div>
                 ))}
                 <div className={"MultipleChoiceBody button"}>
-                    <FaRegCircle className={"FaRegCircle"} />
+                    <FaRegCircle className={"FaRegCircle"}/>
                     <button onClick={() => handleAddChoice(questionIndex)}>إضافة خيار</button>
                 </div>
             </div>
@@ -290,7 +282,8 @@ const ShowBank = () => {
 // Function to render questions
     const renderQuestions = () => {
         return questions.map((question, index) => (
-            <div key={index} className={"model-div body bank"} ref={index === questions.length - 1 ? latestDivRef : null}>
+            <div key={index} className={"model-div body bank"}
+                 ref={index === questions.length - 1 ? latestDivRef : null}>
                 <input
                     className={`model-title question  ${formSubmitted && (question.question.trim() === '' || question.options.some(option => option.option.trim() === '')) ? 'required-field' : ''}`}
                     type={"text"}
@@ -299,8 +292,8 @@ const ShowBank = () => {
                     onChange={(event) => handleQuestionChange(event, index)}
                     required
                 />
-                <FaTimes className="close" onClick={() => removeQuestion(index)} />
-                {handleAddMultipleChoiceOption( index)}
+                <FaTimes className="close" onClick={() => removeQuestion(index)}/>
+                {handleAddMultipleChoiceOption(index)}
             </div>
         ));
     };
@@ -313,40 +306,42 @@ const ShowBank = () => {
 
         <div className={"model"}>
             <div className={"go"}>
-            <FaArrowRight className="back-button" onClick={handleGoBack}/>
-            {/* Back button */}
+                <FaArrowRight className="back-button" onClick={handleGoBack}/>
+                {/* Back button */}
             </div>
             {loading ? (
                 <div className="spinner-container2">
-                    <div className="spinner"/> {/* Correctly closing the spinner */}
+                    <div className="spinner"/>
+                    {/* Correctly closing the spinner */}
                 </div>
             ) : error ? (
                 <div className="spinner-container2">
-                    <FaExclamationCircle className="error-icon" /> {/* Error icon */}
+                    <FaExclamationCircle className="error-icon"/> {/* Error icon */}
                     <p className="error-message-">{error}</p>
                 </div>
             ) : (
                 <>
-            <div className={"model-div title"}>
-                <h1 className={"showTitle"}>{title}</h1>
-                <p className={"showTitle"}>{description}</p>
-                <div className={"add-button-container"}>
-                    <FaPlusCircle className={"add-button"} onClick={handleAddModelDiv} />
-                </div>
-            </div>
-            {renderModelDivs()}
-            {renderQuestions()}
-            <button className={"save"}  onClick={(e)=>AddQuestion(e)} style={{ display: questions.length === 0 ? 'none' : 'block' }}>
-                {loading1 ? (
-                    <div className="loading-indicator">
-                        <span>.</span>
-                        <span>.</span>
-                        <span>.</span>
+                    <div className={"model-div title"}>
+                        <h1 className={"showTitle"}>{title}</h1>
+                        <p className={"showTitle"}>{description}</p>
+                        <div className={"add-button-container"}>
+                            <FaPlusCircle className={"add-button"} onClick={handleAddModelDiv}/>
+                        </div>
                     </div>
-                ) : (
-                    "حفظ"
-                )}
-            </button>
+                    {renderModelDivs()}
+                    {renderQuestions()}
+                    <button className={"save"} onClick={(e) => AddQuestion(e)}
+                            style={{display: questions.length === 0 ? 'none' : 'block'}}>
+                        {loading1 ? (
+                            <div className="loading-indicator">
+                                <span>.</span>
+                                <span>.</span>
+                                <span>.</span>
+                            </div>
+                        ) : (
+                            "حفظ"
+                        )}
+                    </button>
                 </>
             )}
         </div>

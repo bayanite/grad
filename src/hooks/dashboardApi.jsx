@@ -1,19 +1,17 @@
 import {useState} from 'react';
-import Swal from "sweetalert2";
 
 const DashboardApi = () => {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(false);
+
     const [error, setError] = useState(null);
     const token = localStorage.getItem('token');
 
     const count = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}count`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
 
-                    },
+                },
             });
             if (!response.ok) {
                 throw new Error('Failed to fetch count');
@@ -39,7 +37,6 @@ const DashboardApi = () => {
                 throw new Error('Failed to fetch pie chart data');
             }
             const data = await response.json();
-            console.log(data)
             return data;
         } catch (error) {
             setError(error);
@@ -58,7 +55,6 @@ const DashboardApi = () => {
                 throw new Error('Failed to fetch appointments');
             }
             const data = await response.json();
-            console.log(data)
             return data;
         } catch (error) {
             setError(error);
@@ -67,7 +63,6 @@ const DashboardApi = () => {
 
     const statistics = async (year) => {
         try {
-            console.log("year",year)
             const response = await fetch(`${process.env.REACT_APP_API_URL}statistic/${year}`, {
                 method: 'GET',
                 headers: {
@@ -79,15 +74,14 @@ const DashboardApi = () => {
                 throw new Error('Failed to fetch statistics');
             }
             const data = await response.json();
-            console.log("ffff",data)
             return data;
         } catch (error) {
             setError(error);
         }
     };
-    const infoCenter =async () => {
+    const infoCenter = async () => {
         try {
-            const response= await fetch(`${process.env.REACT_APP_API_URL}information/index`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}information/index`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -100,13 +94,13 @@ const DashboardApi = () => {
             console.error(error);
         }
     }
-    const updateInfoCenter=async (director,time,email,facebook,number,site) => {
+    const updateInfoCenter = async (director, time, email, facebook, number, site) => {
         const data = {
-            "director":director ,
+            "director": director,
             "site": site,
             "time": time,
             "email": email,
-            "nubmer":number,
+            "nubmer": number,
             "facebook": facebook,
         }
 
@@ -132,6 +126,7 @@ const DashboardApi = () => {
     }
 
     return {
+        error,
         count,
         PieChart,
         statistics,

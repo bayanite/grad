@@ -1,12 +1,10 @@
-
 import React, {useEffect, useState} from 'react';
 import '../courses/view courses/CreateTemplate.scss';
 import {IoClose} from "react-icons/io5";
-import {FaCamera} from 'react-icons/fa';
-import {FiChevronDown, FiChevronLeft, FiChevronRight, FiChevronUp} from "react-icons/fi";
+import {FiChevronLeft, FiChevronRight} from "react-icons/fi";
 import UseAdviser from "../../hooks/useAdviser";
 
-const AddDates = ({onClose,name,id}) => {
+const AddDates = ({onClose, name, id}) => {
     const [nameAdviser, setNameAdviser] = useState(name);
 
     const {SendDates} = UseAdviser();
@@ -14,11 +12,11 @@ const AddDates = ({onClose,name,id}) => {
     const handleSubmit = async (e) => {
         try {
             setLoading(true); // Start the loading state
-            await SendDates(e,selectedTimesByDay,id);
+            await SendDates(e, selectedTimesByDay, id);
 
         } catch (error) {
             console.error('Error adding template:', error);
-        }finally {
+        } finally {
             setLoading(false); // End the loading state
         }
         onClose();
@@ -27,14 +25,13 @@ const AddDates = ({onClose,name,id}) => {
     const [timeCombinations, setTimeCombinations] = useState({});
     const [selectedTimesByDay, setSelectedTimesByDay] = useState([]);
     const [loading, setLoading] = useState(false); // New loading state
-    console.log("selectedTimesByDay",selectedTimesByDay)
 
     // Populate time combinations array
     const populateTimeCombinations = () => {
         const combinations = [];
         for (let hour = 0; hour < 24; hour++) {
-            for (let minute = 0; minute < 60; minute +=15) {
-                const formattedHour = hour < 10 ?  "0" +hour : hour;
+            for (let minute = 0; minute < 60; minute += 15) {
+                const formattedHour = hour < 10 ? "0" + hour : hour;
                 const formattedMinute = minute < 10 ? "0" + minute : minute;
                 combinations.push(`${formattedHour}:${formattedMinute}`);
             }
@@ -54,16 +51,10 @@ const AddDates = ({onClose,name,id}) => {
     };
 
     const currentMonthIndex = new Date().getMonth();
-    console.log("currentMonthIndex",currentMonthIndex)
     const [month, setMonth] = useState(currentMonthIndex);
     const [year, setYear] = useState(new Date().getFullYear());
     const [selectedDay, setSelectedDay] = useState(null);
     // const [selectedTime, setSelectedTime] = useState([]);
-
-    console.log("selectedDay",selectedDay);
-    console.log("month",month);
-    console.log("year",year);
-    // console.log("selectedTime",selectedTimesByDay);
 
     const monthNamesArabic = [
         'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
@@ -102,7 +93,6 @@ const AddDates = ({onClose,name,id}) => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth();
-    console.log("lllll",currentMonth)
     const currentDay = currentDate.getDate();
 
 // Check if a given date is before the current date
@@ -120,12 +110,12 @@ const AddDates = ({onClose,name,id}) => {
         const days = [];
 
         for (let i = 0; i < firstDay; i++) {
-            days.push(<div key={`empty-${i}`} className="day empty" />);
+            days.push(<div key={`empty-${i}`} className="day empty"/>);
         }
 
         for (let i = 1; i <= totalDays; i++) {
             const isActive = !isDateBeforeCurrent(year, month, i); // Check if date is active
-            const isSelected =isActive && i === selectedDay; // Check if date is selected
+            const isSelected = isActive && i === selectedDay; // Check if date is selected
             const handleClick = isActive ? () => handleDayClick(i) : () => handleDayClick(null); // Conditionally assign onClick handler
             days.push(
                 <div
@@ -142,7 +132,7 @@ const AddDates = ({onClose,name,id}) => {
     };
 
     const handleTimeClickForDay = (day, month, year, time) => {
-        const date =  year + "-" + month + "-" + day;
+        const date = year + "-" + month + "-" + day;
 
         setSelectedTimesByDay((prevState) => {
             // Deep copy of the state array
@@ -177,18 +167,18 @@ const AddDates = ({onClose,name,id}) => {
                     if (lastRange && lastRange.to === null && lastRange.from < time) {
                         // Update the 'to' time if the last range is incomplete
                         updatedSelectedTimes[existingDayIndex].times = existingRanges.map((range) =>
-                            range === lastRange ? { ...range, to: time } : range
+                            range === lastRange ? {...range, to: time} : range
                         );
-                    }  else if (!lastRange || lastRange.to !== null) {
+                    } else if (!lastRange || lastRange.to !== null) {
                         // If there is no last range or it is complete, add a new range
-                        const newTimeRange = { from: time, to: null };
+                        const newTimeRange = {from: time, to: null};
                         updatedSelectedTimes[existingDayIndex].times.push(newTimeRange);
                     }
 
                 }
             } else {
                 // Create a new entry if no selected times exist for the day
-                updatedSelectedTimes.push({ day: date, times: [{ from: time, to: null }] });
+                updatedSelectedTimes.push({day: date, times: [{from: time, to: null}]});
             }
 
             return updatedSelectedTimes;
@@ -210,55 +200,55 @@ const AddDates = ({onClose,name,id}) => {
                     <IoClose className={"IoClose"} onClick={onClose}/>
                 </nav>
                 <form>
-                <div className="calendar pop">
-                    <div className="header">
-                        <FiChevronRight  className="prev" onClick={handleNextMonth}/>
-                        <label>{monthNamesArabic[month]} {year}</label>
-                        <FiChevronLeft  className="next" onClick={handlePrevMonth}/>
+                    <div className="calendar pop">
+                        <div className="header">
+                            <FiChevronRight className="prev" onClick={handleNextMonth}/>
+                            <label>{monthNamesArabic[month]} {year}</label>
+                            <FiChevronLeft className="next" onClick={handlePrevMonth}/>
+                        </div>
+                        <div className="weekdays">
+                            {daysOfWeekArabic.map((day, index) => (
+                                <div key={index} className="weekday">{day}</div>
+                            ))}
+                        </div>
+                        <div className="days pop">
+                            {renderDays()}
+                        </div>
                     </div>
-                    <div className="weekdays">
-                        {daysOfWeekArabic.map((day, index) => (
-                            <div key={index} className="weekday">{day}</div>
-                        ))}
-                    </div>
-                    <div className="days pop">
-                        {renderDays()}
-                    </div>
-                </div>
-                        {selectedDay !== null && (
-                            <div className="time-picker pop">
-                                <div className="time-container-pop ">
-                                    {timeCombinations.map((time, index) => {
-                                        const isBetweenRanges = getSelectedTimesForDay(selectedDay,month+1,year).some(
-                                            (range) => range.from < time && range.to > time
-                                        );
-                                        const isSelected = getSelectedTimesForDay(selectedDay,month+1,year).some(
-                                            (range) => range.from === time || range.to === time
-                                        );
-                                        const className = isSelected
-                                            ? "selected-time"
-                                            : isBetweenRanges
-                                                ? "non-clickable-time"
-                                                : "unselected-time";
+                    {selectedDay !== null && (
+                        <div className="time-picker pop">
+                            <div className="time-container-pop ">
+                                {timeCombinations.map((time, index) => {
+                                    const isBetweenRanges = getSelectedTimesForDay(selectedDay, month + 1, year).some(
+                                        (range) => range.from < time && range.to > time
+                                    );
+                                    const isSelected = getSelectedTimesForDay(selectedDay, month + 1, year).some(
+                                        (range) => range.from === time || range.to === time
+                                    );
+                                    const className = isSelected
+                                        ? "selected-time"
+                                        : isBetweenRanges
+                                            ? "non-clickable-time"
+                                            : "unselected-time";
 
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={`time-pop ${className}`}
-                                                onClick={() => handleTimeClickForDay(selectedDay,month+1,year,time)}
-                                            >
-                                                {isBetweenRanges && <div className={"display-div-pop"} />}
-                                                {time}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={`time-pop ${className}`}
+                                            onClick={() => handleTimeClickForDay(selectedDay, month + 1, year, time)}
+                                        >
+                                            {isBetweenRanges && <div className={"display-div-pop"}/>}
+                                            {time}
+                                        </div>
+                                    );
+                                })}
                             </div>
-                        )}
-                    <div style={{display: 'flex',justifyContent: 'flex-end', marginRight: '190px'}}>
-                        <button style={{ marginTop: '50px'}} type="submit"
-                                onClick={(e)=>handleSubmit(e)}
+
+                        </div>
+                    )}
+                    <div style={{display: 'flex', justifyContent: 'flex-end', marginRight: '190px'}}>
+                        <button style={{marginTop: '50px'}} type="submit"
+                                onClick={(e) => handleSubmit(e)}
                                 disabled={!isSaveButtonEnabled()} // Disable the button if conditions are not met
                         >
                             {loading ? (
@@ -271,12 +261,12 @@ const AddDates = ({onClose,name,id}) => {
                                 "حفظ"
                             )}
                         </button>
-                        <button  style={{ marginTop: '50px'}} type="button"
-                                 onClick={onClose}>
+                        <button style={{marginTop: '50px'}} type="button"
+                                onClick={onClose}>
                             إلغاء
                         </button>
                     </div>
-                    </form>
+                </form>
             </div>
         </div>
     );

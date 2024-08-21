@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import React, {useEffect, useState} from 'react';
+import {FaTimes} from 'react-icons/fa';
 import DashboardApi from "./hooks/dashboardApi";
 
-const Setting = ({ visible, onClose }) => {
+const Setting = ({visible, onClose}) => {
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState([]);
     const [director, setDirector] = useState('');
@@ -12,7 +12,7 @@ const Setting = ({ visible, onClose }) => {
     const [email, setEmail] = useState('');
     const [facebook, setFacebook] = useState('');
 
-    const { infoCenter, updateInfoCenter } = DashboardApi();
+    const {infoCenter, updateInfoCenter} = DashboardApi();
 
     useEffect(() => {
         fetchData();
@@ -37,7 +37,7 @@ const Setting = ({ visible, onClose }) => {
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         switch (name) {
             case 'director':
                 setDirector(value);
@@ -62,7 +62,7 @@ const Setting = ({ visible, onClose }) => {
         }
         setFormData((prevData) => {
             const updatedData = [...prevData];
-            updatedData[0] = { ...updatedData[0], [name]: value }; // Assuming single data object
+            updatedData[0] = {...updatedData[0], [name]: value}; // Assuming single data object
             return updatedData;
         });
     };
@@ -86,7 +86,7 @@ const Setting = ({ visible, onClose }) => {
             <div className="offCanvas-content">
                 <div className="offCanvas-header">
                     <h2>معلومات المركز</h2>
-                    <FaTimes className="close-icon" onClick={onClose} /> {/* Close icon */}
+                    <FaTimes className="close-icon" onClick={onClose}/> {/* Close icon */}
                 </div>
                 <div>
                     {editMode ? (

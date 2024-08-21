@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Account = (toggle,onSave) => {
+const Account = (toggle, onSave) => {
     const token = localStorage.getItem('token');
 
-    const addAccount = async (nameEmp,passwordEm,selectedRole) => {
+    const addAccount = async (nameEmp, passwordEm, selectedRole) => {
         const data = {
             'name': nameEmp,
             'password': passwordEm,
@@ -22,10 +22,8 @@ const Account = (toggle,onSave) => {
             });
 
             const result = await response.json();
-            console.log("jgdd", result);
 
             if (response.ok) {
-                console.log("lllll", result);
                 toggle(); // Call toggle function when the request is successful
                 onSave();
             } else {
@@ -37,25 +35,25 @@ const Account = (toggle,onSave) => {
         }
     }
     const getAllAccount = async () => {
-        try{
-       const response= await fetch(`${process.env.REACT_APP_API_URL}employee/indexAll`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-        return await response.json();
-       }catch (error) {
-        console.error(error);
-      }
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}employee/indexAll`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const updatePassword = async (id, oldPassword, newPassword) => {
         const data = {
             'id': id,
-            'oldPassword':oldPassword,
+            'oldPassword': oldPassword,
             'newPassword': newPassword,
         };
         try {
@@ -70,13 +68,13 @@ const Account = (toggle,onSave) => {
             });
 
             const result = await response.json();
-            if( result.status === 'success'){
-                return { ok:true , result };
+            if (result.status === 'success') {
+                return {ok: true, result};
             } else
-                return { ok: false, result };
+                return {ok: false, result};
         } catch (error) {
             console.error('Error:', error);
-            return { ok: false, result: error };
+            return {ok: false, result: error};
         }
     }
 
@@ -91,16 +89,15 @@ const Account = (toggle,onSave) => {
                 },
             });
             if (!response.ok) {
-                throw new Error( 'Failed to delete course.');
+                throw new Error('Failed to delete course.');
             }
-            console.log("response.ok",response.ok)
             return true
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
-    return {addAccount,getAllAccount,updatePassword,deleteAccount}
+    return {addAccount, getAllAccount, updatePassword, deleteAccount}
 };
 
 export default Account;
