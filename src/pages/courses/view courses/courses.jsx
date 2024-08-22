@@ -111,14 +111,14 @@ const Courses = () => {
                     setNoData('لا توجد بيانات لعرضها');
                 }
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
             setLoading(false);
         } catch (error) {
             if (!navigator.onLine) {
-                setError('لايوجد اتصال بالإنترنت');
+                setError('لايوجد اتصال بالإنترنت !');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
             setLoading(false);
         }
@@ -188,10 +188,10 @@ const Courses = () => {
                                             e.stopPropagation();
                                             handleAnnounceCourse(item.name, item.id);
                                         }}>اعلان عن دورة في المركز</p>
-                                        <p onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDelete(item.id);
-                                        }}>حذف</p>
+                                        {/*<p onClick={(e) => {*/}
+                                        {/*    e.stopPropagation();*/}
+                                        {/*    handleDelete(item.id);*/}
+                                        {/*}}>حذف</p>*/}
                                     </div>
                                 </div>
                             )}

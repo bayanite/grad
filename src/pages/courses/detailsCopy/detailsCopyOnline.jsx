@@ -37,13 +37,13 @@ const DetailsCopyOnline = () => {
             } else if (data && data.data && Array.isArray(data.data) && data.data.length === 0) {
                 setNodata('لا توجد بيانات لعرضها');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         } catch (error) {
             if (!navigator.onLine) {
-                setError('لا يوجد اتصال بالإنترنت');
+                setError('لا يوجد اتصال بالإنترنت !');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         } finally {
             setLoading(false); // End loading

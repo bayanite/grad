@@ -75,15 +75,15 @@ const ShowTamplate = () => {
                     setNoData('لا توجد قوالب لعرضها');
                 }
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
             setLoading(false);
         } catch (error) {
             console.error('Error fetching templates:', error);
             if (!navigator.onLine) {
-                setError('لا يوجد اتصال بالإنترنت');
+                setError('لا يوجد اتصال بالإنترنت !');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
             setLoading(false);
         }

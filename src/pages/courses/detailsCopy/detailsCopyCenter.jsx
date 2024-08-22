@@ -31,13 +31,13 @@ const DetailsCopyCenter = () => {
             } else if (data && data.data.length === 0) {
                 setNoData('لا توجد بيانات لعرضها');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         } catch (error) {
             if (!navigator.onLine) {
-                setError('لا يوجد اتصال بالإنترنت');
+                setError('لا يوجد اتصال بالإنترنت !');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         } finally {
             setLoading(false); // Ensure loading state is reset regardless of success or failure

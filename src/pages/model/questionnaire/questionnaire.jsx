@@ -79,7 +79,7 @@ const Questionnaire = ({TypeName}) => {
 
             await showForm1();
         } catch (error) {
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل في الاتصال بالخادم!');
             setLoading(false); // Stop the loading spinner
         }
     };
@@ -96,7 +96,7 @@ const Questionnaire = ({TypeName}) => {
             }
         } catch (error) {
             // Catch the error and handle it without logging it to the console
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل في الاتصال بالخادم! ');
         } finally {
             setLoading(false);
         }

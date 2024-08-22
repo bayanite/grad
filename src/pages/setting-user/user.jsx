@@ -35,14 +35,14 @@ const UserSetting = () => {
                     setNoData('لا توجد بيانات لعرضها');
                 }
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
             setLoading(false);
         } catch (error) {
             if (!navigator.onLine) {
                 setError('لايوجد اتصال بالإنترنت');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
             setLoading(false);
         }
@@ -61,9 +61,15 @@ const UserSetting = () => {
         getUser();
     }, []);
 
-    const filteredRows = user.filter(row =>
-        row.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredRows = user.filter(row => {
+        const name = row.name ? row.name.toLowerCase() : '';
+        const lastName = row.lastName ? row.lastName.toLowerCase() : '';
+        const fullName = `${name} ${lastName}`;
+        const date = row.created_at ? row.created_at.toLowerCase() : '';
+
+        return fullName.includes(search.toLowerCase()) || date.includes(search.toLowerCase());
+    });
+
 
     return (
         <div className="ShowCopys">

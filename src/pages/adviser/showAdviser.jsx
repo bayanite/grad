@@ -50,7 +50,7 @@ const ShowAdviser = () => {
             // If the server is reachable, proceed to fetch the forms
             await showAdviser();
         } catch (error) {
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل الاتصال بالخادم !');
             setLoading(false); // Stop the loading spinner
         }
     };
@@ -67,7 +67,7 @@ const ShowAdviser = () => {
             }
         } catch (error) {
             // Catch the error and handle it without logging it to the console
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل الاتصال بالخادم !');
         } finally {
             setLoading(false);
         }

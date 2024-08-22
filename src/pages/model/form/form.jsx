@@ -81,7 +81,7 @@ const Form = ({TypeName}) => {
             // If the server is reachable, proceed to fetch the forms
             await showForm();
         } catch (error) {
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل في الاتصال بالخادم!');
             setLoading(false); // Stop the loading spinner
         }
     };
@@ -97,7 +97,7 @@ const Form = ({TypeName}) => {
                 setForms(data);
             }
         } catch (error) {
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل في الاتصال بالخادم! ');
         } finally {
             setLoading(false);
         }

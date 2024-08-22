@@ -22,13 +22,13 @@ const Re_exam = () => {
                 setOrderReExam(data.data);
                 setNoData(data.data.length === 0 ? 'لا توجد بيانات لعرضها' : null);
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         } catch (error) {
             if (!navigator.onLine) {
-                setError('لا يوجد اتصال بالإنترنت');
+                setError('لا يوجد اتصال بالإنترنت !');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         } finally {
             setLoading(false); // Ensure loading state is reset regardless of success or failure
@@ -41,9 +41,9 @@ const Re_exam = () => {
             getOrder(); // Refresh the list after updating status
         } catch (error) {
             if (!navigator.onLine) {
-                setError('لا يوجد اتصال بالإنترنت');
+                setError('لا يوجد اتصال بالإنترنت !');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         }
     };

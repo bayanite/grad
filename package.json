@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.24.0",
     "react-spinner-material": "^1.4.0",
     "sass": "^1.77.6",

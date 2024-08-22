@@ -28,7 +28,7 @@ const ShowAnswer = () => {
             await show();
         } catch (error) {
             // Handle the error without logging it to the console
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل في الاتصال بالخادم!.');
             setLoading(false); // Stop the loading spinner
         }
     };
@@ -41,7 +41,7 @@ const ShowAnswer = () => {
                 setGetFormUser(data);
             }
         } catch (error) {
-            setError('خطأ في الاتصال بالخادم! يرجى التحقق من اتصالك بالإنترنت أو المحاولة لاحقًا.');
+            setError('فشل في الاتصال بالخادم! ');
         } finally {
             setLoading(false);
         }

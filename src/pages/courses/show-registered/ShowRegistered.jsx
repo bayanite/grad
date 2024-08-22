@@ -31,13 +31,13 @@ const ShowRegistered = () => {
                     setNoData('لا توجد بيانات لعرضها'); // حالة عدم وجود بيانات مسجلين
                 }
             } else {
-                setError('فشل في جلب البيانات من الخادم');
+                setError('فشل في جلب البيانات من الخادم !');
             }
         } catch (error) {
             if (!navigator.onLine) {
-                setError('لا يوجد اتصال بالإنترنت');
+                setError('لا يوجد اتصال بالإنترنت !');
             } else {
-                setError('فشل الاتصال بالخادم');
+                setError('فشل الاتصال بالخادم !');
             }
         } finally {
             setLoading(false); // تأكد من إعادة تعيين حالة التحميل بغض النظر عن النجاح أو الفشل
