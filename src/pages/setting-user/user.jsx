@@ -21,7 +21,6 @@ const UserSetting = () => {
     };
 
 
-
     const handleSearch = (event) => {
         setSearch(event.target.value);
     };
@@ -56,6 +55,9 @@ const UserSetting = () => {
             console.error('Error checking user:', error);
         }
     };
+    const handleShowForm = (id_user, id_online_center) => {
+        navigate('/users/showForm', {state: {id_user, id_online_center}});
+    }
 
     useEffect(() => {
         getUser();
@@ -125,7 +127,7 @@ const UserSetting = () => {
                                     <td>{row.type}</td>
                                     <td>
                                         <FaEye className="FaEye"/>
-                                        {/* onClick={showForm(row.id_coursepaper)} */}
+                                        onClick={handleShowForm(row.id_coursepaper)}
                                     </td>
                                     <td>
                                         <FaRegCheckCircle
@@ -136,7 +138,10 @@ const UserSetting = () => {
                                             className="FaRegTimesCircle-"
                                             onClick={() => CheckUser(row.id_booking, 0)}
                                         />
-                                        <BsSendCheck className="send-notif"/>
+                                        <BsSendCheck className="send-notif"
+                                                     onClick={() => CheckUser(row.id_booking, 2)}
+
+                                        />
                                     </td>
                                 </tr>
                             ))}

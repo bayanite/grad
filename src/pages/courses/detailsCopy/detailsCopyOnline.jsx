@@ -166,13 +166,13 @@ const DetailsCopyOnline = () => {
                             <div className="row_inpout">
                                 <p className='input-label'>السعر</p>
                                 <div className='AddOnlineCourse_input_'>
-                                    {onlineInfo[0]?.price || 'غير متوفر'}
+                                    {onlineInfo[0]?.price || 'مجانية'}
                                 </div>
                             </div>
                             <div className="row_inpout">
                                 <p className='input-label'>هل الدورة متسلسلة ؟</p>
                                 <div className='AddOnlineCourse_input_'>
-                                    {onlineInfo[0]?.serial || 'غير متوفر'}
+                                    {onlineInfo[0]?.serial || 'غير متسلسلة'}
                                 </div>
                             </div>
                         </div>

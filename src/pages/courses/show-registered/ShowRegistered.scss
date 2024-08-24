@@ -1,3 +1,4 @@
+
 .input_mark {
   text-align: center;
   padding: 8px;
@@ -5,4 +6,15 @@
   width: 30%;
   outline: none;
   background-color: #f8f8f8;
+}
+
+.FaPen {
+  cursor: pointer;
+  transition: color 0.3s, opacity 0.3s;
+}
+
+.FaPen.disabled {
+  color: #ccc; /* Light gray color for disabled state */
+  cursor: not-allowed; /* Change cursor to indicate that it is not clickable */
+  opacity: 0.6; /* Reduce opacity to give a disabled effect */
 }

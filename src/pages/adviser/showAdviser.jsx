@@ -38,41 +38,33 @@ const ShowAdviser = () => {
         populateTimeCombinations();
     }, []);
     useEffect(() => {
-        checkServerConnectivity();
-        // showAdviser();
+        showAdviser();
     }, []);
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}adviser/show/${id}`); // Replace with a basic endpoint
-            // if (!response.ok) throw new Error('Server not reachable');
 
-            // If the server is reachable, proceed to fetch the forms
-            await showAdviser();
-        } catch (error) {
-            setError('فشل الاتصال بالخادم !');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
 
     const showAdviser = async () => {
         setLoading(true);
         setError(null);
         try {
             const data = await detailsAdviser(id);
-            if (!data || !data.result || data.result.length === 0) {
-                setError("لا توجد بيانات."); // Handle no data found
-            } else {
+            if (data) {
                 setInfoAdviser(data);
+                if (!data || !data.result || data.result.length === 0) {
+                    setError("لا توجد بيانات."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
+
         } catch (error) {
-            // Catch the error and handle it without logging it to the console
-            setError('فشل الاتصال بالخادم !');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
-
-
     }
     const showAppointments = async (date) => {
         try {

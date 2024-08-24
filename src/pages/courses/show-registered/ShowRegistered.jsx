@@ -64,12 +64,15 @@ const ShowRegistered = () => {
         setMarks({...marks, [rowId]: e.target.value});
     };
 
-    const handleKeyPress = async (e, rowId) => {
+    const handleKeyDown = async (e, rowIdBooking) => {
         if (e.key === 'Enter') {
             try {
-                await saveMark(rowId, marks[rowId]); // Assuming saveMark is an API call to save the mark
+                await saveMark(rowIdBooking, marks[rowIdBooking]); // Save the mark
                 alert('Mark saved successfully!');
+
                 setEditingRowId(null); // Exit editing mode
+
+                getRegister(); // Fetch updated data
             } catch (error) {
                 console.error('Error saving mark', error);
                 alert('Failed to save mark');
@@ -77,11 +80,10 @@ const ShowRegistered = () => {
         }
     };
 
-    const handleEditClick = (rowId, currentMark) => {
-        setEditingRowId(rowId); // Set the current row to be editable
-        setMarks({...marks, [rowId]: currentMark || ''}); // Initialize with the current mark if exists
+    const handleEditClick = (rowIdBooking, currentMark) => {
+        setEditingRowId(rowIdBooking); // Set the current row to be editable using id_booking
+        setMarks({...marks, [rowIdBooking]: currentMark ?? ''}); // Initialize with the current mark if exists
     };
-
     const filteredRegister = Array.isArray(register) ? register.filter((val) => {
         return search.toLowerCase() === '' || !val.date
             ? true
@@ -139,25 +141,26 @@ const ShowRegistered = () => {
                                 {copyType === 'center' && (
                                     <>
                                         <td>
-                                            {editingRowId === row.id ? (
+                                            {editingRowId === row.id_booking ? (
                                                 <input
                                                     className="input_mark"
                                                     type="text"
-                                                    value={marks[row.id] || ''}
-                                                    onChange={(e) => handleMarkChange(e, row.id)}
-                                                    onKeyPress={(e) => handleKeyPress(e, row.id)}
+                                                    value={marks[row.id_booking] || ''}
+                                                    onChange={(e) => handleMarkChange(e, row.id_booking)}
+                                                    onKeyDown={(e) => handleKeyDown(e, row.id_booking)} // Use row.id_booking here
                                                 />
                                             ) : (
-                                                <div className="mark-display">
-                                                    <span>{row.mark || ''}</span>
-                                                </div>
+                                                row.marks
                                             )}
                                         </td>
                                         <td>
                                             <FaPen
-                                                className="FaPen"
-                                                onClick={() => handleEditClick(row.id, row.mark)}
+                                                className={`FaPen ${row.mark === 0 ? '' : 'disabled'}`}
+                                                onClick={() => row.mark === 0 && handleEditClick(row.id_booking, row.mark)}
+                                                style={{pointerEvents: row.mark !== 0 ? 'none' : 'auto'}} // Prevent click events when disabled
                                             />
+
+
                                         </td>
                                     </>
                                 )}

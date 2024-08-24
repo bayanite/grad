@@ -176,8 +176,40 @@ const CopyHooks = () => {
             setLoading(false);
         }
     };
+    const saveMark = async (id_book, mark) => {
+        const formData = new FormData();
+        formData.append('mark', mark);
 
-    return {error, fetchCopy, fetchInfoOnlineCopy, fetchInfoCenterCopy, activationCopy, fetchRegister, deleteCopy};
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}exam/addMark/${id_book}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save mark');
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error saving mark', error);
+            throw error;
+        }
+    };
+
+    return {
+        error,
+        fetchCopy,
+        fetchInfoOnlineCopy,
+        fetchInfoCenterCopy,
+        activationCopy,
+        fetchRegister,
+        deleteCopy,
+        saveMark
+    };
 };
 
 export default CopyHooks;

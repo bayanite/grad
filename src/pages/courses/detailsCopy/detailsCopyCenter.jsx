@@ -120,7 +120,7 @@ const DetailsCopyCenter = () => {
                             <label>
                                 رسوم الدورة
                                 <div>
-                                    {centerInfo.price || 'غير متوفر'}
+                                    {centerInfo.price || 'مجانا'}
                                 </div>
                             </label>
                         </div>

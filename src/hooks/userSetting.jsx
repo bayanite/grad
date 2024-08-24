@@ -72,6 +72,13 @@ const useSetting = () => {
                         showConfirmButton: false,
                         timer: 1500
                     });
+                } else if (status === 2) {
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'تم إرسال تذكير بنجاح',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             }
         } catch (error) {

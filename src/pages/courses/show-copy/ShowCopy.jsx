@@ -43,7 +43,9 @@ const ShowCopy = () => {
             const data = await fetchCopy(idc);
             if (data && data.data && data.data.data) {
                 setCopy(data.data.data);
-                setNoData(data.data.length === 0 ? 'لا توجد بيانات لعرضها' : null);
+                if (data.data.data.length === 0) {
+                    setNoData('لا توجد بيانات لعرضها');
+                }
             } else {
                 setError('فشل الاتصال بالخادم !');
             }

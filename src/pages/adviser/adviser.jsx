@@ -77,43 +77,31 @@ const Adviser = () => {
     };
 
     useEffect(() => {
-        checkServerConnectivity();
-        // getAdviser()
+        getAdviser()
     }, [])
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}adviser/index`); // Replace with a basic endpoint
-            // if (!response.ok) throw new Error('Server not reachable');
-
-            // If the server is reachable, proceed to fetch the forms
-            await getAdviser();
-        } catch (error) {
-            // Handle the error without logging it to the console
-            setError('فشل الاتصال بالخادم !');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
 
     const getAdviser = async () => {
         setLoading(true);
         setError(null);
         try {
             const data = await fetchAdvisers();
-            if (!data || !data.data || !data.data.adviser || data.data.adviser.length === 0) {
-                setError("لا يوجد مستشارين ."); // Handle no data found
-            } else {
+            if (data) {
                 setAdviser(data);
+                if (!data || !data.data || !data.data.adviser || data.data.adviser.length === 0) {
+                    setError("لا يوجد مستشارين ."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
         } catch (error) {
-            setError('فشل الاتصال بالخادم !');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
-        //     setAdviser(data);
-        // } catch (error) {
-        //     console.error('Error fetching courses:', error);
-        // }
     };
 
     useEffect(() => {
