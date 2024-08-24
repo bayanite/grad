@@ -126,7 +126,8 @@ const UserSetting = () => {
                                     <td>{row.namecourse}</td>
                                     <td>{row.type}</td>
                                     <td>
-                                        <FaEye className="FaEye"
+
+                                    <FaEye className="FaEye"
                                                onClick={() => handleShowForm(row.id_user, row.id_online_center)}/>
                                     </td>
                                     <td>
