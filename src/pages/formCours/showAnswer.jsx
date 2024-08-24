@@ -15,43 +15,37 @@ const ShowAnswer = () => {
     const {displayUser} = Model();
 
     useEffect(() => {
-        checkServerConnectivity();
-        // show();
+        show();
     }, []);
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/displayUser/${id_user}/${id_online_center}`); // Replace with a basic endpoint
-            if (!response.ok) throw new Error('Server not reachable');
 
-            // If the server is reachable, proceed to fetch the forms
-            await show();
-        } catch (error) {
-            // Handle the error without logging it to the console
-            setError('فشل في الاتصال بالخادم!.');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
     const show = async () => {
+        setLoading(true);
+        setError(null);
         try {
             const data = await displayUser(id_user, id_online_center);
-            if (!data || data.length === 0) {
-                setError("لا توجد بيانات."); // Handle no data found
-            } else {
+            if (data) {
                 setGetFormUser(data);
+                if (!data || data.length === 0) {
+                    setError("لا توجد بيانات."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
+
         } catch (error) {
-            setError('فشل في الاتصال بالخادم! ');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
-
-
     }
     const handleGoBack = () => {
         window.history.back(); // Go back to the previous page
     };
-    const getFormUsers = getFormUser && getFormUser.data;
+    const getFormUsers = getFormUser;
 
     return (
         <div className="model">

@@ -83,35 +83,29 @@ const ShowAccount = () => {
 
 
     useEffect(() => {
-        checkServerConnectivity();
-        // getAccount();
+        getAccount();
     }, []);
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}employee/indexAll`); // Replace with a basic endpoint
-            // if (!response.ok) throw new Error('Server not reachable');
 
-            await getAccount();
-        } catch (error) {
-            setError('فشل في الاتصال بالخادم! ');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
     const getAccount = async () => {
         setLoading(true);
         setError(null);
         try {
             const data = await getAllAccount();
-            if (!data || !data.data || !data.data || data.data.length === 0) {
-                setError("لا توجد بيانات."); // Handle no data found
-            } else {
+            if (data) {
                 setUserAccount(data);
+                if (!data || !data.data || !data.data || data.data.length === 0) {
+                    setError("لا توجد بيانات."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
         } catch (error) {
-            // Catch the error and handle it without logging it to the console
-            setError('فشل في الاتصال بالخادم!');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
 

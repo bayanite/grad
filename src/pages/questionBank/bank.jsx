@@ -69,33 +69,31 @@ const Bank = () => {
     };
 
     useEffect(() => {
-        checkServerConnectivity();
+        showExam();
     }, []);
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}exam/index`); // Replace with a basic endpoint
-            // if (!response.ok) throw new Error('Server not reachable');
 
-            // If the server is reachable, proceed to fetch the forms
-            await showExam();
-        } catch (error) {
-            // Handle the error without logging it to the console
-            setError('فشل في الاتصال بالخادم!');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
     const showExam = async () => {
         setLoading(true); // Start loading
         setError(null); // Reset error before new request
         try {
             const data = await allExam();
-            setExams(data);
+            if (data) {
+                setExams(data);
+                if (!data || !data.data || !data.data.exam || data.data.exam.length === 0) {
+                    setError("لا توجد بيانات."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
+            setLoading(false);
+
         } catch (error) {
-            console.error('Error fetching exams:', error);
-            setError('حدث خطأ في تحميل البيانات من الخادم.'); // Set error message
-        } finally {
-            setLoading(false); // Stop loading
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
+            setLoading(false);
         }
     };
 

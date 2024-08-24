@@ -36,41 +36,34 @@ const ShowBank = () => {
         }
         if (id1) {
             setIdModel(id1);
-            // ShowBank(id1)
-            checkServerConnectivity();
+            ShowBank(id1)
         }
 
     }, [title1, description1, id1]);
-
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}exam/show/${id1}`); // Replace with a basic endpoint
-            // if (!response.ok) throw new Error('Server not reachable');
-
-            await ShowBank(id1);
-        } catch (error) {
-            setError('فشل في الاتصال بالخادم!');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
 
     const ShowBank = async (id) => {
         setLoading(true);
         setError(null);
         try {
             const data = await detailsBank(id);
-            if (!data || !data.data || !data.data.exam || data.data.exam.length === 0) {
-                setError("لا توجد بيانات."); // Handle no data found
-            } else {
+            if (data) {
                 setDataModel(data);
+                if (!data || !data.data || !data.data.exam || data.data.exam.length === 0) {
+                    setError("لا توجد بيانات."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
+
         } catch (error) {
-            setError('فشل في الاتصال بالخادم!');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
-
     }
 
     const deleteQuestion = async (id) => {
@@ -159,6 +152,11 @@ const ShowBank = () => {
         );
         setSaveDisabled(!isAtLeastOneCorrect); // Enable save button if at least one correct option is found
     };
+    // Check if each question has exactly one correct option
+    const invalidQuestions = questions.some(
+        (question) =>
+            question.options.filter((option) => option.correct === 1).length !== 1
+    );
 
     const AddQuestion = async (e) => {
         e.preventDefault();
@@ -169,19 +167,34 @@ const ShowBank = () => {
         });
 
         if (requiredFieldsEmpty) {
+            alert("يجب تعبئة جميع الحقول.");
             setFormSubmitted(true); // Mark the form as submitted
             return; // Exit the function if required fields are empty
         }
 
+        if (invalidQuestions) {
+            alert("يجب أن يحتوي كل سؤال على خيار واحد صحيح بالضبط.");
+            return; // Exit the function if any question has more than one or zero correct options
+        }
         try {
             setLoading1(true); // Start the loading state
-            await addQuestionExam(id1, questions);
-            await Swal.fire({
-                icon: 'success',
-                title: 'تمت الإضافة بنجاح',
-                showConfirmButton: false,
-                timer: 1500
-            });
+            const data = addQuestionExam(id1, questions);
+            if (data.ok) {
+                console.log("jjhhhh")
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'تمت الإضافة بنجاح',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'حدث خطأ ما!',
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+            }
             setQuestions([]);
             await ShowBank(id1)
 

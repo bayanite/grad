@@ -47,39 +47,32 @@ const ShowModel = () => {
         if (id1) {
             setIdModel(id1);
             // setLoading(true); // Start loading when fetching data
-            // formDetails(id1)
-            checkServerConnectivity();
+            formDetails(id1)
         }
 
     }, [title1, description1, id1]);
 
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/show/${id1}`); // Replace with a basic endpoint
-            if (!response.ok) throw new Error('Server not reachable');
-
-            // If the server is reachable, proceed to fetch the forms
-            await formDetails(id1);
-        } catch (error) {
-            // Handle the error without logging it to the console
-            setError('فشل في الاتصال بالخادم! ');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
     const formDetails = async (id) => {
         setLoading(true);
         setError(null);
         try {
             const data = await detailsForm(id);
-            if (!data || !data.data || !data.data.paper || data.data.paper.length === 0) {
-                setError("لا توجد بيانات."); // Handle no data found
-            } else {
+            if (data) {
                 setDataModel(data);
+                if (!data || !data.data || !data.data.paper || data.data.paper.length === 0) {
+                    setError("لا توجد بيانات."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
+
         } catch (error) {
-            setError('فشل في الاتصال بالخادم!');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
 
@@ -265,13 +258,22 @@ const ShowModel = () => {
         }
         try {
             setLoading1(true); // Start the loading state
-            await addQuestion(id1, questions);
-            await Swal.fire({
-                icon: 'success',
-                title: 'تمت الإضافة بنجاح',
-                showConfirmButton: false,
-                timer: 1500
-            });
+            const data = addQuestion(id1, questions);
+            if (data.ok) {
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'تمت الإضافة بنجاح',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'حدث خطأ ما!',
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+            }
             setQuestions([]);
             await formDetails(id1)
 

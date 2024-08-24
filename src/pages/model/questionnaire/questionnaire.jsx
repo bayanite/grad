@@ -68,36 +68,30 @@ const Questionnaire = ({TypeName}) => {
     };
 
     useEffect(() => {
-        checkServerConnectivity();
+        showForm1()
     }, []);
-
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/index/${type}`);
-            if (!response.ok) throw new Error('Server not reachable');
-
-            await showForm1();
-        } catch (error) {
-            setError('فشل في الاتصال بالخادم!');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
 
     const showForm1 = async () => {
         setLoading(true);
         setError(null);
         try {
             const data = await allForm(type);
-            if (!data || !data.data || !data.data.paper || data.data.paper.length === 0) {
-                setError("لا توجد استبيانات متاحة."); // Handle no data found
-            } else {
+            if (data) {
                 setQuestionnaire(data);
+                if (!data || !data.data || !data.data.paper || data.data.paper.length === 0) {
+                    setError("لا توجد استبيانات متاحة.");  // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
+
         } catch (error) {
-            // Catch the error and handle it without logging it to the console
-            setError('فشل في الاتصال بالخادم! ');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
     };

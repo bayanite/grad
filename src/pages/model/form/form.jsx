@@ -69,36 +69,30 @@ const Form = ({TypeName}) => {
     };
 
     useEffect(() => {
-        checkServerConnectivity();
+        showForm();
     }, []);
-
-    const checkServerConnectivity = async () => {
-        try {
-            // Make a simple GET request to check server status
-            const response = await fetch(`${process.env.REACT_APP_API_URL}paper/index/${type}`); // Replace with a basic endpoint
-            if (!response.ok) throw new Error('Server not reachable');
-
-            // If the server is reachable, proceed to fetch the forms
-            await showForm();
-        } catch (error) {
-            setError('فشل في الاتصال بالخادم!');
-            setLoading(false); // Stop the loading spinner
-        }
-    };
 
     const showForm = async () => {
         setLoading(true);
         setError(null);
         try {
             const data = await allForm(type);
-            if (!data || !data.data || !data.data.paper || data.data.paper.length === 0) {
-                setError("لا توجد نماذج متاحة."); // Handle no data found
-            } else {
+            if (data) {
                 setForms(data);
+                if (!data || !data.data || !data.data.paper || data.data.paper.length === 0) {
+                    setError("لا توجد نماذج متاحة."); // Handle no data found
+                }
+            } else {
+                setError('فشل الاتصال بالخادم !');
             }
+            setLoading(false);
+
         } catch (error) {
-            setError('فشل في الاتصال بالخادم! ');
-        } finally {
+            if (!navigator.onLine) {
+                setError('لا يوجد اتصال بالإنترنت');
+            } else {
+                setError('فشل الاتصال بالخادم !');
+            }
             setLoading(false);
         }
     };
